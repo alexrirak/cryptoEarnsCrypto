@@ -105,8 +105,12 @@ Artisan::command('getCelsiusRates', function () {
         }
 
         // insert the data in one action
-        Log::info("[Celsius] Inserting generated data");
-        Rate::insert($data);
+        if (count($data) > 0) {
+            Log::info("[Celsius] Inserting updated data");
+            Rate::insert($data);
+        } else {
+            Log::info("[Celsius] No updated data");
+        }
 
 
     } else {
@@ -116,11 +120,3 @@ Artisan::command('getCelsiusRates', function () {
 
 
 })->purpose('Fetch latest rates from Celsius website');
-
-Artisan::command('test', function () {
-    $temp = CoinHelper::getCoinBySymbolOrName("ETH1","ethereum");
-    print($temp);
-
-    // $temp = CoinHelper::getCoinByName("ethereum");
-    // print($temp);
-});
