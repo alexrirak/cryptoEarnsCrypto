@@ -1,0 +1,33 @@
+body {
+    padding-top: 5rem;
+  }
+
+  .coinLogo {
+    width: 2em;
+    height: 2em;
+    margin: auto;
+  }
+
+  .coinLogo small {
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  .grayOut {
+      opacity: 0.4;
+      filter: alpha(opacity=40); /* msie */
+  }
+
+  #rateTable td {
+    vertical-align: middle;
+  }
+
+  @media (min-width: 767px) {
+    #rateTable_length label {
+      float: left;
+    }
+
+    #rateTable_info {
+      float: left;
+    }
+  }
