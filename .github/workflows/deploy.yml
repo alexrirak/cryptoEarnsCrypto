@@ -32,6 +32,7 @@ jobs:
         server: 192.185.46.34
         username: github_cec_qa@cryptoearnscrypto.com
         password: ${{ secrets.ftp_qa_password }}
+        state-name: crypto_earns_crypto_qa/.sync-state.json
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
