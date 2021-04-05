@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 
 use App\Helpers\RateHelper;
 use App\Helpers\CoinHelper;
+use App\Models\CoinMetadata;
 use App\Models\Rate;
 
 /*
@@ -57,10 +58,27 @@ Artisan::command('getCelsiusRates', function () {
                     Log::notice("[Celsius] Coin doesnt exist, creating it: " . json_encode($rate));
                     $coinId = (string) Str::uuid();
 
+                    $coinMetadata = new CoinMetadata;
+                    $coinMetadata->id = $coinId;
+                    $coinMetadata->name = $rate["currency"]["name"];
+                    $coinMetadata->symbol = $rate["coin"];
+                    $coinMetadata->image = $rate["currency"]["image_url"];
+                    $coinMetadata->save();
+
+                    //TODO: send notification (at least to myself) that new rate is available
+
                 }
 
+                // Insert the rate for the coin
+                $data[] = [
+                    'id' => (string) Str::uuid(),
+                    'coin_id' => $coinId,
+                    'rate' => $newApyRate,
+                    'special_rate' => $newCelApyRate,
+                    'source' => config('sources.celsius_source_id')
+                  ];
 
-                // TODO
+                // No need to continue
                 continue;
             }
 
