@@ -29,10 +29,12 @@ jobs:
     - name: Upload files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
-        server: 192.185.46.34
-        username: github_cec_qa@cryptoearnscrypto.com
+        server: ${{ secrets.ftp_server }}
+        username: ${{ secrets.ftp_qa_username }}
         password: ${{ secrets.ftp_qa_password }}
-        state-name: .sync-state.json
+        state-name: /home2/cryptpto/crypto_earns_crypto_qa/.sync-state.json
+        local-dir: ./public/
+        server-dir: ./public/
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
