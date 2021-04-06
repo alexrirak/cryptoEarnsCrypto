@@ -49,3 +49,9 @@ jobs:
         password: ${{ secrets.ftp_qa_pub_password }}
         state-name: .sync-state.json
         local-dir: ./public/
+        exclude: .git*
+          - .git*/**
+          -  **/.git*/**
+          - node_modules/**
+          - node_modules/**/*
+          - **/index.php
