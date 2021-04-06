@@ -20,16 +20,4 @@ class CoinMetadata extends Model
      * @var string
      */
     protected $keyType = 'string';
-
-    /**
-     * Overide the default boot method to create our uuid
-     */
-    protected static function boot() {
-
-        parent::boot();
-
-        static::creating(function (Model $model) {
-            $model->setAttribute($model->getKeyName(), Uuid::uuid4());
-        });
-    }
 }
