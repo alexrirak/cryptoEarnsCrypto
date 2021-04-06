@@ -1,4 +1,4 @@
-name: Build and Deploy app to host gator
+name: Deploy QA
 
 on:
   push:
@@ -26,23 +26,26 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-dev
 
-    - name: Upload files
+    - name: Upload data files
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ${{ secrets.ftp_server }}
         username: ${{ secrets.ftp_qa_username }}
         password: ${{ secrets.ftp_qa_password }}
         state-name: .sync-state.json
-        log-level: verbose
         exclude: .git*
           - .git*/**
           -  **/.git*/**
           - node_modules/**
           - node_modules/**/*
           - **/.github*/**
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test
+          
+    
+    - name: Upload public files
+      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      with:
+        server: ${{ secrets.ftp_server }}
+        username: ${{ secrets.ftp_qa_pub_username }}
+        password: ${{ secrets.ftp_qa_pub_password }}
+        state-name: .sync-state.json
+        local-dir: ./public/
