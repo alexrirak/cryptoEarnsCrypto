@@ -34,13 +34,6 @@ jobs:
         password: ${{ secrets.ftp_qa_password }}
         state-name: .sync-state.json
         log-level: verbose
-        exclude: .git*
-          - .git*/**
-          -  **/.git*/**
-          - node_modules/**
-          - node_modules/**/*
-          - vendor/**
-          - vendor/**/*
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
