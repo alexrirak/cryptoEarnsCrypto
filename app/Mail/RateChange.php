@@ -2,23 +2,29 @@
 
 namespace App\Mail;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class RateChange extends Mailable
 {
-    use Queueable, SerializesModels;
 
+    public $testMessage;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(String $message)
     {
         //
+        $this->testMessage = $message;
+
+        // This is to get the mailer to work on cli
+        $mailTransport = app()->make('mailer')->getSwiftMailer()->getTransport();
+
+        if ($mailTransport instanceof \Swift_SmtpTransport) {
+           $mailTransport->setLocalDomain('0.0.0.0');
+        }
     }
 
     /**
@@ -28,7 +34,7 @@ class RateChange extends Mailable
      */
     public function build()
     {
-        return $this//->from('noreply@qa.cryptoearnscrypto.com')
+        return $this
             ->subject("Test Email")
             ->view('emails.rateChange');
     }

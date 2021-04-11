@@ -1,7 +1,7 @@
 <html>
 
 <body>
-    <div>Test</div>
+    <div>{{ $testMessage }}</div>
 </body>
 
 </html>
