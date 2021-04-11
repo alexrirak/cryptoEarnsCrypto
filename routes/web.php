@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\EmailHelper;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Mail;
 
@@ -33,10 +34,5 @@ Route::get('/support-us', function () {
 
 Route::get('/test', function () {
     return view('welcome');
-});
-
-Route::get('/mail', function () {
-    Mail::to("alexrirak@yahoo.com")
-    ->send(new RateChange());
 });
 
