@@ -3,11 +3,13 @@
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Arr;
 
 use App\Helpers\RateHelper;
 use App\Helpers\CoinHelper;
+use App\Mail\RateChange;
 use App\Models\CoinMetadata;
 use App\Models\Rate;
 
@@ -122,3 +124,8 @@ Artisan::command('getCelsiusRates', function () {
 
 
 })->purpose('Fetch latest rates from Celsius website');
+
+Artisan::command('test', function () {
+    Mail::to("alexrirak@gmail.com")
+    ->send(new RateChange());
+})->purpose('test');
