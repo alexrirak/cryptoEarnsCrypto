@@ -1,10 +1,8 @@
 <?php
 
-use App\Helpers\EmailHelper;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Mail;
 
-use App\Mail\RateChange;
+use App\Http\Controllers\SocialAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +33,15 @@ Route::get('/support-us', function () {
 Route::get('/test', function () {
     return view('welcome');
 });
+
+Route::get('login/{provider}', [SocialAuthController::class, 'redirect'])
+    ->name('login-provider');
+
+Route::get('login/{provider}/callback',[SocialAuthController::class, 'callback']);
+
+Route::get('login',[SocialAuthController::class, 'landing'])
+    ->name('login');
+
+Route::get('logout',[SocialAuthController::class, 'logout'])
+    ->name('logout');
 

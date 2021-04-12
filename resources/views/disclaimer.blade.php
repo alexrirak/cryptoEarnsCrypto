@@ -2,26 +2,11 @@
 
 @section('title', 'Disclaimer')
 
-@section('styles')
-<style>
-    .disclaimer-card {
-        width: 100%;
-    }
-    @media (min-width: 767px) {
-        .disclaimer-card {
-            width: 75%;
-        }
-    }
-</style>
-@endsection
-
-
-
 @section('content')
     <div>
         <h1 class="text-center">Disclaimer</h1>
 
-            <div class="card mx-auto mt-3 disclaimer-card">
+            <div class="card mx-auto mt-3 content-card">
                 <div class="card-body">
                     <h4 class="card-title">Not Investment Advice</h4>
 
