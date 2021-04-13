@@ -45,6 +45,31 @@ class User extends Authenticatable
     ];
 
     /**
+     * Indicates whether the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
+     * User constructor. Sets id to a uuid on creation
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = array())
+    {
+        parent::__construct($attributes);
+
+        $this->id = (string) Str::uuid();
+    }
+
+    /**
      * Returns two initials based on the user's name
      * @return string
      */
