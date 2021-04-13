@@ -38,7 +38,7 @@
                                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
                                     <svg width="32" height="32">
                                         <circle cx="16" cy="16" r="16" fill="#aeaeae" />
-                                        <text x="50%" y="50%" text-anchor="middle" fill="white" font-size="16px" font-family="Arial" dy=".4em">AR</text>
+                                        <text x="50%" y="50%" text-anchor="middle" fill="white" font-size="16px" font-family="Arial" dy=".4em">{{ Auth::user()->initials() }}</text>
                                     </svg>
                                 </a>
                                 <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -42,4 +43,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Returns two initials based on the user's name
+     * @return string
+     */
+    public function initials(): string
+    {
+        $words = explode(" ", $this->name );
+        $initials = null;
+        $initials .= $words[0][0];
+        if(count($words) > 1)
+            $initials .= $words[count($words)-1][0];
+        return Str::upper($initials);
+    }
 }
