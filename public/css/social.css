@@ -1,7 +1,11 @@
 .google-btn div {
-    width: 382px;
-    height: 92px;
+    /*width: 382px;*/
+    /*height: 92px;*/
+    height: 5rem;
+    width: 20rem;
     background-image: url(/img/social/google/btn_google_signin_dark_normal_web@2x.png);
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 .google-btn div:hover {
