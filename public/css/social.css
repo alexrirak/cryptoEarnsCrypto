@@ -1,0 +1,13 @@
+.google-btn div {
+    width: 382px;
+    height: 92px;
+    background-image: url(http://localhost/img/social/google/btn_google_signin_dark_normal_web@2x.png);
+}
+
+.google-btn div:hover {
+    background-image: url(http://localhost/img/social/google/btn_google_signin_dark_focus_web@2x.png);
+}
+
+.google-btn div:active {
+    background-image: url(http://localhost/img/social/google/btn_google_signin_dark_pressed_web@2x.png);
+}
