@@ -24,6 +24,8 @@ class SocialAuthController extends Controller
     {
         $userSocial =   Socialite::driver($provider)->user();
 
+        //TODO Check that we got email
+
         $user       =   User::where(['email' => $userSocial->getEmail()])->first();
 
         if($user){

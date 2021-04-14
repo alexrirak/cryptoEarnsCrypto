@@ -13,7 +13,10 @@
         <div class="card mx-auto mt-3 content-card">
             <div class="card-body">
                 <a href="{{ route('login-provider', ['provider'=>'google']) }}" class="google-btn">
-                    <div id="google-btn" class="mx-auto"></div>
+                    <div class="mx-auto"></div>
+                </a>
+                <a href="{{ route('login-provider', ['provider'=>'facebook']) }}" class="facebook-btn">
+                    <div class="mx-auto"></div>
                 </a>
             </div>
         </div>
