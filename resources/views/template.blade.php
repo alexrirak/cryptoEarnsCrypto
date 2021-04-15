@@ -18,6 +18,8 @@
             <div class="corner-ribbon top-left sticky orange shadow" style="z-index: 9999;">{{ Str::upper(config('app.env')) }}</div>
         @endif
 
+        @include('cookieConsent::index')
+
         <header class="p-2 bg-dark text-white">
             <div class="container">
                 <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start ">
