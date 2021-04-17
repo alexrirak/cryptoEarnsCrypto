@@ -29,10 +29,8 @@ class SocialAuthController extends Controller
         $user       =   User::where(['email' => $userSocial->getEmail()])->first();
 
         if($user){
-            if($user->provider_id == $userSocial->getId()) {
-                Auth::login($user);
-            }
-            //TODO: Handle login from wrong provider
+            Auth::login($user);
+
         }else{
             $user = User::create([
                 'name'          => $userSocial->getName(),
