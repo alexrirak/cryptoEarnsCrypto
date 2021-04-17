@@ -4,8 +4,6 @@ $(document).ready(function() {
         ajax: {
             url: '/api/rate-stats/Celsius',
             dataSrc: function (json) {
-                console.log(json)
-
                 // maps the return data to the data we want to show in the table
                 var return_data = new Array();
                 for(var i=0;i< json.length; i++) {
@@ -46,7 +44,6 @@ $(document).ready(function() {
         columns: [
             {
                 render: function (data, type) {
-                    console.log(type);
                     return type === 'sort' ? data[0] : data[1];
                 }
             },
