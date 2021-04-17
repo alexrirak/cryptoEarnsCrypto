@@ -12,6 +12,17 @@
 
         <div class="card mx-auto mt-3 content-card">
             <div class="card-body">
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <a href="{{ route('login-provider', ['provider'=>'google']) }}" class="google-btn">
                     <div class="mx-auto"></div>
                 </a>
