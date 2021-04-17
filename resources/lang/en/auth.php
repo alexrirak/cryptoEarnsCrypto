@@ -16,5 +16,7 @@ return [
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'no-email-error' => 'Did not receive an email but email is required. Please try again.',
+    'external-error' => 'Authentication with the chosen provider failed. Please try again.',
 
 ];
