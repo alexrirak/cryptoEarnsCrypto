@@ -25,7 +25,7 @@ class SocialAuthController extends Controller
     {
         // Try to catch errors coming back from the providers
         if (!$request->has('code') || $request->has('error')) {
-            return redirect('login')->withErrors(['Authentication with the chosen provider failed. Please try again.']);
+            return redirect('login')->withErrors([__('auth.external-error')]);
         }
 
         $userSocial =   Socialite::driver($provider)->user();
@@ -40,7 +40,7 @@ class SocialAuthController extends Controller
                 $http->delete("https://graph.facebook.com/v3.0/".$userSocial->getId()."/permissions?access_token=".$userSocial->token);
             }
 
-            return redirect('login')->withErrors(['Did not receive an email but email is required. Please try again.']);
+            return redirect('login')->withErrors([__('auth.no-email-error')]);
         }
 
         // Find the suer by email, provider is not currently checked
