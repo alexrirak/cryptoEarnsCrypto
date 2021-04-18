@@ -2,7 +2,7 @@ $(document).ready(function() {
     var rateTable = $('#rateTable').DataTable( {
         responsive: true,
         ajax: {
-            url: '/api/rate-stats/Celsius',
+            url: '/api/rate-stats/' + $("h1[data-provider]").attr('data-provider'),
             dataSrc: function (json) {
                 // maps the return data to the data we want to show in the table
                 var return_data = new Array();

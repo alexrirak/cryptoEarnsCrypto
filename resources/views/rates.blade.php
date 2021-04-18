@@ -19,7 +19,7 @@
 
 @section('content')
     <div class="text-center">
-        <h1>APY Tracker</h1>
+        <h1 data-provider="{{ Str::lower($provider) }}">{{ Str::ucfirst($provider) }} APY Tracker</h1>
         <div class="alert alert-success" role="alert" id="signupSuccess" style="display: none;">
             <h4 class="alert-heading"><i class="bi bi-check-square"></i> You have been registered for alerts!</h4>
             <p>If this is your first time signing up you will need to confirm your email first. Check your email for your confirmation link.</p>
