@@ -57,7 +57,3 @@ Route::get('/rate-stats/{source}', function ($source) {
                 ->groupBy('rates.coin_id', 'rates.source')
                 ->get();
 });
-
-Route::get('/test2', function () {
-    return CoinMetadata::get();
-})->name('rate-stats-by-source');

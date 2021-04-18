@@ -16,10 +16,20 @@ use App\Http\Controllers\SocialAuthController;
 */
 
 Route::get('/', function () {
-    return view('rates');
+    return view('rates', ['provider' => 'celsius']);
 })->name('home');
 
 Route::redirect('/home', '/');
+
+Route::get('/rates/{provider}', function ($provider) {
+
+    if (\App\Models\ProviderMetadata::where('name', $provider)->first()) {
+        return view('rates', ['provider' => $provider]);
+    } else {
+        abort(404);
+    }
+    
+})->name('rates');
 
 Route::get('/disclaimer', function () {
     return view('disclaimer');
