@@ -7,7 +7,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/dist/bootstrap-switch-button.min.js"></script>
-    <script type="text/javascript" src="{{ asset('js/rates.js') }}"></script>
+    @include('rates-js')
 @endsection
 
 @section('styles')
