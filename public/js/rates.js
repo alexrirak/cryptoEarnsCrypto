@@ -72,20 +72,22 @@ $(document).ready(function() {
 
             specialRate = $("h1[data-provider-rate]").attr('data-provider-rate')
             if (specialRate != "") {
-                $("#rate-switch").html("<button type=\"button\" class=\"btn btn-outline-secondary\" data-rate-label=\"" + specialRate + "\">Show " + specialRate + "</button>");
+                $("#rate-switch").html("<button type=\"button\" class=\"btn btn-outline-secondary\" data-rate-label=\"" + specialRate + "\" special-rate-selected='false'>Show " + specialRate + "</button>");
 
                 $("[data-rate-label]").click(function() {
 
-                    if ($("[data-type='specialRate']").first().is(":hidden")){
+                    if ($("[special-rate-selected]").attr('special-rate-selected') === 'false'){
                         $("[data-rate-label]").html("Hide " + $("[data-rate-label]").attr('data-rate-label'));
                         $("[data-type='rate']").hide();
                         $("[data-type='specialRate']").show();
                         $("td:has(\"[data-type='specialRate']\")").addClass("flash");
-                    } else if ($("[data-type='rate']").first().is(":hidden")){
+                        $("[special-rate-selected]").attr('special-rate-selected','true');
+                    } else if ($("[special-rate-selected]").attr('special-rate-selected') === 'true'){
                         $("[data-rate-label]").html("Show " + $("[data-rate-label]").attr('data-rate-label'));
                         $("[data-type='specialRate']").hide();
                         $("[data-type='rate']").show();
                         $("td:has(\"[data-type='rate']\")").addClass("flash");
+                        $("[special-rate-selected]").attr('special-rate-selected','false');
                     }
 
                     setTimeout( function(){
@@ -103,10 +105,21 @@ $(document).ready(function() {
 
     // When a collapsed row is opened we need to do a check for which rate to show
     rateTable.on( 'responsive-display', function (  ) {
-        if ($("[data-type='rate']").first().is(":hidden")){
+        if ($("[special-rate-selected]").attr('special-rate-selected') === 'true'){
             $("[data-type='rate']").hide();
             $("[data-type='specialRate']").show();
-        } else if ($("[data-type='specialRate']").first().is(":hidden")){
+        } else if ($("[special-rate-selected]").attr('special-rate-selected') === 'false'){
+            $("[data-type='specialRate']").hide();
+            $("[data-type='rate']").show();
+        }
+    } );
+
+    // When a page is changed we need to do a check for which rate to show
+    rateTable.on( 'draw', function () {
+        if ($("[special-rate-selected]").attr('special-rate-selected') === 'true'){
+            $("[data-type='rate']").hide();
+            $("[data-type='specialRate']").show();
+        } else if ($("[special-rate-selected]").attr('special-rate-selected') === 'false'){
             $("[data-type='specialRate']").hide();
             $("[data-type='rate']").show();
         }
