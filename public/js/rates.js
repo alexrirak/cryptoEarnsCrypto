@@ -64,6 +64,51 @@ $(document).ready(function() {
                 }
             },
             { }
-        ]
+        ],
+        dom: "<'row'<'#length-switch.col-sm-12 col-md-3 mb-1'l><'#rate-switch.col-sm-12 col-md-3 mb-1'><'#favorite-button.col-sm-12 col-md-3 mb-1'><'#search.col-sm-12 col-md-3 mb-1'f>>" +
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+        "initComplete": function() {
+
+            specialRate = $("h1[data-provider-rate]").attr('data-provider-rate')
+            if (specialRate != "") {
+                $("#rate-switch").html("<button type=\"button\" class=\"btn btn-outline-secondary\" data-rate-label=\"" + specialRate + "\">Show " + specialRate + "</button>");
+
+                $("[data-rate-label]").click(function() {
+
+                    if ($("[data-type='specialRate']").first().is(":hidden")){
+                        $("[data-rate-label]").html("Hide " + $("[data-rate-label]").attr('data-rate-label'));
+                        $("[data-type='rate']").hide();
+                        $("[data-type='specialRate']").show();
+                        $("td:has(\"[data-type='specialRate']\")").addClass("flash");
+                    } else if ($("[data-type='rate']").first().is(":hidden")){
+                        $("[data-rate-label]").html("Show " + $("[data-rate-label]").attr('data-rate-label'));
+                        $("[data-type='specialRate']").hide();
+                        $("[data-type='rate']").show();
+                        $("td:has(\"[data-type='rate']\")").addClass("flash");
+                    }
+
+                    setTimeout( function(){
+                        $("td.flash").removeClass("flash")
+                    }, 1000);
+
+                    $(this).blur();
+
+                });
+
+                $("#favorite-button").html("<button type=\"button\" class=\"btn btn-outline-secondary\" ><i class=\"bi bi-star-fill\"></i> Add Favorites <i class=\"bi bi-star-fill\"></i></button>");
+            }
+        }
     });
+
+    // When a collapsed row is opened we need to do a check for which rate to show
+    rateTable.on( 'responsive-display', function (  ) {
+        if ($("[data-type='rate']").first().is(":hidden")){
+            $("[data-type='rate']").hide();
+            $("[data-type='specialRate']").show();
+        } else if ($("[data-type='specialRate']").first().is(":hidden")){
+            $("[data-type='specialRate']").hide();
+            $("[data-type='rate']").show();
+        }
+    } );
 });
