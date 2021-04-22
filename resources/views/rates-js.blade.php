@@ -11,8 +11,14 @@
                         rateChange = json[i].prior_rate ? [parseFloat(json[i].latest_rate) - parseFloat(json[i].prior_rate)] : []
                         specialRateChange = json[i].prior_rate ? [parseFloat(json[i].latest_special_rate) - parseFloat(json[i].prior_special_rate)] : []
                         return_data.push([
-                            [json[i].name, "@auth<div class='coinLogoHolder'>@endauth<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>@auth<i coin='"+json[i].symbol+"' data-bs-placement=\"right\" data-bs-original-title=\"Added!\" data-bs-trigger=\"manual\" class=\"bi bi-star favoriteStar\"></i></div>@endauth<span style='display:none'>" + json[i].name + "</span>"],
+                            @auth
+                                "@desktop<div class='coinLogoHolder'>@enddesktop<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>@desktop<i coin='"+json[i].symbol+"' data-bs-placement=\"right\" data-bs-original-title=\"Added!\" data-bs-trigger=\"manual\" class=\"bi bi-star favoriteStar\"></i></div>@enddesktop",
+                            @else
+                                "<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>",
+                            @endauth
+                            json[i].name,
                             json[i].symbol,
+                            @auth "<button type='button' data-bs-placement='right' data-bs-original-title='Added!' data-bs-trigger='manual' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star'></i></button>", @endauth
                             [parseFloat(json[i].latest_rate),
                                 "<span data-type='specialRate' style='display: none'>"
                                 + (parseFloat(json[i].latest_special_rate) * 100).toFixed(2) + " %"
@@ -43,29 +49,42 @@
                 }
             },
             columns: [
+                { // shows image, not searchable
+                    "searchable": false,
+                    "orderable": false,
+                },
                 {
+                    //name, hidden but searchable
+                    "visible": false,
+                },
+                {
+                    // symbol/ticker
+                },
+                @auth {
+                    "visible": false,
+                    "searchable": false
+                    // favorites
+                }, @endauth
+                { // current rate, decimal for sort, converted to percent for display
                     render: function (data, type) {
                         return type === 'sort' ? data[0] : data[1];
                     }
                 },
-                { },
-                {
+                {  // prior rate, decimal for sort, converted to percent for display or unknown if none
                     render: function (data, type) {
-                        return type === 'sort' ? data[0] : data[1];
+                        return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
                     }
                 },
-                {
+                {  // change, decimal for sort, converted to percent for display or unknown if none
                     render: function (data, type) {
                         return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
                     }
                 },
                 {
-                    render: function (data, type) {
-                        return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
-                    }
-                },
-                { }
+                  // date string or unknown fixme: make this sortable
+                }
             ],
+            "order": [[ 1, 'asc' ]],
             dom: "<'row'<'#length-switch.col-sm-12 col-md-3 mb-1'l><'#rate-switch.col-sm-12 col-md-3 mb-1'><'#favorite-button.col-sm-12 col-md-3 mb-1'><'#search.col-sm-12 col-md-3 mb-1'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -101,6 +120,40 @@
 
                     @auth
                     $("#favorite-button").html("<button type=\"button\" class=\"btn btn-outline-secondary\" ><i class=\"bi bi-star-fill\"></i> Edit Favorites <i class=\"bi bi-star-fill\"></i></button>");
+                    $("#favorite-button").click(function() {
+                        var favoritesColumn = rateTable.column(3);
+                        if (!favoritesColumn.visible()) {
+                            favoritesColumn.visible( ! favoritesColumn.visible() );
+                            $('#rateTable').width('100%');
+                            $("button[coin]").click(function() {
+                                if($(this).find("i").hasClass("bi-star")) {
+                                    $(this).find("i").removeClass("bi-star");
+                                    $(this).find("i").addClass("bi-star-fill");
+                                    showtooltip($( this ));
+                                    $(this).attr('data-bs-original-title','Removed!');
+                                    $(this).blur();
+                                } else if ($(this).find("i").hasClass("bi-star-fill")) {
+                                    $(this).find("i").removeClass("bi-star-fill");
+                                    $(this).find("i").addClass("bi-star");
+                                    showtooltip($( this ));
+                                    $(this).attr('data-bs-original-title','Added!');
+                                    $(this).blur();
+                                }
+                            });
+                            @desktop
+                                $(".coinLogo").parent().removeClass("coinLogoHolder");
+                            @enddesktop
+                        } else {
+                            $("button[coin]").off("click");
+                            favoritesColumn.visible( ! favoritesColumn.visible() );
+                            @desktop
+                                $(".coinLogo").parent().addClass("coinLogoHolder");
+                            @enddesktop
+                            $('#rateTable').width('100%');
+                        }
+                    });
+
+
                     @else
                     $("#favorite-button").html("<button type=\"button\" class=\"btn btn-outline-secondary\" ><i class=\"bi bi-star-fill\"></i> Add Favorites <i class=\"bi bi-star-fill\"></i></button>");
                     @endauth

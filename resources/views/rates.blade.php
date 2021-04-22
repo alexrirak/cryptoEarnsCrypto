@@ -28,11 +28,13 @@
             <h4 class="alert-heading"><i class="bi bi-x-square"></i> Something went wrong!</h4>
             <p>We were not able to register you for alerts. Please try again later. If this problem persist please contact us.</p>
         </div>
-        <table id="rateTable" class="table table-striped" >
+        <table id="rateTable" class="table table-striped" style="width:100%;">
             <thead>
                 <tr>
                     <th>Coin</th>
+                    <th>Name</th>
                     <th>Ticker</th>
+                    @auth <th>Favorites</th> @endauth
                     <th>Current Rate</th>
                     <th>Prior Rate</th>
                     <th>Change</th>
