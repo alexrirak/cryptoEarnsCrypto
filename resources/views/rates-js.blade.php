@@ -119,7 +119,7 @@
                     });
 
                     @auth
-                    $("#favorite-button").html("<button type=\"button\" class=\"btn btn-outline-secondary\" ><i class=\"bi bi-star-fill\"></i> Edit Favorites <i class=\"bi bi-star-fill\"></i></button>");
+                    $("#favorite-button").html("<button type=\"button\" class=\"btn btn-outline-secondary\" ><i class=\"bi bi-star-fill\"></i> Manage Favorites <i class=\"bi bi-star-fill\"></i></button>");
                     $("#favorite-button").click(function() {
                         var favoritesColumn = rateTable.column(3);
                         if (!favoritesColumn.visible()) {

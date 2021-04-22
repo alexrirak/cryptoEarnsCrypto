@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FavoriteController;
 use App\Models\CoinMetadata;
 use App\Models\Rate;
 use Illuminate\Http\Request;
@@ -57,3 +58,9 @@ Route::get('/rate-stats/{source}', function ($source) {
                 ->groupBy('rates.coin_id', 'rates.source')
                 ->get();
 });
+
+Route::get('favorite/{provider}/{coin}',[FavoriteController::class, 'addFavorite'])
+    ->middleware('auth:api')
+    ->name('addFavorite');
+
+// TODO: change this to a PUT and create the delete version
