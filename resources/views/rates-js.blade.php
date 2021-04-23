@@ -129,15 +129,51 @@
                                 if($(this).find("i").hasClass("bi-star")) {
                                     $(this).find("i").removeClass("bi-star");
                                     $(this).find("i").addClass("bi-star-fill");
-                                    showtooltip($( this ));
-                                    $(this).attr('data-bs-original-title','Removed!');
-                                    $(this).blur();
+
+                                    var element = this;
+
+                                    $.ajax({
+                                        url: '{{ route('addFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
+                                        type: 'PUT',
+                                        success: function() {
+                                            showtooltip($( element ));
+                                            $(element).attr('data-bs-original-title','Removed!');
+                                            $(element).blur();
+                                        }
+                                    }).fail(function() {
+                                        $(element).attr('data-bs-original-title','Error!');
+                                        showtooltip($( element ));
+                                        $(element).blur();
+                                        //revert to original state
+                                        $(element).attr('data-bs-original-title','Added!');
+                                        $(element).find("i").removeClass("bi-star-fill");
+                                        $(element).find("i").addClass("bi-star");
+                                    });
+
+
                                 } else if ($(this).find("i").hasClass("bi-star-fill")) {
                                     $(this).find("i").removeClass("bi-star-fill");
                                     $(this).find("i").addClass("bi-star");
-                                    showtooltip($( this ));
-                                    $(this).attr('data-bs-original-title','Added!');
-                                    $(this).blur();
+
+                                    var element = this;
+
+                                    $.ajax({
+                                        url: '{{ route('deleteFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
+                                        type: 'DELETE',
+                                        success: function() {
+                                            showtooltip($( element ));
+                                            $(element).attr('data-bs-original-title','Added!');
+                                            $(element).blur();
+                                        }
+                                    }).fail(function() {
+                                        $(element).attr('data-bs-original-title','Error!');
+                                        showtooltip($( element ));
+                                        $(element).blur();
+                                        //revert to original state
+                                        $(element).attr('data-bs-original-title','Removed!');
+                                        $(element).find("i").removeClass("bi-star");
+                                        $(element).find("i").addClass("bi-star-fill");
+                                    });
                                 }
                             });
                             @desktop
@@ -164,13 +200,45 @@
                     if($(this).hasClass("bi-star")) {
                         $(this).removeClass("bi-star");
                         $(this).addClass("bi-star-fill");
-                        showtooltip($( this ));
-                        $(this).attr('data-bs-original-title','Removed!');
+
+                        var element = this;
+
+                        $.ajax({
+                            url: '{{ route('addFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
+                            type: 'PUT',
+                            success: function() {
+                                showtooltip($( element ));
+                                $(element).attr('data-bs-original-title','Removed!');
+                            }
+                        }).fail(function() {
+                            $(element).attr('data-bs-original-title','Error!');
+                            showtooltip($( element ));
+                            //revert to original state
+                            $(element).attr('data-bs-original-title','Added!');
+                            $(element).removeClass("bi-star-fill");
+                            $(element).addClass("bi-star");
+                        });
                     } else if ($(this).hasClass("bi-star-fill")) {
                         $(this).removeClass("bi-star-fill");
                         $(this).addClass("bi-star");
-                        showtooltip($( this ));
-                        $(this).attr('data-bs-original-title','Added!');
+
+                        var element = this;
+
+                        $.ajax({
+                            url: '{{ route('deleteFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
+                            type: 'DELETE',
+                            success: function() {
+                                showtooltip($( element ));
+                                $(element).attr('data-bs-original-title','Added!');
+                            }
+                        }).fail(function() {
+                            $(element).attr('data-bs-original-title','Error!');
+                            showtooltip($( element ));
+                            //revert to original state
+                            $(element).attr('data-bs-original-title','Removed!');
+                            $(element).removeClass("bi-star");
+                            $(element).addClass("bi-star-fill");
+                        });
                     }
                 });
                 @endauth

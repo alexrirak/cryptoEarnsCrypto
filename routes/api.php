@@ -59,8 +59,12 @@ Route::get('/rate-stats/{source}', function ($source) {
                 ->get();
 });
 
-Route::get('favorite/{provider}/{coin}',[FavoriteController::class, 'addFavorite'])
+Route::put('favorite/{provider}/{coin}',[FavoriteController::class, 'addFavorite'])
     ->middleware('auth:api')
     ->name('addFavorite');
+
+Route::delete('favorite/{provider}/{coin}',[FavoriteController::class, 'deleteFavorite'])
+     ->middleware('auth:api')
+     ->name('deleteFavorite');
 
 // TODO: change this to a PUT and create the delete version

@@ -39,8 +39,36 @@ class FavoriteController extends Controller
         $favorite->save();
 
 
-
         return response("",201);
+
+    }
+
+    public function deleteFavorite(Request $request, $provider, $coin) {
+
+        $provider = ProviderMetadata::where('name', $provider)->get();
+
+        if (count($provider) == 0) {
+            abort(400);
+        }
+
+        $coin = CoinMetadata::where('symbol', $coin)->get();
+
+        if (count($coin) == 0) {
+            abort(400);
+        }
+
+        $existing = UserFavorite::where('user_id', $request->user()->id)
+                                ->where('coin_id', $coin[0]->id)
+                                ->where('source_id', $provider[0]->id)
+                                ->get();
+
+        if (count($existing) != 1) {
+            abort(400);
+        }
+
+        $existing[0]->delete();
+
+        return response("",204);
 
     }
 }
