@@ -3,7 +3,7 @@
         var rateTable = $('#rateTable').DataTable( {
             responsive: true,
             ajax: {
-                url: '/api/rate-stats/' + $("h1[data-provider]").attr('data-provider'),
+                url: '/api/rate-stats/' + $("h1[data-provider]").attr('data-provider') @auth+ '?user={{ Auth::user()->id }}'@endauth,
                 dataSrc: function (json) {
                     // maps the return data to the data we want to show in the table
                     var return_data = new Array();
@@ -12,13 +12,19 @@
                         specialRateChange = json[i].prior_rate ? [parseFloat(json[i].latest_special_rate) - parseFloat(json[i].prior_special_rate)] : []
                         return_data.push([
                             @auth
-                                "@desktop<div class='coinLogoHolder'>@enddesktop<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>@desktop<i coin='"+json[i].symbol+"' data-bs-placement=\"right\" data-bs-original-title=\"Added!\" data-bs-trigger=\"manual\" class=\"bi bi-star favoriteStar\"></i></div>@enddesktop",
+                                @desktop
+                                json[i].favorite === 1
+                                    ? "<div class='coinLogoHolder'><img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/><i coin='"+json[i].symbol+"' data-bs-placement=\"right\" data-bs-original-title=\"Removed!\" data-bs-trigger=\"manual\" class=\"bi bi-star-fill favoriteStar\"></i></div>"
+                                    : "<div class='coinLogoHolder'><img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/><i coin='"+json[i].symbol+"' data-bs-placement=\"right\" data-bs-original-title=\"Added!\" data-bs-trigger=\"manual\" class=\"bi bi-star favoriteStar\"></i></div>",
+                                @elsedesktop
+                                "<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>",
+                                @enddesktop
                             @else
                                 "<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>",
                             @endauth
                             json[i].name,
                             json[i].symbol,
-                            @auth "<button type='button' data-bs-placement='right' data-bs-original-title='Added!' data-bs-trigger='manual' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star'></i></button>", @endauth
+                            @auth json[i].favorite === 1 ? "<button type='button' data-bs-placement='right' data-bs-original-title='Removed!' data-bs-trigger='manual' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star-fill'></i></button>" : "<button type='button' data-bs-placement='right' data-bs-original-title='Added!' data-bs-trigger='manual' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star'></i></button>", @endauth
                             [parseFloat(json[i].latest_rate),
                                 "<span data-type='specialRate' style='display: none'>"
                                 + (parseFloat(json[i].latest_special_rate) * 100).toFixed(2) + " %"
