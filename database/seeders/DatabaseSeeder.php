@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CoinMetadataSeeder::class,
             RateSeeder::class,
+            ProviderMetadataSeeder::class,
         ]);
     }
 }
