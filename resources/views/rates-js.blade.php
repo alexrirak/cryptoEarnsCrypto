@@ -131,7 +131,7 @@
                     });
 
                     @auth
-                    $("#favorite-button").html("<button type=\"button\" class=\"btn btn-outline-secondary\" ><i class=\"bi bi-star-fill\"></i> Manage Favorites <i class=\"bi bi-star-fill\"></i></button>");
+                    $("#favorite-button").html("<button type=\"button\" class=\"btn btn-outline-secondary\" >Manage Favorites</button>");
                     $("#favorite-button").click(function() {
                         var favoritesColumn = rateTable.column(3);
                         if (!favoritesColumn.visible()) {
@@ -159,7 +159,7 @@
 
 
                     @else
-                    $("#favorite-button").html("<button type=\"button\" class=\"btn btn-outline-secondary\" ><i class=\"bi bi-star-fill\"></i> Add Favorites <i class=\"bi bi-star-fill\"></i></button>");
+                    $("#favorite-button").html("<button type=\"button\" class=\"btn btn-outline-secondary\" data-bs-toggle=\"modal\" data-bs-target=\"#favoriteModal\">Manage Favorites</button>");
                     @endauth
                 }
             }

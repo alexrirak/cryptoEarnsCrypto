@@ -45,4 +45,24 @@
             </thead>
         </table>
     </div>
+    @guest
+    <div class="modal fade" id="favoriteModal" tabindex="-1" aria-labelledby="favoriteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="favoriteModalLabel">
+                        {{ __('favorites.account-required') }}
+                    </h5>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Back</button>
+                    <div>
+                        <a class="btn btn-outline-secondary" href="{{ route('login') }}" role="button">Login</a>
+                        <a class="btn btn-outline-secondary" href="{{ route('login') }}" role="button">Sign-up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endguest
 @endsection
