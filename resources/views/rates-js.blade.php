@@ -13,18 +13,19 @@
                         return_data.push([
                             @auth
                                 @desktop
+                                [json[i].favorite * -1,
                                 json[i].favorite === 1
                                     ? "<div class='coinLogoHolder'><img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/><i coin='"+json[i].symbol+"' data-bs-placement=\"right\" data-bs-original-title=\"Removed!\" data-bs-trigger=\"manual\" class=\"bi bi-star-fill favoriteStar\"></i></div>"
-                                    : "<div class='coinLogoHolder'><img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/><i coin='"+json[i].symbol+"' data-bs-placement=\"right\" data-bs-original-title=\"Added!\" data-bs-trigger=\"manual\" class=\"bi bi-star favoriteStar\"></i></div>",
+                                    : "<div class='coinLogoHolder'><img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/><i coin='"+json[i].symbol+"' data-bs-placement=\"right\" data-bs-original-title=\"Added!\" data-bs-trigger=\"manual\" class=\"bi bi-star favoriteStar\"></i></div>"],
                                 @elsedesktop
-                                "<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>",
+                                [json[i].favorite * -1,"<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>"],
                                 @enddesktop
                             @else
                                 "<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>",
                             @endauth
                             json[i].name,
                             json[i].symbol,
-                            @auth json[i].favorite === 1 ? "<button type='button' data-bs-placement='right' data-bs-original-title='Removed!' data-bs-trigger='manual' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star-fill'></i></button>" : "<button type='button' data-bs-placement='right' data-bs-original-title='Added!' data-bs-trigger='manual' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star'></i></button>", @endauth
+                            @auth [json[i].favorite * -1,json[i].favorite === 1 ? "<button type='button' data-bs-placement='right' data-bs-original-title='Removed!' data-bs-trigger='manual' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star-fill'></i></button>" : "<button type='button' data-bs-placement='right' data-bs-original-title='Added!' data-bs-trigger='manual' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star'></i></button>"], @endauth
                             [parseFloat(json[i].latest_rate),
                                 "<span data-type='specialRate' style='display: none'>"
                                 + (parseFloat(json[i].latest_special_rate) * 100).toFixed(2) + " %"
@@ -57,7 +58,9 @@
             columns: [
                 { // shows image, not searchable
                     "searchable": false,
-                    "orderable": false,
+                    render: function (data, type) {
+                        return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
+                    }
                 },
                 {
                     //name, hidden but searchable
@@ -67,9 +70,12 @@
                     // symbol/ticker
                 },
                 @auth {
-                    "visible": false,
-                    "searchable": false
                     // favorites
+                    "visible": false,
+                    "searchable": false,
+                    render: function (data, type) {
+                        return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
+                    }
                 }, @endauth
                 { // current rate, decimal for sort, converted to percent for display
                     render: function (data, type) {
@@ -90,7 +96,7 @@
                   // date string or unknown fixme: make this sortable
                 }
             ],
-            "order": [[ 1, 'asc' ]],
+            "order": [[ 0, 'asc' ],[ 1, 'asc' ]],
             dom: "<'row'<'#length-switch.col-sm-12 col-md-3 mb-1'l><'#rate-switch.col-sm-12 col-md-3 mb-1'><'#favorite-button.col-sm-12 col-md-3 mb-1'><'#search.col-sm-12 col-md-3 mb-1'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
@@ -131,83 +137,7 @@
                         if (!favoritesColumn.visible()) {
                             favoritesColumn.visible( ! favoritesColumn.visible() );
                             $('#rateTable').width('100%');
-                            $("button[coin]").click(function() {
-                                if($(this).find("i").hasClass("bi-star")) {
-                                    $(this).find("i").removeClass("bi-star");
-                                    $(this).find("i").addClass("bi-star-fill");
-
-                                    @desktop
-                                        $("i[coin=" + $(this).attr('coin') + "]").removeClass("bi-star");
-                                        $("i[coin=" + $(this).attr('coin') + "]").addClass("bi-star-fill");
-                                    @enddesktop
-
-                                    var element = this;
-
-                                    $.ajax({
-                                        url: '{{ route('addFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
-                                        type: 'PUT',
-                                        success: function() {
-                                            showtooltip($( element ));
-                                            $(element).attr('data-bs-original-title','Removed!');
-                                            $(element).blur();
-                                            @desktop
-                                            $("i[coin=" + $(element).attr('coin') + "]").attr('data-bs-original-title','Removed!');
-                                            @enddesktop
-                                        }
-                                    }).fail(function() {
-                                        $(element).attr('data-bs-original-title','Error!');
-                                        showtooltip($( element ));
-                                        $(element).blur();
-                                        //revert to original state
-                                        $(element).attr('data-bs-original-title','Added!');
-                                        $(element).find("i").removeClass("bi-star-fill");
-                                        $(element).find("i").addClass("bi-star");
-
-                                        @desktop
-                                            $("i[coin=" + $(element).attr('coin') + "]").removeClass("bi-star-fill");
-                                            $("i[coin=" + $(element).attr('coin') + "]").addClass("bi-star");
-                                        @enddesktop
-                                    });
-
-
-                                } else if ($(this).find("i").hasClass("bi-star-fill")) {
-                                    $(this).find("i").removeClass("bi-star-fill");
-                                    $(this).find("i").addClass("bi-star");
-
-                                    @desktop
-                                        $("i[coin=" + $(this).attr('coin') + "]").removeClass("bi-star-fill");
-                                        $("i[coin=" + $(this).attr('coin') + "]").addClass("bi-star");
-                                    @enddesktop
-
-                                    var element = this;
-
-                                    $.ajax({
-                                        url: '{{ route('deleteFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
-                                        type: 'DELETE',
-                                        success: function() {
-                                            showtooltip($( element ));
-                                            $(element).attr('data-bs-original-title','Added!');
-                                            $(element).blur();
-                                            @desktop
-                                                $("i[coin=" + $(element).attr('coin') + "]").attr('data-bs-original-title','Added!');
-                                            @enddesktop
-                                        }
-                                    }).fail(function() {
-                                        $(element).attr('data-bs-original-title','Error!');
-                                        showtooltip($( element ));
-                                        $(element).blur();
-                                        //revert to original state
-                                        $(element).attr('data-bs-original-title','Removed!');
-                                        $(element).find("i").removeClass("bi-star");
-                                        $(element).find("i").addClass("bi-star-fill");
-
-                                    @desktop
-                                        $("i[coin=" + $(this).attr('coin') + "]").removeClass("bi-star");
-                                        $("i[coin=" + $(this).attr('coin') + "]").addClass("bi-star-fill");
-                                    @enddesktop
-                                    });
-                                }
-                            });
+                            favoriteButtonBinding(rateTable);
                             @desktop
                                 $("i[coin]").each(function( index, element) {
                                     var relatedElement = $("button[coin='" + $(element).attr('coin') + "']")
@@ -234,83 +164,6 @@
                     $("#favorite-button").html("<button type=\"button\" class=\"btn btn-outline-secondary\" ><i class=\"bi bi-star-fill\"></i> Add Favorites <i class=\"bi bi-star-fill\"></i></button>");
                     @endauth
                 }
-
-                @auth
-                $(".favoriteStar").click(function() {
-                    if($(this).hasClass("bi-star")) {
-                        $(this).removeClass("bi-star");
-                        $(this).addClass("bi-star-fill");
-
-                        @desktop
-                        var relatedElement = $("button[coin='" + $(this).attr('coin') + "']")
-
-                        relatedElement.find("i").removeClass("bi-star");
-                        relatedElement.find("i").addClass("bi-star-fill");
-                        @enddesktop
-
-                        var element = this;
-
-                        $.ajax({
-                            url: '{{ route('addFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
-                            type: 'PUT',
-                            success: function() {
-                                showtooltip($( element ));
-                                $(element).attr('data-bs-original-title','Removed!');
-                                @desktop
-                                    relatedElement.attr('data-bs-original-title','Removed!');
-                                @enddesktop
-                            }
-                        }).fail(function() {
-                            $(element).attr('data-bs-original-title','Error!');
-                            showtooltip($( element ));
-                            //revert to original state
-                            $(element).attr('data-bs-original-title','Added!');
-                            $(element).removeClass("bi-star-fill");
-                            $(element).addClass("bi-star");
-
-                            @desktop
-                                relatedElement.find("i").removeClass("bi-star-fill");
-                                relatedElement.find("i").addClass("bi-star");
-                            @enddesktop
-                        });
-                    } else if ($(this).hasClass("bi-star-fill")) {
-                        $(this).removeClass("bi-star-fill");
-                        $(this).addClass("bi-star");
-
-                        @desktop
-                        var relatedElement = $("button[coin='" + $(this).attr('coin') + "']")
-
-                        relatedElement.find("i").removeClass("bi-star-fill");
-                        relatedElement.find("i").addClass("bi-star");
-                        @enddesktop
-
-                        var element = this;
-
-                        $.ajax({
-                            url: '{{ route('deleteFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
-                            type: 'DELETE',
-                            success: function() {
-                                showtooltip($( element ));
-                                $(element).attr('data-bs-original-title','Added!');
-                                @desktop
-                                    relatedElement.attr('data-bs-original-title','Added!');
-                                @enddesktop
-                            }
-                        }).fail(function() {
-                            $(element).attr('data-bs-original-title','Error!');
-                            showtooltip($( element ));
-                            //revert to original state
-                            $(element).attr('data-bs-original-title','Removed!');
-                            $(element).removeClass("bi-star");
-                            $(element).addClass("bi-star-fill");
-                            @desktop
-                                relatedElement.find("i").removeClass("bi-star");
-                                relatedElement.find("i").addClass("bi-star-fill");
-                            @enddesktop
-                        });
-                    }
-                });
-                @endauth
             }
         });
 
@@ -334,14 +187,191 @@
                 $("[data-type='specialRate']").hide();
                 $("[data-type='rate']").show();
             }
+            @auth
+                @desktop
+                    favoriteStarBinding(rateTable);
+                @enddesktop
+                favoriteButtonBinding(rateTable);
+            @endauth
         } );
     });
 
-    function showtooltip(element) {
-        element.tooltip('show');
-        setTimeout(function() {
-            element.tooltip('hide');
-        }, 1000);
-    }
+    @auth
+        function showtooltip(element) {
+            element.tooltip('show');
+            setTimeout(function() {
+                element.tooltip('hide');
+            }, 1000);
+        }
+
+        function coinAddedToast(coin) {
+            toastr.success(coin + " added to favorites!");
+        }
+
+        function coinRemovedToast(coin) {
+            toastr.success(coin + " removed from favorites!");
+        }
+
+        function favoriteButtonBinding(rateTable) {
+            $("button[coin]").off("click");
+            $("button[coin]").click(function() {
+                if($(this).find("i").hasClass("bi-star")) {
+                    $(this).find("i").removeClass("bi-star");
+                    $(this).find("i").addClass("bi-star-fill");
+
+                    @desktop
+                        $("i[coin=" + $(this).attr('coin') + "]").removeClass("bi-star");
+                        $("i[coin=" + $(this).attr('coin') + "]").addClass("bi-star-fill");
+                    @enddesktop
+
+                    var element = this;
+
+                    $.ajax({
+                        url: '{{ route('addFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
+                        type: 'PUT',
+                        success: function() {
+                            showtooltip($( element ));
+
+                            $(element).attr('data-bs-original-title','Removed!');
+                            $(element).blur();
+                        @desktop
+                            $("i[coin=" + $(element).attr('coin') + "]").attr('data-bs-original-title','Removed!');
+                        @enddesktop
+                        }
+                    }).fail(function() {
+                        $(element).attr('data-bs-original-title','Error!');
+                        showtooltip($( element ));
+                        $(element).blur();
+                        //revert to original state
+                        $(element).attr('data-bs-original-title','Added!');
+                        $(element).find("i").removeClass("bi-star-fill");
+                        $(element).find("i").addClass("bi-star");
+
+                    @desktop
+                        $("i[coin=" + $(element).attr('coin') + "]").removeClass("bi-star-fill");
+                        $("i[coin=" + $(element).attr('coin') + "]").addClass("bi-star");
+                    @enddesktop
+                    });
+
+
+                } else if ($(this).find("i").hasClass("bi-star-fill")) {
+                    $(this).find("i").removeClass("bi-star-fill");
+                    $(this).find("i").addClass("bi-star");
+
+                @desktop
+                    $("i[coin=" + $(this).attr('coin') + "]").removeClass("bi-star-fill");
+                    $("i[coin=" + $(this).attr('coin') + "]").addClass("bi-star");
+                    @enddesktop
+
+                    var element = this;
+
+                    $.ajax({
+                        url: '{{ route('deleteFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
+                        type: 'DELETE',
+                        success: function() {
+                            showtooltip($( element ));
+                            $(element).attr('data-bs-original-title','Added!');
+                            $(element).blur();
+                        @desktop
+                            $("i[coin=" + $(element).attr('coin') + "]").attr('data-bs-original-title','Added!');
+                        @enddesktop
+                        }
+                    }).fail(function() {
+                        $(element).attr('data-bs-original-title','Error!');
+                        showtooltip($( element ));
+                        $(element).blur();
+                        //revert to original state
+                        $(element).attr('data-bs-original-title','Removed!');
+                        $(element).find("i").removeClass("bi-star");
+                        $(element).find("i").addClass("bi-star-fill");
+
+                    @desktop
+                        $("i[coin=" + $(this).attr('coin') + "]").removeClass("bi-star");
+                        $("i[coin=" + $(this).attr('coin') + "]").addClass("bi-star-fill");
+                    @enddesktop
+                    });
+                }
+                if(rateTable) {
+                    rateTable.ajax.reload(null, false);
+                }
+            });
+        }
+        @desktop
+        function favoriteStarBinding(rateTable) {
+            $(".favoriteStar").off("click");
+            $(".favoriteStar").click(function() {
+                if($(this).hasClass("bi-star")) {
+                    $(this).removeClass("bi-star");
+                    $(this).addClass("bi-star-fill");
+
+                    var relatedElement = $("button[coin='" + $(this).attr('coin') + "']")
+
+                    relatedElement.find("i").removeClass("bi-star");
+                    relatedElement.find("i").addClass("bi-star-fill");
+
+                    var element = this;
+
+                    $.ajax({
+                        url: '{{ route('addFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
+                        type: 'PUT',
+                        success: function() {
+                            showtooltip($( element ));
+                            $(element).attr('data-bs-original-title','Removed!');
+
+                            relatedElement.attr('data-bs-original-title','Removed!');
+                        }
+                    }).fail(function() {
+                        $(element).attr('data-bs-original-title','Error!');
+                        showtooltip($( element ));
+                        //revert to original state
+                        $(element).attr('data-bs-original-title','Added!');
+                        $(element).removeClass("bi-star-fill");
+                        $(element).addClass("bi-star");
+
+                        relatedElement.find("i").removeClass("bi-star-fill");
+                        relatedElement.find("i").addClass("bi-star");
+                    });
+                } else if ($(this).hasClass("bi-star-fill")) {
+                    $(this).removeClass("bi-star-fill");
+                    $(this).addClass("bi-star");
+
+                    var relatedElement = $("button[coin='" + $(this).attr('coin') + "']")
+
+                    relatedElement.find("i").removeClass("bi-star-fill");
+                    relatedElement.find("i").addClass("bi-star");
+
+                    var element = this;
+
+                    $.ajax({
+                        url: '{{ route('deleteFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
+                        type: 'DELETE',
+                        success: function() {
+                            showtooltip($( element ));
+                            $(element).attr('data-bs-original-title','Added!');
+
+                            relatedElement.attr('data-bs-original-title','Added!');
+                        }
+                    }).fail(function() {
+                        $(element).attr('data-bs-original-title','Error!');
+                        showtooltip($( element ));
+                        //revert to original state
+                        $(element).attr('data-bs-original-title','Removed!');
+                        $(element).removeClass("bi-star");
+                        $(element).addClass("bi-star-fill");
+
+                        relatedElement.find("i").removeClass("bi-star");
+                        relatedElement.find("i").addClass("bi-star-fill");
+                    });
+                }
+                if(rateTable) {
+                    rateTable.ajax.reload(null, false);
+                }
+        })};
+        @enddesktop
+
+        toastr.options = {
+            "positionClass": "toast-bottom-right",
+        }
+    @endauth
 
 </script>
