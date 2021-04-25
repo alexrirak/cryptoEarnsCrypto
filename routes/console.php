@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\RatesProcessed;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +26,7 @@ use App\Models\Rate;
 
 
 /**
- * Queries the Celsius API to get the latest rates nad inserts them into the DB is they have been udpated
+ * Queries the Celsius API to get the latest rates nad inserts them into the DB is they have been updated
  * Also does conversion and saves 'Cel' rate
  */
 Artisan::command('getCelsiusRates', function () {
@@ -115,6 +116,8 @@ Artisan::command('getCelsiusRates', function () {
             Log::info("[Celsius] No updated data");
         }
 
+        RatesProcessed::dispatch("celsius");
+
 
     } else {
         Log::critical("[Celsius] API call for rates failed! Error Code: " . $response->status());
@@ -124,8 +127,8 @@ Artisan::command('getCelsiusRates', function () {
 
 })->purpose('Fetch latest rates from Celsius website');
 
-Artisan::command('test', function (EmailHelper $emailHelper) {
+Artisan::command('test', function () {
 
-    $emailHelper->sendMail("console");
+    RatesProcessed::dispatch("celsius");
     Log::info("Mail Sent");
 })->purpose('test');
