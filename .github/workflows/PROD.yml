@@ -29,8 +29,8 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ${{ secrets.ftp_server }}
-        username: ${{ secrets.ftp_username }}
-        password: ${{ secrets.ftp_password }}
+        username: ${{ secrets.ftp_prod_username }}
+        password: ${{ secrets.ftp_prod_password }}
         state-name: .sync-state.json
         exclude: .git*
           - .git*/**
@@ -44,8 +44,8 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@4.0.0
       with:
         server: ${{ secrets.ftp_server }}
-        username: ${{ secrets.ftp_pub_username }}
-        password: ${{ secrets.ftp_pub_password }}
+        username: ${{ secrets.ftp_prod_pub_username }}
+        password: ${{ secrets.ftp_prod_pub_password }}
         state-name: .sync-state.json
         local-dir: ./public/
         exclude: .git*
