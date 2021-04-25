@@ -1,12 +1,32 @@
   .coinLogo {
-    width: 2em;
-    height: 2em;
-    margin: auto;
+      width: 2em;
+      height: 2em;
+      margin: auto;
+  }
+
+  .coinLogoHolder img {
+      opacity: 1;
+      transition: .5s ease;
+      backface-visibility: hidden;
+  }
+
+  .coinLogoHolder i {
+      transition: .5s ease;
+      opacity: 0;
+  }
+  @media (min-width: 767px) {
+      .coinLogoHolder:hover img {
+          opacity: 0.3;
+      }
+
+      .coinLogoHolder:hover i {
+          opacity: 1;
+      }
   }
 
   .coinLogo small {
-    width: 1.5em;
-    height: 1.5em;
+      width: 1.5em;
+      height: 1.5em;
   }
 
   .grayOut {
@@ -26,6 +46,14 @@
     #rateTable_info {
       float: left;
     }
+  }
+
+  .favoriteStar {
+      position: relative;
+      top: 0.15em;
+      left: -1.15em;
+      font-size: 1.5rem;
+      opacity: 0;
   }
 
   .flash {

@@ -7,13 +7,15 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap5.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/dist/bootstrap-switch-button.min.js"></script>
-    <script type="text/javascript" src="{{ asset('js/rates.js') }}"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @include('rates-js')
 @endsection
 
 @section('styles')
     <link href="https://cdn.datatables.net/1.10.23/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap-switch-button@1.1.0/css/bootstrap-switch-button.min.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <link href="{{ asset('css/rates.css') }}" rel="stylesheet">
 @endsection
 
@@ -28,11 +30,13 @@
             <h4 class="alert-heading"><i class="bi bi-x-square"></i> Something went wrong!</h4>
             <p>We were not able to register you for alerts. Please try again later. If this problem persist please contact us.</p>
         </div>
-        <table id="rateTable" class="table table-striped" >
+        <table id="rateTable" class="table table-striped" style="width:100%;">
             <thead>
                 <tr>
                     <th>Coin</th>
+                    <th>Name</th>
                     <th>Ticker</th>
+                    @auth <th>Favorites</th> @endauth
                     <th>Current Rate</th>
                     <th>Prior Rate</th>
                     <th>Change</th>
