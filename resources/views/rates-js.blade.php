@@ -21,7 +21,7 @@
                                 [json[i].favorite * -1,"<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>"],
                                 @enddesktop
                             @else
-                                "<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>",
+                                ["<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>"],
                             @endauth
                             json[i].name,
                             json[i].symbol,
