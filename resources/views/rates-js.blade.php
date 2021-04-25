@@ -144,11 +144,9 @@
                                     if($(element).hasClass('bi-star-fill') && !relatedElement.find("i").hasClass('bi-star-fill')) {
                                         relatedElement.find("i").removeClass("bi-star");
                                         relatedElement.find("i").addClass("bi-star-fill");
-                                        relatedElement.attr('data-bs-original-title','Removed!');
                                     } else if ($(element).hasClass('bi-star') && !relatedElement.find("i").hasClass('bi-star')) {
                                         relatedElement.find("i").removeClass("bi-star-fill");
                                         relatedElement.find("i").addClass("bi-star");
-                                        relatedElement.attr('data-bs-original-title','Added!');
                                     }
                                 })
                             @enddesktop
@@ -214,7 +212,7 @@
             $("button[coin]").click(function() {
                 if($(this).find("i").hasClass("bi-star")) {
                     $(this).find("i").removeClass("bi-star");
-                    $(this).find("i").addClass("bi-star-fill");
+                    $(this).find("i").addClass("bi-hourglass-split");
 
                     @desktop
                         $("i[coin=" + $(this).attr('coin') + "]").removeClass("bi-star");
@@ -227,14 +225,19 @@
                         url: '{{ route('addFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
                         type: 'PUT',
                         success: function() {
+                            $(element).find("i").removeClass("bi-hourglass-split");
+                            $(element).find("i").addClass("bi-star-fill");
                             favoriteAddedToast($(element).attr('coin'))
                             $(element).blur();
+                            if(rateTable) {
+                                rateTable.ajax.reload(null, false);
+                            }
                         }
                     }).fail(function() {
                         favoriteErrorToast();
                         $(element).blur();
                         //revert to original state
-                        $(element).find("i").removeClass("bi-star-fill");
+                        $(element).find("i").removeClass("bi-hourglass-split");
                         $(element).find("i").addClass("bi-star");
 
                         @desktop
@@ -246,7 +249,7 @@
 
                 } else if ($(this).find("i").hasClass("bi-star-fill")) {
                     $(this).find("i").removeClass("bi-star-fill");
-                    $(this).find("i").addClass("bi-star");
+                    $(this).find("i").addClass("bi-hourglass-split");
 
                     @desktop
                         $("i[coin=" + $(this).attr('coin') + "]").removeClass("bi-star-fill");
@@ -259,14 +262,19 @@
                         url: '{{ route('deleteFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
                         type: 'DELETE',
                         success: function() {
+                            $(element).find("i").removeClass("bi-hourglass-split");
+                            $(element).find("i").addClass("bi-star");
                             favoriteRemovedToast($(element).attr('coin'));
                             $(element).blur();
+                            if(rateTable) {
+                                rateTable.ajax.reload(null, false);
+                            }
                         }
                     }).fail(function() {
                         favoriteErrorToast();
                         $(element).blur();
                         //revert to original state
-                        $(element).find("i").removeClass("bi-star");
+                        $(element).find("i").removeClass("bi-hourglass-split");
                         $(element).find("i").addClass("bi-star-fill");
 
                         @desktop
@@ -274,9 +282,6 @@
                             $("i[coin=" + $(this).attr('coin') + "]").addClass("bi-star-fill");
                         @enddesktop
                     });
-                }
-                if(rateTable) {
-                    rateTable.ajax.reload(null, false);
                 }
             });
         }
@@ -286,7 +291,7 @@
             $(".favoriteStar").click(function() {
                 if($(this).hasClass("bi-star")) {
                     $(this).removeClass("bi-star");
-                    $(this).addClass("bi-star-fill");
+                    $(this).addClass("bi-hourglass-split");
 
                     var relatedElement = $("button[coin='" + $(this).attr('coin') + "']")
 
@@ -299,12 +304,17 @@
                         url: '{{ route('addFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
                         type: 'PUT',
                         success: function() {
+                            $(element).removeClass("bi-hourglass-split");
+                            $(element).addClass("bi-star-fill");
                             favoriteAddedToast($(element).attr('coin'));
+                            if(rateTable) {
+                                rateTable.ajax.reload(null, false);
+                            }
                         }
                     }).fail(function() {
                         favoriteErrorToast();
                         //revert to original state
-                        $(element).removeClass("bi-star-fill");
+                        $(element).removeClass("bi-hourglass-split");
                         $(element).addClass("bi-star");
 
                         relatedElement.find("i").removeClass("bi-star-fill");
@@ -312,7 +322,7 @@
                     });
                 } else if ($(this).hasClass("bi-star-fill")) {
                     $(this).removeClass("bi-star-fill");
-                    $(this).addClass("bi-star");
+                    $(this).addClass("bi-hourglass-split");
 
                     var relatedElement = $("button[coin='" + $(this).attr('coin') + "']")
 
@@ -325,20 +335,22 @@
                         url: '{{ route('deleteFavorite', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
                         type: 'DELETE',
                         success: function() {
+                            $(element).removeClass("bi-hourglass-split");
+                            $(element).addClass("bi-star");
                             favoriteRemovedToast($(element).attr('coin'))
+                            if(rateTable) {
+                                rateTable.ajax.reload(null, false);
+                            }
                         }
                     }).fail(function() {
                         favoriteErrorToast();
                         //revert to original state
-                        $(element).removeClass("bi-star");
+                        $(element).removeClass("bi-hourglass-split");
                         $(element).addClass("bi-star-fill");
 
                         relatedElement.find("i").removeClass("bi-star");
                         relatedElement.find("i").addClass("bi-star-fill");
                     });
-                }
-                if(rateTable) {
-                    rateTable.ajax.reload(null, false);
                 }
         })};
         @enddesktop
