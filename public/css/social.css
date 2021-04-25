@@ -1,0 +1,23 @@
+.google-btn div {
+    height: 5rem;
+    width: 20rem;
+    background-image: url(/img/social/google/btn_google_signin_dark_normal_web@2x.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.google-btn div:hover {
+    background-image: url(/img/social/google/btn_google_signin_dark_focus_web@2x.png);
+}
+
+.google-btn div:active {
+    background-image: url(/img/social/google/btn_google_signin_dark_pressed_web@2x.png);
+}
+
+.facebook-btn div {
+    height: 5rem;
+    width: 20rem;
+    background-image: url(/img/social/facebook/facebook.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}

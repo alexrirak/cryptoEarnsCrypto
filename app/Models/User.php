@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -20,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'provider',
+        'provider_id',
     ];
 
     /**
@@ -40,4 +43,43 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Indicates whether the model's ID is auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * The data type of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
+     * User constructor. Sets id to a uuid on creation
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = array())
+    {
+        parent::__construct($attributes);
+
+        $this->id = (string) Str::uuid();
+    }
+
+    /**
+     * Returns two initials based on the user's name
+     * @return string
+     */
+    public function initials(): string
+    {
+        $words = explode(" ", $this->name );
+        $initials = null;
+        $initials .= $words[0][0];
+        if(count($words) > 1)
+            $initials .= $words[count($words)-1][0];
+        return Str::upper($initials);
+    }
 }

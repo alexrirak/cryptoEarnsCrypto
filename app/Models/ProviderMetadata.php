@@ -4,13 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 
-class Rate extends Model
+class ProviderMetadata extends Model
 {
-    use HasFactory;
-
-     /**
+    /**
      * Indicates whether the model's ID is auto-incrementing.
      *
      * @var bool
@@ -23,4 +21,15 @@ class Rate extends Model
      * @var string
      */
     protected $keyType = 'string';
+
+    /**
+     * User constructor. Sets id to a uuid on creation
+     * @param array $attributes
+     */
+    public function __construct(array $attributes = array())
+    {
+        parent::__construct($attributes);
+
+        $this->id = (string) Str::uuid();
+    }
 }

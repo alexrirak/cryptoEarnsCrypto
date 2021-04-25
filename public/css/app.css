@@ -1,3 +1,12 @@
+.content-card {
+    width: 100%;
+}
+@media (min-width: 767px) {
+    .content-card {
+        width: 75%;
+    }
+}
+
 #disclaimer {
     font-size: 0.75em;
     text-align: center;

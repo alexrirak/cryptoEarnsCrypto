@@ -2,19 +2,6 @@
 
 @section('title', 'Support Us')
 
-@section('styles')
-<style>
-    .support-card {
-        width: 100%;
-    }
-    @media (min-width: 767px) {
-        .support-card {
-            width: 75%;
-        }
-    }
-</style>
-@endsection
-
 @section('scripts')
     <script type="text/javascript" src="{{ asset('js/supportUs.js') }}"></script>
 @endsection
@@ -25,7 +12,7 @@
     <div>
         <h1 class="text-center">Support Us</h1>
 
-            <div class="card mx-auto mt-3 support-card">
+            <div class="card mx-auto mt-3 content-card">
                 <div class="card-body">
                     <h4 class="card-title">Wallet Addresses</h4>
                     <p class="card-text">

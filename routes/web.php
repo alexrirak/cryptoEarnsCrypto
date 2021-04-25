@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\SocialAuthController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,11 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('rates');
-})->name('home');
+Route::redirect('/', '/rates/celsius')->name('home');
 
 Route::redirect('/home', '/');
+
+Route::get('/rates/{provider}', function ($provider) {
+
+    $providerMetaData = \App\Models\ProviderMetadata::where('name', $provider)->first();
+
+    if ($providerMetaData) {
+        return view('rates', ['provider' => $provider,'providerMetaData' => $providerMetaData]);
+    } else {
+        abort(404);
+    }
+
+})->name('rates');
 
 Route::get('/disclaimer', function () {
     return view('disclaimer');
@@ -31,4 +43,15 @@ Route::get('/support-us', function () {
 Route::get('/test', function () {
     return view('welcome');
 });
+
+Route::get('login/{provider}', [SocialAuthController::class, 'redirect'])
+    ->name('login-provider');
+
+Route::get('login/{provider}/callback',[SocialAuthController::class, 'callback']);
+
+Route::get('login',[SocialAuthController::class, 'landing'])
+    ->name('login');
+
+Route::get('logout',[SocialAuthController::class, 'logout'])
+    ->name('logout');
 

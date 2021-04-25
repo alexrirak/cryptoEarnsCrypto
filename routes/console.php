@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 
 use App\Helpers\RateHelper;
 use App\Helpers\CoinHelper;
+use App\Helpers\EmailHelper;
 use App\Models\CoinMetadata;
 use App\Models\Rate;
 
@@ -55,7 +56,7 @@ Artisan::command('getCelsiusRates', function () {
 
                 // if it doesnt exsist we need to create it
                 if (!$coinId) {
-                    Log::notice("[Celsius] Coin doesnt exist, creating it: " . json_encode($rate));
+                    Log::notice("[Celsius] Coin doesnt exist");
                     $coinId = (string) Str::uuid();
 
                     $coinMetadata = new CoinMetadata;
@@ -63,6 +64,8 @@ Artisan::command('getCelsiusRates', function () {
                     $coinMetadata->name = $rate["currency"]["name"];
                     $coinMetadata->symbol = $rate["coin"];
                     $coinMetadata->image = $rate["currency"]["image_url"];
+
+                    Log::notice("[Celsius] Creating: " . json_encode($coinMetadata));
                     $coinMetadata->save();
 
                     //TODO: send notification (at least to myself) that new rate is available
@@ -120,3 +123,9 @@ Artisan::command('getCelsiusRates', function () {
 
 
 })->purpose('Fetch latest rates from Celsius website');
+
+Artisan::command('test', function (EmailHelper $emailHelper) {
+
+    $emailHelper->sendMail("console");
+    Log::info("Mail Sent");
+})->purpose('test');

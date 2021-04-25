@@ -1,16 +1,32 @@
-body {
-    padding-top: 5rem;
+  .coinLogo {
+      width: 2em;
+      height: 2em;
+      margin: auto;
   }
 
-  .coinLogo {
-    width: 2em;
-    height: 2em;
-    margin: auto;
+  .coinLogoHolder img {
+      opacity: 1;
+      transition: .5s ease;
+      backface-visibility: hidden;
+  }
+
+  .coinLogoHolder i {
+      transition: .5s ease;
+      opacity: 0;
+  }
+  @media (min-width: 767px) {
+      .coinLogoHolder:hover img {
+          opacity: 0.3;
+      }
+
+      .coinLogoHolder:hover i {
+          opacity: 1;
+      }
   }
 
   .coinLogo small {
-    width: 1.5em;
-    height: 1.5em;
+      width: 1.5em;
+      height: 1.5em;
   }
 
   .grayOut {
@@ -30,4 +46,47 @@ body {
     #rateTable_info {
       float: left;
     }
+  }
+
+  .favoriteStar {
+      position: relative;
+      top: 0.15em;
+      left: -1.15em;
+      font-size: 1.5rem;
+      opacity: 0;
+  }
+
+  .flash {
+      -moz-animation: flash 1s ease-out;
+      -moz-animation-iteration-count: 1;
+
+      -webkit-animation: flash 1s ease-out;
+      -webkit-animation-iteration-count: 1;
+
+      -ms-animation: flash 1s ease-out;
+      -ms-animation-iteration-count: 1;
+  }
+
+  @keyframes flash {
+      0% { background-color: transparent; }
+      50% { background-color: #fbf8b2; }
+      100% { background-color: transparent; }
+  }
+
+  @-webkit-keyframes flash {
+      0% { background-color: transparent; }
+      50% { background-color: #fbf8b2; }
+      100% { background-color: transparent; }
+  }
+
+  @-moz-keyframes flash {
+      0% { background-color: transparent; }
+      50% { background-color: #fbf8b2; }
+      100% { background-color: transparent; }
+  }
+
+  @-ms-keyframes flash {
+      0% { background-color: transparent; }
+      50% { background-color: #fbf8b2; }
+      100% { background-color: transparent; }
   }

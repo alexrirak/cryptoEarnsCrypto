@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 
-class CoinMetadata extends Model
+class UserFavorite extends Model
 {
     /**
      * Indicates whether the model's ID is auto-incrementing.
@@ -20,4 +21,11 @@ class CoinMetadata extends Model
      * @var string
      */
     protected $keyType = 'string';
+
+    public function __construct(array $attributes = array())
+    {
+        parent::__construct($attributes);
+
+        $this->id = (string) Str::uuid();
+    }
 }
