@@ -136,6 +136,11 @@
                                     $(this).find("i").removeClass("bi-star");
                                     $(this).find("i").addClass("bi-star-fill");
 
+                                    @desktop
+                                        $("i[coin=" + $(this).attr('coin') + "]").removeClass("bi-star");
+                                        $("i[coin=" + $(this).attr('coin') + "]").addClass("bi-star-fill");
+                                    @enddesktop
+
                                     var element = this;
 
                                     $.ajax({
@@ -145,6 +150,9 @@
                                             showtooltip($( element ));
                                             $(element).attr('data-bs-original-title','Removed!');
                                             $(element).blur();
+                                            @desktop
+                                            $("i[coin=" + $(element).attr('coin') + "]").attr('data-bs-original-title','Removed!');
+                                            @enddesktop
                                         }
                                     }).fail(function() {
                                         $(element).attr('data-bs-original-title','Error!');
@@ -154,12 +162,22 @@
                                         $(element).attr('data-bs-original-title','Added!');
                                         $(element).find("i").removeClass("bi-star-fill");
                                         $(element).find("i").addClass("bi-star");
+
+                                        @desktop
+                                            $("i[coin=" + $(element).attr('coin') + "]").removeClass("bi-star-fill");
+                                            $("i[coin=" + $(element).attr('coin') + "]").addClass("bi-star");
+                                        @enddesktop
                                     });
 
 
                                 } else if ($(this).find("i").hasClass("bi-star-fill")) {
                                     $(this).find("i").removeClass("bi-star-fill");
                                     $(this).find("i").addClass("bi-star");
+
+                                    @desktop
+                                        $("i[coin=" + $(this).attr('coin') + "]").removeClass("bi-star-fill");
+                                        $("i[coin=" + $(this).attr('coin') + "]").addClass("bi-star");
+                                    @enddesktop
 
                                     var element = this;
 
@@ -170,6 +188,9 @@
                                             showtooltip($( element ));
                                             $(element).attr('data-bs-original-title','Added!');
                                             $(element).blur();
+                                            @desktop
+                                                $("i[coin=" + $(element).attr('coin') + "]").attr('data-bs-original-title','Added!');
+                                            @enddesktop
                                         }
                                     }).fail(function() {
                                         $(element).attr('data-bs-original-title','Error!');
@@ -179,18 +200,31 @@
                                         $(element).attr('data-bs-original-title','Removed!');
                                         $(element).find("i").removeClass("bi-star");
                                         $(element).find("i").addClass("bi-star-fill");
+
+                                    @desktop
+                                        $("i[coin=" + $(this).attr('coin') + "]").removeClass("bi-star");
+                                        $("i[coin=" + $(this).attr('coin') + "]").addClass("bi-star-fill");
+                                    @enddesktop
                                     });
                                 }
                             });
                             @desktop
-                                $(".coinLogo").parent().removeClass("coinLogoHolder");
+                                $("i[coin]").each(function( index, element) {
+                                    var relatedElement = $("button[coin='" + $(element).attr('coin') + "']")
+                                    if($(element).hasClass('bi-star-fill') && !relatedElement.find("i").hasClass('bi-star-fill')) {
+                                        relatedElement.find("i").removeClass("bi-star");
+                                        relatedElement.find("i").addClass("bi-star-fill");
+                                        relatedElement.attr('data-bs-original-title','Removed!');
+                                    } else if ($(element).hasClass('bi-star') && !relatedElement.find("i").hasClass('bi-star')) {
+                                        relatedElement.find("i").removeClass("bi-star-fill");
+                                        relatedElement.find("i").addClass("bi-star");
+                                        relatedElement.attr('data-bs-original-title','Added!');
+                                    }
+                                })
                             @enddesktop
                         } else {
                             $("button[coin]").off("click");
                             favoritesColumn.visible( ! favoritesColumn.visible() );
-                            @desktop
-                                $(".coinLogo").parent().addClass("coinLogoHolder");
-                            @enddesktop
                             $('#rateTable').width('100%');
                         }
                     });
@@ -207,6 +241,13 @@
                         $(this).removeClass("bi-star");
                         $(this).addClass("bi-star-fill");
 
+                        @desktop
+                        var relatedElement = $("button[coin='" + $(this).attr('coin') + "']")
+
+                        relatedElement.find("i").removeClass("bi-star");
+                        relatedElement.find("i").addClass("bi-star-fill");
+                        @enddesktop
+
                         var element = this;
 
                         $.ajax({
@@ -215,6 +256,9 @@
                             success: function() {
                                 showtooltip($( element ));
                                 $(element).attr('data-bs-original-title','Removed!');
+                                @desktop
+                                    relatedElement.attr('data-bs-original-title','Removed!');
+                                @enddesktop
                             }
                         }).fail(function() {
                             $(element).attr('data-bs-original-title','Error!');
@@ -223,10 +267,22 @@
                             $(element).attr('data-bs-original-title','Added!');
                             $(element).removeClass("bi-star-fill");
                             $(element).addClass("bi-star");
+
+                            @desktop
+                                relatedElement.find("i").removeClass("bi-star-fill");
+                                relatedElement.find("i").addClass("bi-star");
+                            @enddesktop
                         });
                     } else if ($(this).hasClass("bi-star-fill")) {
                         $(this).removeClass("bi-star-fill");
                         $(this).addClass("bi-star");
+
+                        @desktop
+                        var relatedElement = $("button[coin='" + $(this).attr('coin') + "']")
+
+                        relatedElement.find("i").removeClass("bi-star-fill");
+                        relatedElement.find("i").addClass("bi-star");
+                        @enddesktop
 
                         var element = this;
 
@@ -236,6 +292,9 @@
                             success: function() {
                                 showtooltip($( element ));
                                 $(element).attr('data-bs-original-title','Added!');
+                                @desktop
+                                    relatedElement.attr('data-bs-original-title','Added!');
+                                @enddesktop
                             }
                         }).fail(function() {
                             $(element).attr('data-bs-original-title','Error!');
@@ -244,6 +303,10 @@
                             $(element).attr('data-bs-original-title','Removed!');
                             $(element).removeClass("bi-star");
                             $(element).addClass("bi-star-fill");
+                            @desktop
+                                relatedElement.find("i").removeClass("bi-star");
+                                relatedElement.find("i").addClass("bi-star-fill");
+                            @enddesktop
                         });
                     }
                 });
