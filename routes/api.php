@@ -37,3 +37,8 @@ Route::put('notification/{provider}/{coin}',[NotificationController::class, 'add
 Route::delete('notification/{provider}/{coin}',[NotificationController::class, 'deleteNotification'])
      ->middleware('auth:api')
      ->name('deleteNotification');
+
+Route::get('/test', function(){
+    Log::debug('An informational message!!!');
+    return "done";
+});
