@@ -3,11 +3,7 @@
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RatesController;
-use App\Models\CoinMetadata;
-use App\Models\Rate;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
