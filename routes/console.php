@@ -130,5 +130,5 @@ Artisan::command('getCelsiusRates', function () {
 Artisan::command('test', function () {
 
     RatesProcessed::dispatch("celsius");
-    Log::info("Mail Sent");
+//    Log::info("Mail Sent");
 })->purpose('test');
