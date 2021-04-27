@@ -39,6 +39,6 @@ Route::delete('notification/{provider}/{coin}',[NotificationController::class, '
      ->name('deleteNotification');
 
 Route::get('/test', function(){
-    Log::debug('An informational message!!!');
+    Log::info('An informational message!!!');
     return "done";
 });
