@@ -31,7 +31,7 @@ use App\Models\Rate;
  */
 Artisan::command('getCelsiusRates', function () {
 
-    $url = Str::lower(config('app.env'))=='production' ? config('sources.celsius_url') : config('sources.celsius_staging_url') ;
+    $url = Str::lower(config('app.env')) == 'production' ? config('sources.celsius_url') : config('sources.celsius_staging_url');
     $response = Http::get($url);
 
     if ($response->successful()) {
@@ -40,25 +40,25 @@ Artisan::command('getCelsiusRates', function () {
         $currentRates = RateHelper::getRates("celsius");
 
 
-        $data=[];
-        foreach($rates as $rate){
+        $data = [];
+        foreach ($rates as $rate) {
 
             // Grab current info and get the conversions out of the way
             $currRate = RateHelper::filterRatesArray($currentRates, $rate["coin"]);
-            $newApyRate = round(RateHelper::aprToApy((float)$rate["rate"],52),4);
-            $newCelApyRate = round(RateHelper::aprToApy(RateHelper::inKindToCel((float)$rate["rate"]),52),4);
+            $newApyRate = round(RateHelper::aprToApy((float)$rate["rate"], 52), 4);
+            $newCelApyRate = round(RateHelper::aprToApy(RateHelper::inKindToCel((float)$rate["rate"]), 52), 4);
 
             // if the count is not 1 then this is a new coin we dont have rates for yet
-            if(count($currRate) != 1) {
+            if (count($currRate) != 1) {
                 Log::info("[Celsius] New coin available: " . $rate["coin"]);
 
                 // Get the coin id for this coin if it already exists
-                $coinId = CoinHelper::getCoinBySymbolOrName($rate["coin"],$rate["currency"]["name"]);
+                $coinId = CoinHelper::getCoinBySymbolOrName($rate["coin"], $rate["currency"]["name"]);
 
                 // if it doesnt exsist we need to create it
                 if (!$coinId) {
                     Log::notice("[Celsius] Coin doesnt exist");
-                    $coinId = (string) Str::uuid();
+                    $coinId = (string)Str::uuid();
 
                     $coinMetadata = new CoinMetadata;
                     $coinMetadata->id = $coinId;
@@ -75,19 +75,21 @@ Artisan::command('getCelsiusRates', function () {
 
                 // Insert the rate for the coin
                 $data[] = [
-                    'id' => (string) Str::uuid(),
+                    'id' => (string)Str::uuid(),
                     'coin_id' => $coinId,
                     'rate' => $newApyRate,
                     'special_rate' => $newCelApyRate,
                     'source' => config('sources.celsius_source_id')
-                  ];
+                ];
 
                 // No need to continue
                 continue;
             }
 
             // we have an array with one item, so reference the item directly
-            $currRate = Arr::first($currRate, function() {return true;});
+            $currRate = Arr::first($currRate, function () {
+                return true;
+            });
 
             // if the rate has changed prep the data we will insert into db
             if ($currRate->rate != $newApyRate) {
@@ -96,12 +98,12 @@ Artisan::command('getCelsiusRates', function () {
                 Log::debug("[Celsius] Old Rate:" . $currRate->rate . " New Rate: " . $newApyRate);
 
                 $data[] = [
-                    'id' => (string) Str::uuid(),
+                    'id' => (string)Str::uuid(),
                     'coin_id' => $currRate->coin_id,
                     'rate' => $newApyRate,
                     'special_rate' => $newCelApyRate,
                     'source' => config('sources.celsius_source_id')
-                  ];
+                ];
             } else {
                 Log::debug("[Celsius] No update needed for " . $currRate->symbol);
             }
@@ -124,11 +126,17 @@ Artisan::command('getCelsiusRates', function () {
     }
 
 
-
 })->purpose('Fetch latest rates from Celsius website');
 
-Artisan::command('test', function () {
+Artisan::command('testEvent', function () {
 
     RatesProcessed::dispatch("celsius");
-//    Log::info("Mail Sent");
-})->purpose('test');
+
+})->purpose('testEvent');
+
+
+Artisan::command('testLog', function () {
+
+    Log::info("This is a test log");
+
+})->purpose('testLog');

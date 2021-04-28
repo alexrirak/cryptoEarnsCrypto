@@ -3,32 +3,24 @@
 namespace App\Listeners;
 
 use App\Events\RatesProcessed;
+use App\Events\UserRateNotification;
 use App\Helpers\EmailHelper;
 use App\Models\EmailLog;
 use App\Models\ProviderMetadata;
 use App\Models\Rate;
-use App\Models\UserNotification;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class RatesProcessedListener
 {
 
     /**
-     * Reference to email helper
-     *
-     * @var EmailHelper
-     */
-    private $emailHelper;
-
-    /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(EmailHelper $emailHelper)
+    public function __construct()
     {
-        $this->emailHelper = $emailHelper;
+        //
     }
 
     /**
@@ -39,7 +31,7 @@ class RatesProcessedListener
      */
     public function handle(RatesProcessed $event)
     {
-        Log::info("Handling rate update from [" . $event->provider . "]");
+        Log::info(sprintf("[%s][Rate Update] Handling rate update", $event->provider));
 
         $provider = ProviderMetadata::where('name', $event->provider)->first();
 
@@ -56,7 +48,7 @@ class RatesProcessedListener
         $lastUpdate = $emailLog ? $emailLog->created_at : date("Y-m-d H:i:s", strtotime("-1 days"));
         $currentDate = date("Y-m-d H:i:s");
 
-        Log::info(sprintf("[%s] Fetching rates from %s to %s", $provider->name, $lastUpdate, $currentDate));
+        Log::info(sprintf("[%s][Rate Update] Fetching rates from %s to %s", $provider->name, $lastUpdate, $currentDate));
 
         $usersTonotify = Rate::join('user_notifications', 'rates.coin_id', '=', 'user_notifications.coin_id')
                              ->join('users', 'user_notifications.user_id', '=', 'users.id')
@@ -66,13 +58,31 @@ class RatesProcessedListener
                              ->groupBy('users.id', 'users.name', 'users.email')
                              ->get();
 
-        Log::debug(sprintf("[%s] Users needing notification: %s", $provider->name, $usersTonotify));
+        Log::debug(sprintf("[%s][Rate Update] Users needing notification: %s", $provider->name, $usersTonotify));
 
         if (count($usersTonotify) == 0) {
-            Log::info(sprintf("[%s] No updates to send since last run", $provider->name));
+            Log::info(sprintf("[%s][Rate Update] No updates to send since last run", $provider->name));
             return;
         }
 
-        $this->emailHelper->sendMail($usersTonotify);
+        Log::info(sprintf("[%s][Rate Update] Generating notification events", $provider->name));
+
+        foreach ($usersTonotify as $user) {
+            Log::debug(sprintf("[%s][Rate Update] Dispatching event for: %s", $provider->name, $user));
+            UserRateNotification::dispatch($provider,$user,$lastUpdate,$currentDate);
+        }
+
+        Log::info(sprintf("[%s][Rate Update] Updating email log", $provider->name));
+        if ($emailLog) {
+            $emailLog->replicate()->save();
+        } else {
+            $emailLog = new EmailLog();
+            $emailLog->type = "UPDATE";
+            $emailLog->provider_id = $provider->id;
+            $emailLog->save();
+        }
+
+        Log::info(sprintf("[%s][Rate Update] Rate Update Processed", $provider->name));
+
     }
 }
