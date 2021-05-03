@@ -136,6 +136,12 @@
                 $("#favorite-button").click(function () {
                     var favoritesColumn = rateTable.column(3);
                     if (!favoritesColumn.visible()) {
+                        if ($(window).width() < 576) {
+                            var alertColumn = rateTable.column(4);
+                            if (alertColumn.visible()) {
+                                $('#alert-button').trigger('click');
+                            }
+                        }
                         favoritesColumn.visible(!favoritesColumn.visible());
                         $('#rateTable').width('100%');
                         $(this).addClass('active');
@@ -163,6 +169,12 @@
                 $("#alert-button").click(function () {
                     var alertColumn = rateTable.column(4);
                     if (!alertColumn.visible()) {
+                        if ($(window).width() < 576) {
+                            var favoritesColumn = rateTable.column(3);
+                            if (favoritesColumn.visible()) {
+                                $('#favorite-button').trigger('click');
+                            }
+                        }
                         alertColumn.visible(!alertColumn.visible());
                         $('#rateTable').width('100%');
                         $(this).addClass('active');
