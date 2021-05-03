@@ -37,6 +37,7 @@
                     <th>Name</th>
                     <th>Ticker</th>
                     @auth <th>Favorites</th> @endauth
+                    @auth <th>Alerts</th> @endauth
                     <th>Current Rate</th>
                     <th>Prior Rate</th>
                     <th>Change</th>

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\FavoriteController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\AlertController;
 use App\Http\Controllers\RatesController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,13 +30,13 @@ Route::delete('favorite/{provider}/{coin}',[FavoriteController::class, 'deleteFa
      ->middleware('auth:api')
      ->name('deleteFavorite');
 
-Route::put('notification/{provider}/{coin}',[NotificationController::class, 'addNotification'])
+Route::put('alert/{provider}/{coin}',[AlertController::class, 'addAlert'])
      ->middleware('auth:api')
-     ->name('addNotification');
+     ->name('addAlert');
 
-Route::delete('notification/{provider}/{coin}',[NotificationController::class, 'deleteNotification'])
+Route::delete('alert/{provider}/{coin}',[AlertController::class, 'deleteAlert'])
      ->middleware('auth:api')
-     ->name('deleteNotification');
+     ->name('deleteAlert');
 
 Route::get('/test', function(){
     Log::info('An informational message!!!');

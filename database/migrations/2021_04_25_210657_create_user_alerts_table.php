@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserNotificationsTable extends Migration
+class CreateUserAlertsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUserNotificationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_notifications', function (Blueprint $table) {
+        Schema::create('user_alerts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id');
             $table->uuid('coin_id');
@@ -32,6 +32,6 @@ class CreateUserNotificationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_notifications');
+        Schema::dropIfExists('user_alerts');
     }
 }

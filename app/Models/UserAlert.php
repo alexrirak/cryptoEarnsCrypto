@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class UserNotification extends Model
+class UserAlert extends Model
 {
     /**
      * Indicates whether the model's ID is auto-incrementing.

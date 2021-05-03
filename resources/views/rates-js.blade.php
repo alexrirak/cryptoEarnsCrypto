@@ -26,6 +26,7 @@
                                 json[i].name,
                             json[i].symbol,
                                 @auth [json[i].favorite * -1, json[i].favorite === 1 ? "<button type='button' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star-fill'></i></button>" : "<button type='button' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star'></i></button>"], @endauth
+                                @auth [json[i].alert * -1, json[i].alert === 1 ? "<button type='button' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-envelope-fill'></i></button>" : "<button type='button' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-envelope'></i></button>"], @endauth
                             [parseFloat(json[i].latest_rate),
                                 "<span data-type='specialRate' style='display: none'>"
                                 + (parseFloat(json[i].latest_special_rate) * 100).toFixed(2) + " %"
@@ -59,7 +60,7 @@
                 { // shows image, not searchable
                     "searchable": false,
                     @guest
-                    "orderable":false,
+                    "orderable": false,
                     @endguest
                     render: function (data, type) {
                         return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
@@ -79,6 +80,15 @@
                     render: function (data, type) {
                         return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
                     }
+                }, @endauth
+                    @auth {
+                    // alerts
+                    "visible": false,
+                    "searchable": false,
+                    render: function (data, type) {
+                        return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
+                    }
+
                 }, @endauth
                 { // current rate, decimal for sort, converted to percent for display
                     render: function (data, type) {
@@ -113,13 +123,13 @@
                         "<div class='btn-group' role='group'>" +
                         "<button type='button' class='btn btn-outline-secondary' data-rate-label='" + specialRate + "' special-rate-selected='false'>Show " + specialRate + "</button>" +
                         "<button type='button' class='btn btn-outline-secondary' id='favorite-button'>Manage Favorites</button>" +
-                        "<button type='button' class='btn btn-outline-secondary'>Manage Notifications</button>" +
+                        "<button type='button' class='btn btn-outline-secondary' id='alert-button'>Manage Alerts</button>" +
                         "</div>");
                 } else {
                     $("#button-area").html(
                         "<div class='btn-group' role='group'>" +
                         "<button type='button' class='btn btn-outline-secondary' id='favorite-button'>Manage Favorites</button>" +
-                        "<button type='button' class='btn btn-outline-secondary'>Manage Notifications</button>" +
+                        "<button type='button' class='btn btn-outline-secondary' id='alert-button'>Manage Alerts</button>" +
                         "</div>");
                 }
 
@@ -150,6 +160,22 @@
                     }
                 });
 
+                $("#alert-button").click(function () {
+                    var alertColumn = rateTable.column(4);
+                    if (!alertColumn.visible()) {
+                        alertColumn.visible(!alertColumn.visible());
+                        $('#rateTable').width('100%');
+                        $(this).addClass('active');
+                        // favoriteButtonBinding(rateTable);
+                    } else {
+                        // $("button[coin]").off("click");
+                        alertColumn.visible(!alertColumn.visible());
+                        $('#rateTable').width('100%');
+                        $(this).removeClass('active');
+                    }
+                    $(this).blur();
+                });
+
 
                 @else
                 if (specialRate != "") {
@@ -157,13 +183,13 @@
                         "<div class='btn-group' role='group' aria-label='Basic outlined example'>" +
                         "<button type=\"button\" class='btn btn-outline-secondary' data-rate-label=\"" + specialRate + "\" special-rate-selected='false'>Show " + specialRate + "</button>" +
                         "<button type='button' class='btn btn-outline-secondary' data-bs-toggle='modal' data-bs-target='#favoriteModal'>Manage Favorites</button>" +
-                        "<button type='button' class='btn btn-outline-secondary' data-bs-toggle='modal' data-bs-target='#notificationModal'>Manage Notifications</button>" +
+                        "<button type='button' class='btn btn-outline-secondary' data-bs-toggle='modal' data-bs-target='#notificationModal'>Manage Alerts</button>" +
                         "</div>");
                 } else {
                     $("#button-area").html(
                         "<div class='btn-group' role='group' aria-label='Basic outlined example'>" +
                         "<button type='button' class='btn btn-outline-secondary' data-bs-toggle='modal' data-bs-target='#favoriteModal'>Manage Favorites</button>" +
-                        "<button type='button' class='btn btn-outline-secondary' data-bs-toggle='modal' data-bs-target='#notificationModal'>Manage Notifications</button>" +
+                        "<button type='button' class='btn btn-outline-secondary' data-bs-toggle='modal' data-bs-target='#notificationModal'>Manage Alerts</button>" +
                         "</div>");
                 }
                 @endauth
