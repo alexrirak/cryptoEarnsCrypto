@@ -36,6 +36,7 @@ class AlertController extends Controller
         $notification->user_id = $request->user()->id;
         $notification->coin_id = $coin[0]->id;
         $notification->source_id = $provider[0]->id;
+        $notification->use_special = 0;
         $notification->save();
 
 

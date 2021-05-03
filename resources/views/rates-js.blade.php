@@ -25,8 +25,8 @@
                             @endauth
                                 json[i].name,
                             json[i].symbol,
-                                @auth [json[i].favorite * -1, json[i].favorite === 1 ? "<button type='button' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star-fill'></i></button>" : "<button type='button' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star'></i></button>"], @endauth
-                                @auth [json[i].alert * -1, json[i].alert === 1 ? "<button type='button' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-envelope-fill'></i></button>" : "<button type='button' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-envelope'></i></button>"], @endauth
+                                @auth [json[i].favorite * -1, json[i].favorite === 1 ? "<button type='button' class='btn btn-outline-secondary' data-type='favorite' coin='" + json[i].symbol + "'><i class='bi bi-star-fill'></i></button>" : "<button type='button' data-type='favorite' class='btn btn-outline-secondary' coin='" + json[i].symbol + "'><i class='bi bi-star'></i></button>"], @endauth
+                                @auth [json[i].alert * -1, json[i].alert === 1 ? "<button type='button' class='btn btn-outline-secondary' data-type='alert' coin='" + json[i].symbol + "'><i class='bi bi-envelope-fill'></i></button>" : "<button type='button' class='btn btn-outline-secondary' data-type='alert' coin='" + json[i].symbol + "'><i class='bi bi-envelope'></i></button>"], @endauth
                             [parseFloat(json[i].latest_rate),
                                 "<span data-type='specialRate' style='display: none'>"
                                 + (parseFloat(json[i].latest_special_rate) * 100).toFixed(2) + " %"
@@ -153,7 +153,7 @@
                         })
                     @enddesktop
                     } else {
-                        $("button[coin]").off("click");
+                        $("button[coin][data-type='favorite']").off("click");
                         favoritesColumn.visible(!favoritesColumn.visible());
                         $('#rateTable').width('100%');
                         $(this).removeClass('active');
@@ -166,9 +166,9 @@
                         alertColumn.visible(!alertColumn.visible());
                         $('#rateTable').width('100%');
                         $(this).addClass('active');
-                        // favoriteButtonBinding(rateTable);
+                        alertButtonBinding(rateTable);
                     } else {
-                        // $("button[coin]").off("click");
+                        $("button[coin][data-type='alert']").off("click");
                         alertColumn.visible(!alertColumn.visible());
                         $('#rateTable').width('100%');
                         $(this).removeClass('active');
@@ -249,6 +249,7 @@
             favoriteStarBinding(rateTable);
         @enddesktop
             favoriteButtonBinding(rateTable);
+            alertButtonBinding(rateTable);
             @endauth
         });
     });
@@ -266,9 +267,83 @@
         toastr.error("Error occurred updating favorites. Please try again.");
     }
 
+    function alertAddedToast(coin) {
+        toastr.success("Subscribed to alerts for " + coin);
+    }
+
+    function alertRemovedToast(coin) {
+        toastr.success("Unsubscribed from alerts for " + coin);
+    }
+
+    function alertErrorToast() {
+        toastr.error("Error occurred updating alerts. Please try again.");
+    }
+
+    function alertButtonBinding(rateTable) {
+        $("button[coin][data-type='alert']").off("click");
+        $("button[coin][data-type='alert']").click(function () {
+            if ($(this).find("i").hasClass("bi-envelope")) {
+                $(this).find("i").removeClass("bi-envelope");
+                $(this).find("i").addClass("bi-hourglass-split");
+
+                var element = this;
+
+                $.ajax({
+                    url: '{{ route('addAlert', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
+                    type: 'PUT',
+                    success: function () {
+                        $(element).find("i").removeClass("bi-hourglass-split");
+                        $(element).find("i").addClass("bi-envelope-fill");
+                        alertAddedToast($(element).attr('coin'))
+                        $(element).blur();
+                        if (rateTable) {
+                            rateTable.ajax.reload(null, false);
+                        }
+                    }
+                }).fail(function () {
+                    alertErrorToast();
+                    $(element).blur();
+                    //revert to original state
+                    $(element).find("i").removeClass("bi-hourglass-split");
+                    $(element).find("i").addClass("bi-envelope");
+
+                });
+
+
+            } else if ($(this).find("i").hasClass("bi-envelope-fill")) {
+                $(this).find("i").removeClass("bi-envelope-fill");
+                $(this).find("i").addClass("bi-hourglass-split");
+
+
+                var element = this;
+
+                $.ajax({
+                    url: '{{ route('deleteAlert', ['provider' => Str::lower($provider), 'coin' => '-coin-']) . "?api_token=" . Auth::user()->id }}'.replace("-coin-", $(this).attr('coin')),
+                    type: 'DELETE',
+                    success: function () {
+                        $(element).find("i").removeClass("bi-hourglass-split");
+                        $(element).find("i").addClass("bi-envelope");
+                        alertRemovedToast($(element).attr('coin'));
+                        $(element).blur();
+                        if (rateTable) {
+                            rateTable.ajax.reload(null, false);
+                        }
+                    }
+                }).fail(function () {
+                    alertErrorToast();
+                    $(element).blur();
+                    //revert to original state
+                    $(element).find("i").removeClass("bi-hourglass-split");
+                    $(element).find("i").addClass("bi-envelope-fill");
+
+                });
+            }
+        });
+    }
+
     function favoriteButtonBinding(rateTable) {
-        $("button[coin]").off("click");
-        $("button[coin]").click(function () {
+        $("button[coin][data-type='favorite']").off("click");
+        $("button[coin][data-type='favorite']").click(function () {
             if ($(this).find("i").hasClass("bi-star")) {
                 $(this).find("i").removeClass("bi-star");
                 $(this).find("i").addClass("bi-hourglass-split");
