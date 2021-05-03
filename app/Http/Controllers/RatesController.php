@@ -28,14 +28,19 @@ class RatesController extends Controller
                                DB::raw('Max(coin_metadata.name) as name'),
                                DB::raw('Max(coin_metadata.image) as image'),
                                DB::raw('(uf.coin_id is not NULL) as favorite'),
+                               DB::raw('(ua.coin_id is not NULL) as alert'),
                                'rates.source'
                            )
-                           ->leftJoin('user_favorites as uf', function($join) use ($user) {
-                               $join->on('uf.coin_id','=','rates.coin_id')
+                           ->leftJoin('user_favorites as uf', function ($join) use ($user) {
+                               $join->on('uf.coin_id', '=', 'rates.coin_id')
                                     ->where('uf.user_id', '=', $user->id);
                            })
+                           ->leftJoin('user_alerts as ua', function ($join) use ($user) {
+                               $join->on('ua.coin_id', '=', 'rates.coin_id')
+                                    ->where('ua.user_id', '=', $user->id);
+                           })
                            ->where('rates.source', '=', $source)
-                           ->groupBy('rates.coin_id', 'rates.source', 'uf.coin_id')
+                           ->groupBy('rates.coin_id', 'rates.source', 'uf.coin_id', 'ua.coin_id')
                            ->get();
             }
 
