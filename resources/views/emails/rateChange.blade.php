@@ -70,7 +70,7 @@
     <tr>
         <td style="padding: 20px 0 30px 0;">
 
-            <table align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border: 1px solid #cccccc;min-width: 480px;">
+            <table align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border: 1px solid #cccccc;min-width: 480px;border-radius: 20px;overflow: hidden;">
                 <tr>
                     <td align="center" style="background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f7a449), to(#f7a74c));background-color: #f7a449;padding: 8px;">
                         <h1 style="text-shadow: 0 1px 0 #ccc,
@@ -88,7 +88,7 @@
                             {{ config('app.name') }}</h1>
                     </td>
                 </tr>
-                <tr>
+                <tr style="border-width: 0px 3px;border-color: #f7a449;border-style: solid;">
                     <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
                         <table border="0" cellpadding="0" cellspacing="0" width="100%"
                                style="border-collapse: collapse;">
