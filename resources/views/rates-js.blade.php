@@ -164,6 +164,7 @@
                         $('#rateTable').width('100%');
                         $(this).removeClass('active');
                     }
+                    $(this).blur();
                 });
 
                 $("#alert-button").click(function () {

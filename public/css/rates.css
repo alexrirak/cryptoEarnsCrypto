@@ -48,6 +48,14 @@
     }
   }
 
+  @media (hover: none) {
+      .btn-outline-secondary:hover:not(.active) {
+          color: #6c757d;
+          border-color: #6c757d;
+          background-color: rgba(0, 0, 0, 0);
+      }
+  }
+
   .favoriteStar {
       position: relative;
       top: 0.15em;
