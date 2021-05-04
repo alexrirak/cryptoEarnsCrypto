@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Events\RatesProcessed;
 use App\Events\UserRateNotification;
-use App\Helpers\EmailHelper;
 use App\Models\EmailLog;
 use App\Models\ProviderMetadata;
 use App\Models\Rate;
@@ -50,8 +49,8 @@ class RatesProcessedListener
 
         Log::info(sprintf("[%s][Rate Update] Fetching rates from %s to %s", $provider->name, $lastUpdate, $currentDate));
 
-        $usersTonotify = Rate::join('user_notifications', 'rates.coin_id', '=', 'user_notifications.coin_id')
-                             ->join('users', 'user_notifications.user_id', '=', 'users.id')
+        $usersTonotify = Rate::join('user_alerts', 'rates.coin_id', '=', 'user_alerts.coin_id')
+                             ->join('users', 'user_alerts.user_id', '=', 'users.id')
                              ->select('users.id', 'users.name', 'users.email')
                              ->where('rates.source', '=', $provider->name)
                              ->whereBetween('rates.created_at', [$lastUpdate, $currentDate])
@@ -69,7 +68,7 @@ class RatesProcessedListener
 
         foreach ($usersTonotify as $user) {
             Log::debug(sprintf("[%s][Rate Update] Dispatching event for: %s", $provider->name, $user));
-            UserRateNotification::dispatch($provider,$user,$lastUpdate,$currentDate);
+            UserRateNotification::dispatch($provider, $user, $lastUpdate, $currentDate);
         }
 
         Log::info(sprintf("[%s][Rate Update] Updating email log", $provider->name));
