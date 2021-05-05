@@ -148,7 +148,7 @@
                         <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;" id="disclaimer">
                             <tr>
                                 <td style="padding-bottom: 10px;">
-                                    <a href="/unsubscribe" >[Unsubscribe]</a>
+                                    <a href="{{ route('unsubscribe', ["emailId"=>bin2hex($user->email)]) }}" >[Unsubscribe]</a>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: middle;">
                                         <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                                     </svg>

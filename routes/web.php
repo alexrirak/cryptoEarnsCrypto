@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\UnsubscribeController;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,7 @@ Route::get('/rates/{provider}', function ($provider) {
     $providerMetaData = \App\Models\ProviderMetadata::where('name', $provider)->first();
 
     if ($providerMetaData) {
-        return view('rates', ['provider' => $provider,'providerMetaData' => $providerMetaData]);
+        return view('rates', ['provider' => $provider, 'providerMetaData' => $providerMetaData]);
     } else {
         abort(404);
     }
@@ -39,19 +40,17 @@ Route::get('/support-us', function () {
     return view('support');
 })->name('support-us');
 
-
-Route::get('/test', function () {
-    return view('welcome');
-});
+Route::get('/unsubscribe/{emailId}', [UnsubscribeController::class, 'showUnsubscribePage'])
+     ->name('unsubscribe');
 
 Route::get('login/{provider}', [SocialAuthController::class, 'redirect'])
-    ->name('login-provider');
+     ->name('login-provider');
 
-Route::get('login/{provider}/callback',[SocialAuthController::class, 'callback']);
+Route::get('login/{provider}/callback', [SocialAuthController::class, 'callback']);
 
-Route::get('login',[SocialAuthController::class, 'landing'])
-    ->name('login');
+Route::get('login', [SocialAuthController::class, 'landing'])
+     ->name('login');
 
-Route::get('logout',[SocialAuthController::class, 'logout'])
-    ->name('logout');
+Route::get('logout', [SocialAuthController::class, 'logout'])
+     ->name('logout');
 
