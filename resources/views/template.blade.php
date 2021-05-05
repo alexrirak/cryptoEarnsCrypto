@@ -13,9 +13,9 @@
 
     <body>
         @if (Str::lower(config('app.env'))=='local')
-            <div class="corner-ribbon top-left sticky green shadow" style="z-index: 9999;">{{ Str::upper(config('app.env')) }}</div>
+            <div class="corner-ribbon top-left sticky green shadow" style="z-index: 9999;" onclick="$(this).hide();">{{ Str::upper(config('app.env')) }}</div>
         @elseif (Str::lower(config('app.env'))!='production')
-            <div class="corner-ribbon top-left sticky orange shadow" style="z-index: 9999;">{{ Str::upper(config('app.env')) }}</div>
+            <div class="corner-ribbon top-left sticky orange shadow" style="z-index: 9999;" onclick="$(this).hide();">{{ Str::upper(config('app.env')) }}</div>
         @endif
 
 
