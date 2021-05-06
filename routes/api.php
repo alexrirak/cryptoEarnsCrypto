@@ -3,6 +3,7 @@
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\RatesController;
+use App\Http\Controllers\UnsubscribeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +38,9 @@ Route::put('alert/{provider}/{coin}',[AlertController::class, 'addAlert'])
 Route::delete('alert/{provider}/{coin}',[AlertController::class, 'deleteAlert'])
      ->middleware('auth:api')
      ->name('deleteAlert');
+
+Route::delete('/unsubscribe/{emailId}', [UnsubscribeController::class, 'processUnsubscribe'])
+     ->name('unsubscribe-process');
 
 Route::get('/test', function(){
     Log::info('An informational message!!!');
