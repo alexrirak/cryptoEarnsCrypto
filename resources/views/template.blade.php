@@ -13,9 +13,9 @@
 
     <body>
         @if (Str::lower(config('app.env'))=='local')
-            <div class="corner-ribbon top-left sticky green shadow" style="z-index: 9999;">{{ Str::upper(config('app.env')) }}</div>
+            <div class="corner-ribbon top-left sticky green shadow" style="z-index: 9999;" onclick="$(this).hide();">{{ Str::upper(config('app.env')) }}</div>
         @elseif (Str::lower(config('app.env'))!='production')
-            <div class="corner-ribbon top-left sticky orange shadow" style="z-index: 9999;">{{ Str::upper(config('app.env')) }}</div>
+            <div class="corner-ribbon top-left sticky orange shadow" style="z-index: 9999;" onclick="$(this).hide();">{{ Str::upper(config('app.env')) }}</div>
         @endif
 
 
@@ -32,7 +32,7 @@
                 This website is not affiliated with any of the listed networks. All logos property of their respective owners.
                 @show
                 <br /><br />
-                <!--<a href="/unsubscribe" >[Unsubscribe]</a> <i class="bi bi-three-dots"></i>--> <a href="{{ route('disclaimer') }}" >[Disclaimer]</a> <i class="bi bi-three-dots"></i> <a href="{{ route('support-us') }}" >[Support Us]</a>
+                <a href="{{ route('privacy-center') }}" >[Privacy Center]</a> <i class="bi bi-three-dots"></i> <a href="{{ route('disclaimer') }}" >[Disclaimer]</a> <i class="bi bi-three-dots"></i> <a href="{{ route('support-us') }}" >[Support Us]</a>
             </div>
         </main>
 
