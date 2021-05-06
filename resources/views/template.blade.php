@@ -32,7 +32,7 @@
                 This website is not affiliated with any of the listed networks. All logos property of their respective owners.
                 @show
                 <br /><br />
-                <!--<a href="/unsubscribe" >[Unsubscribe]</a> <i class="bi bi-three-dots"></i>--> <a href="{{ route('disclaimer') }}" >[Disclaimer]</a> <i class="bi bi-three-dots"></i> <a href="{{ route('support-us') }}" >[Support Us]</a>
+                <a href="{{ route('privacy-center') }}" >[Privacy Center]</a> <i class="bi bi-three-dots"></i> <a href="{{ route('disclaimer') }}" >[Disclaimer]</a> <i class="bi bi-three-dots"></i> <a href="{{ route('support-us') }}" >[Support Us]</a>
             </div>
         </main>
 

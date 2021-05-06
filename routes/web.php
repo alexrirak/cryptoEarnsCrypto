@@ -40,6 +40,12 @@ Route::get('/support-us', function () {
     return view('support');
 })->name('support-us');
 
+Route::get('/privacy-center', function () {
+    return view('common.privacy');
+})->name('privacy-center');
+
+Route::redirect('/cookie-policy', '/privacy-center#cookie-policy')->name('cookie-policy');
+
 Route::get('/unsubscribe/{emailId}', [UnsubscribeController::class, 'showUnsubscribePage'])
      ->name('unsubscribe');
 
