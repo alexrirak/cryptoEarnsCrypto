@@ -25,7 +25,7 @@
                 <li><hr class="dropdown-divider"></li>
                 @auth
                     <li class="nav-item d-md-none">
-                        <a class="nav-link" aria-current="page" href="">Profile</a>
+                        <a class="nav-link" aria-current="page" href="{{ route('profile') }}">Profile</a>
                     </li>
                     <li class="nav-item d-md-none">
                         <a class="nav-link" aria-current="page" href="{{ route('logout') }}">Sign out</a>
@@ -47,7 +47,7 @@
                             </svg>
                         </a>
                         <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
+                            <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}">Sign out</a></li>
                         </ul>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\UnsubscribeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,4 +59,8 @@ Route::get('login', [SocialAuthController::class, 'landing'])
 
 Route::get('logout', [SocialAuthController::class, 'logout'])
      ->name('logout');
+
+Route::get('/profile', [UserController::class, 'showProfile'])
+     ->middleware('auth')
+     ->name('profile');
 
