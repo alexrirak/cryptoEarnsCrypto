@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\UnsubscribeController;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
