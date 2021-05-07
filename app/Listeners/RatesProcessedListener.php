@@ -7,7 +7,9 @@ use App\Events\UserRateNotification;
 use App\Models\EmailLog;
 use App\Models\ProviderMetadata;
 use App\Models\Rate;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class RatesProcessedListener
 {
@@ -41,11 +43,12 @@ class RatesProcessedListener
 
         $emailLog = EmailLog::where('provider_id', '=', $provider->id)
                             ->where('type', '=', 'UPDATE')
-                            ->orderBy('created_at')
+                            ->orderBy('created_at', 'desc')
                             ->first();
 
-        $lastUpdate = $emailLog ? $emailLog->created_at : date("Y-m-d H:i:s", strtotime("-1 days"));
-        $currentDate = date("Y-m-d H:i:s");
+        $dbDates = DB::select((DB::raw('Select NOW() AS today, NOW() - INTERVAL 1 DAY AS yesterday')))[0];
+        $lastUpdate = $emailLog ? $emailLog->created_at : $dbDates->yesterday;
+        $currentDate = $dbDates->today;
 
         Log::info(sprintf("[%s][Rate Update] Fetching rates from %s to %s", $provider->name, $lastUpdate, $currentDate));
 
@@ -73,7 +76,9 @@ class RatesProcessedListener
 
         Log::info(sprintf("[%s][Rate Update] Updating email log", $provider->name));
         if ($emailLog) {
-            $emailLog->replicate()->save();
+            $emailLog = $emailLog->replicate();
+            $emailLog->id = Str::uuid();
+            $emailLog->save();
         } else {
             $emailLog = new EmailLog();
             $emailLog->type = "UPDATE";

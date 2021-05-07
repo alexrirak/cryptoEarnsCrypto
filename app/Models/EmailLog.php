@@ -21,6 +21,15 @@ class EmailLog extends Model
      */
     protected $keyType = 'string';
 
+    /**
+     * Stops Larvel from managing the dates -> the db is able to do it just fine
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+//    protected $dates = ['date_begin', 'date_end'];
+
     public function __construct(array $attributes = array())
     {
         parent::__construct($attributes);
