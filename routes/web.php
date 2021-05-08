@@ -64,3 +64,7 @@ Route::get('/profile', [UserController::class, 'showProfile'])
      ->middleware('auth')
      ->name('profile');
 
+Route::get('/delete-user', [UserController::class, 'deleteUser'])
+     ->middleware('auth')
+     ->name('delete-user');
+
