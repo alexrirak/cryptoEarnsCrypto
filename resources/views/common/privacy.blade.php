@@ -11,7 +11,7 @@
                 <h4 class="card-title">Manage Your Email Preferences</h4>
 
                 <p>To manage your email preferences for coin alerts, first log in to your account. Then use the "Manage Alerts" button on the main page to
-                    change your subscriptions. You can also use the unsubscribe on the <a href="{{ route('profile') }}">profile page</a> or use the unsubscribe link in our emails.</p>
+                    change your subscriptions. You can also use the "Unsubscribe" button on the <a href="{{ route('profile') }}">profile page</a> or use the unsubscribe link in our emails.</p>
 
                 <h4 class="card-title">Delete My Data</h4>
 
