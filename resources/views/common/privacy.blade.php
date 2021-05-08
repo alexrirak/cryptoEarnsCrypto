@@ -11,11 +11,11 @@
                 <h4 class="card-title">Manage Your Email Preferences</h4>
 
                 <p>To manage your email preferences for coin alerts, first log in to your account. Then use the "Manage Alerts" button on the main page to
-                    change your subscriptions. You can also use this process to unsubscribe or use the unsubscribe link in our emails.</p>
+                    change your subscriptions. You can also use the unsubscribe on the @auth <a href="{{ route('profile') }}">profile page</a> @elseauth profile page @endauth or use the unsubscribe link in our emails.</p>
 
                 <h4 class="card-title">Delete My Data</h4>
 
-                <p>To delete your data, first log in to your account. Then navigate to the profile page and use the "Delete my Account" button.</p>
+                <p>To delete your data, first log in to your account. Then navigate to the @auth <a href="{{ route('profile') }}">profile page</a> @elseauth profile page @endauth and use the "Delete my Account" button.</p>
 
                 <h4 id="cookie-policy" class="card-title">Cookie Policy</h4>
 
