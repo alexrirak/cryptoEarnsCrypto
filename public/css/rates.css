@@ -38,7 +38,11 @@
     vertical-align: middle;
   }
 
-  @media (min-width: 767px) {
+  #stat-area {
+      padding-top: .85em;
+  }
+
+  @media (min-width: 992px) {
     #rateTable_length label {
       float: left;
     }

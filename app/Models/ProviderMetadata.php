@@ -22,6 +22,13 @@ class ProviderMetadata extends Model
     protected $keyType = 'string';
 
     /**
+     * Stops Laravel from managing the dates -> the db is able to do it just fine
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * User constructor. Sets id to a uuid on creation
      * @param array $attributes
      */

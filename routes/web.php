@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RatesController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\UnsubscribeController;
 use App\Http\Controllers\UserController;
@@ -20,17 +21,8 @@ Route::redirect('/', '/rates/celsius')->name('home');
 
 Route::redirect('/home', '/');
 
-Route::get('/rates/{provider}', function ($provider) {
-
-    $providerMetaData = \App\Models\ProviderMetadata::where('name', $provider)->first();
-
-    if ($providerMetaData) {
-        return view('rates', ['provider' => $provider, 'providerMetaData' => $providerMetaData]);
-    } else {
-        abort(404);
-    }
-
-})->name('rates');
+Route::get('/rates/{provider}', [RatesController::class, 'showRatesView'])
+    ->name('rates');
 
 Route::get('/disclaimer', function () {
     return view('disclaimer');

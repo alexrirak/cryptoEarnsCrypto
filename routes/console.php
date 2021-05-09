@@ -1,7 +1,9 @@
 <?php
 
 use App\Events\RatesProcessed;
+use App\Models\ProviderMetadata;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -119,6 +121,12 @@ Artisan::command('getCelsiusRates', function () {
 
         RatesProcessed::dispatch("celsius");
 
+        // We want to have a record of when we last updated rates
+        $provider = ProviderMetadata::where('name','=', 'Celsius')->first();
+        // Eloquent wont save unless we dirty up the model, this will get overwritten
+        $provider->updated_at = "now";
+        $provider->save();
+
 
     } else {
         Log::critical("[Celsius] API call for rates failed! Error Code: " . $response->status());
@@ -129,7 +137,13 @@ Artisan::command('getCelsiusRates', function () {
 
 Artisan::command('testEvent', function () {
 
-    RatesProcessed::dispatch("celsius");
+    // We want to have a record of when we last updated rates
+    $provider = ProviderMetadata::where('name','=', 'Celsius')->first();
+    // Eloquent wont save unless we dirty up the model, this will get overwritten
+    $provider->updated_at = DB::raw("now()");
+    $provider->save();
+
+//    RatesProcessed::dispatch("celsius");
 
 })->purpose('testEvent');
 
