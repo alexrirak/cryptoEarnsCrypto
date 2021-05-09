@@ -6,11 +6,11 @@ use App\Models\ProviderMetadata;
 use App\Models\Rate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class RatesController extends Controller
 {
-    public function getRates(Request $request, $source) {
+    public function getRates(Request $request, $source)
+    {
         // If we receive a user id check that the user exists and if so return their favorites status with the data
         if ($request->query('user')) {
             $user = \App\Models\User::where('id', '=', $request->query('user'))
@@ -66,7 +66,8 @@ class RatesController extends Controller
                    ->get();
     }
 
-    public function getAllRates(Request $request) {
+    public function getAllRates(Request $request)
+    {
         return Rate::join('coin_metadata', 'rates.coin_id', '=', 'coin_metadata.id')
                    ->select(
                        DB::raw('Max(coin_metadata.symbol) as symbol'),
@@ -84,10 +85,11 @@ class RatesController extends Controller
                    ->get();
     }
 
-    public function showRatesView(string $provider) {
+    public function showRatesView(string $provider)
+    {
 
         $providerMetaData = ProviderMetadata::where('name', $provider)->first();
-        $diff = DB::select((DB::raw('SELECT TIMESTAMPDIFF(SECOND,"' . $providerMetaData->updated_at .'",NOW()) AS diff; ')))[0];
+        $diff = DB::select((DB::raw('SELECT TIMESTAMPDIFF(SECOND,"' . $providerMetaData->updated_at . '",NOW()) AS diff; ')))[0];
 
         $diff = $this->convertSeconds($diff->diff);
 
@@ -99,24 +101,21 @@ class RatesController extends Controller
 
     }
 
-    private function convertSeconds(int $seconds) {
-        if ($seconds < 60){
+    private function convertSeconds(int $seconds)
+    {
+        if ($seconds < 60) {
             $time = $seconds;
             $time_val = "second";
-        }
-        else if ($seconds >= 60 && $seconds < 3600){ # hr
+        } else if ($seconds >= 60 && $seconds < 3600) { # hr
             $time = floor($seconds / 60);
             $time_val = "minute";
-        }
-        else if ($seconds >= 3600 && $seconds < 86400){ # day
+        } else if ($seconds >= 3600 && $seconds < 86400) { # day
             $time = floor($seconds / 3600);
             $time_val = "hour";
-        }
-        else if ($seconds >= 86400 && $seconds < 604800){ # week
+        } else if ($seconds >= 86400 && $seconds < 604800) { # week
             $time = floor($seconds / 86400);
             $time_val = "day";
-        }
-        else if ($seconds >= 604800) {
+        } else if ($seconds >= 604800) {
             $time = floor($seconds / 604800);
             $time_val = "week";
         }
