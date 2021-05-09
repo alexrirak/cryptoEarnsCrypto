@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\DeleteUser;
 use App\Events\RatesProcessed;
 use App\Events\UserRateNotification;
+use App\Listeners\DeleteUserListener;
 use App\Listeners\RatesProcessedListener;
 use App\Listeners\UserRateNotificationSender;
 use Illuminate\Auth\Events\Registered;
@@ -26,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         UserRateNotification::class => [
             UserRateNotificationSender::class
+        ],
+        DeleteUser::class => [
+            DeleteUserListener::class
         ]
     ];
 

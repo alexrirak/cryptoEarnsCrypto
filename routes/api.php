@@ -41,8 +41,3 @@ Route::delete('alert/{provider}/{coin}',[AlertController::class, 'deleteAlert'])
 
 Route::delete('/unsubscribe/{emailId}', [UnsubscribeController::class, 'processUnsubscribe'])
      ->name('unsubscribe-process');
-
-Route::get('/test', function(){
-    Log::info('An informational message!!!');
-    return "done";
-});

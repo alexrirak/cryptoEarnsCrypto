@@ -9,7 +9,6 @@ use Illuminate\Support\Arr;
 
 use App\Helpers\RateHelper;
 use App\Helpers\CoinHelper;
-use App\Helpers\EmailHelper;
 use App\Models\CoinMetadata;
 use App\Models\Rate;
 
@@ -46,7 +45,7 @@ Artisan::command('getCelsiusRates', function () {
             // Grab current info and get the conversions out of the way
             $currRate = RateHelper::filterRatesArray($currentRates, $rate["coin"]);
             $newApyRate = round(RateHelper::aprToApy((float)$rate["rate"], 52), 4);
-            $newCelApyRate = round(RateHelper::aprToApy(RateHelper::inKindToCel((float)$rate["rate"]), 52), 4);
+            $newCelApyRate = Str::lower($rate["coin"]) == "cel" ? $newApyRate : round(RateHelper::aprToApy(RateHelper::inKindToCel((float)$rate["rate"]), 52), 4);
 
             // if the count is not 1 then this is a new coin we dont have rates for yet
             if (count($currRate) != 1) {
