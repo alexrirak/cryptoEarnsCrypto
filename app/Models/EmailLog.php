@@ -22,7 +22,7 @@ class EmailLog extends Model
     protected $keyType = 'string';
 
     /**
-     * Stops Larvel from managing the dates -> the db is able to do it just fine
+     * Stops Laravel from managing the dates -> the db is able to do it just fine
      *
      * @var bool
      */
