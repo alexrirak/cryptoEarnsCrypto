@@ -112,7 +112,7 @@
             "order": [[0, 'asc'], [1, 'asc']],
             dom: "<'row'<'#length-switch.col-sm-12 col-md-3 mb-1'l><'#button-area.col-sm-12 col-md-6 mb-1'><'#search.col-sm-12 col-md-3 mb-1'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
-                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                "<'row'<'col-md-12 col-lg-4'i><'#stat-area.col-md-12 col-lg-4 mb-1'><'col-md-12 col-lg-4'p>>",
             "initComplete": function () {
 
                 specialRate = $("h1[data-provider-rate]").attr('data-provider-rate');
@@ -206,6 +206,11 @@
                         "</div>");
                 }
                 @endauth
+
+                $("#stat-area").html("Last updated {{ $diff }} ago");
+                if ($(window).width() < 992) {
+                    $("ul.pagination").addClass('justify-content-center');
+                }
 
 
                 if (specialRate != "") {
