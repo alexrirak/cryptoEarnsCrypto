@@ -1,23 +1,24 @@
-.google-btn div {
-    height: 5rem;
-    width: 20rem;
-    background-image: url(/img/social/google/btn_google_signin_dark_normal_web@2x.png);
-    background-size: contain;
-    background-repeat: no-repeat;
+.google-btn a {
+    background-color: #dd4b39;
+    border-color: rgba(0,0,0,0.2);
+    color: #fff;
 }
 
-.google-btn div:hover {
-    background-image: url(/img/social/google/btn_google_signin_dark_focus_web@2x.png);
+.google-btn a:hover {
+    background-color:#c23321;
+    border-color: rgba(0,0,0,0.2);
+    color: #fff;
 }
 
-.google-btn div:active {
-    background-image: url(/img/social/google/btn_google_signin_dark_pressed_web@2x.png);
+.facebook-btn a {
+    background-color: #3b5998;
+    border-color: rgba(0,0,0,0.2);
+    color: #fff;
 }
 
-.facebook-btn div {
-    height: 5rem;
-    width: 20rem;
-    background-image: url(/img/social/facebook/facebook.png);
-    background-size: contain;
-    background-repeat: no-repeat;
+.facebook-btn a:hover {
+    background-color:#2d4373;
+    border-color: rgba(0,0,0,0.2);
+    color: #fff;
 }
+
