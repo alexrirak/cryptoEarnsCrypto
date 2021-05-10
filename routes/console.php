@@ -123,8 +123,7 @@ Artisan::command('getCelsiusRates', function () {
 
         // We want to have a record of when we last updated rates
         $provider = ProviderMetadata::where('name','=', 'Celsius')->first();
-        // Eloquent wont save unless we dirty up the model, this will get overwritten
-        $provider->updated_at = "now";
+        $provider->updated_at = DB::raw("now()");
         $provider->save();
 
 
@@ -137,13 +136,7 @@ Artisan::command('getCelsiusRates', function () {
 
 Artisan::command('testEvent', function () {
 
-    // We want to have a record of when we last updated rates
-    $provider = ProviderMetadata::where('name','=', 'Celsius')->first();
-    // Eloquent wont save unless we dirty up the model, this will get overwritten
-    $provider->updated_at = DB::raw("now()");
-    $provider->save();
-
-//    RatesProcessed::dispatch("celsius");
+    RatesProcessed::dispatch("celsius");
 
 })->purpose('testEvent');
 
