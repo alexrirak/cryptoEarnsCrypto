@@ -22,13 +22,17 @@
                         </ul>
                     </div>
                 @endif
+                <div class="d-flex flex-column justify-content-center">
+                    <div class="btn-group google-btn mx-auto p-1">
+                        <a href="{{ route('login-provider', ['provider'=>'google']) }}" class="btn" style="font-size: x-large;"><i class="bi bi-google"></i></a>
+                        <a href="{{ route('login-provider', ['provider'=>'google']) }}" class="btn" style="width: 184px;">Sign In With Google</a>
+                    </div>
 
-                <a href="{{ route('login-provider', ['provider'=>'google']) }}" class="google-btn">
-                    <div class="mx-auto"></div>
-                </a>
-                <a href="{{ route('login-provider', ['provider'=>'facebook']) }}" class="facebook-btn">
-                    <div class="mx-auto"></div>
-                </a>
+                    <div class="btn-group facebook-btn mx-auto p-1">
+                        <a href="{{ route('login-provider', ['provider'=>'facebook']) }}" class="btn" style="font-size: x-large;"><i class="bi bi-facebook"></i></a>
+                        <a href="{{ route('login-provider', ['provider'=>'facebook']) }}" class="btn" style="width: 184px;">Sign In With Facebook</a>
+                    </div>
+                </div>
             </div>
         </div>
 
