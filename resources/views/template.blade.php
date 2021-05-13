@@ -9,6 +9,16 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         @yield('styles')
 
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RTD1DPSRHB"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-RTD1DPSRHB');
+        </script>
+
     </head>
 
     <body>
