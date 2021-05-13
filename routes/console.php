@@ -133,16 +133,3 @@ Artisan::command('getCelsiusRates', function () {
 
 
 })->purpose('Fetch latest rates from Celsius website');
-
-Artisan::command('testEvent', function () {
-
-    RatesProcessed::dispatch("celsius");
-
-})->purpose('testEvent');
-
-
-Artisan::command('testLog', function () {
-
-    Log::info("This is a test log");
-
-})->purpose('testLog');
