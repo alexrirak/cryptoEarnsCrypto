@@ -60,3 +60,7 @@ Route::get('/delete-user', [UserController::class, 'deleteUser'])
      ->middleware('auth')
      ->name('delete-user');
 
+Route::get('/subscriptions', [UserController::class, 'showSubscriptions'])
+     ->middleware('auth')
+     ->name('subscriptions');
+
