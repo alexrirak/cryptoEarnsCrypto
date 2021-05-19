@@ -8,7 +8,7 @@
         $(document).ready(function () {
 
             // handle favorite button click for each coin
-            $("[data-type='favorite']").click(function() {
+            $("[data-type='favorite']").click(function () {
                 if ($(this).find("i").hasClass("bi-star-fill")) {
 
                     //already in favorites, so remove it
@@ -25,7 +25,7 @@
                         success: function () {
                             $(element).find("i").removeClass("bi-hourglass-split");
                             $(element).find("i").addClass("bi-star");
-                            favoriteRemovedToast($(element).attr('data-coin'),$(element).attr('data-provider'));
+                            favoriteRemovedToast($(element).attr('data-coin'), $(element).attr('data-provider'));
                         }
                     }).fail(function () {
                         favoriteErrorToast();
@@ -49,7 +49,7 @@
                         success: function () {
                             $(element).find("i").removeClass("bi-hourglass-split");
                             $(element).find("i").addClass("bi-star-fill");
-                            favoriteAddedToast($(element).attr('data-coin'),$(element).attr('data-provider'));
+                            favoriteAddedToast($(element).attr('data-coin'), $(element).attr('data-provider'));
                         }
                     }).fail(function () {
                         favoriteErrorToast();
@@ -61,7 +61,7 @@
             })
 
             // handle alert button click for each coin
-            $("[data-type='alert']").click(function() {
+            $("[data-type='alert']").click(function () {
                 if ($(this).find("i").hasClass("bi-envelope-fill")) {
                     //already in alerts, so remove it
 
@@ -144,7 +144,7 @@
         }
 
         function capitalize(word) {
-            return word.substr(0,1).toUpperCase()+word.substr(1);
+            return word.substr(0, 1).toUpperCase() + word.substr(1);
         }
     </script>
 @endsection
@@ -178,6 +178,16 @@
             border: 2px solid #797979
         }
         @enddesktop
+
+        @media (max-width:767.98px) {
+            .btn-group {
+                width: 100%;
+            }
+
+            div button:disabled {
+                width: 3rem;
+            }
+        }
     </style>
 @endsection
 
@@ -190,7 +200,26 @@
 
                 @foreach ($data as $source)
                     <a name="{{$source[0]->source}}_coins"></a>
-                    <h4 class="card-title mb-2 mt-1">{{ Str::ucfirst($source[0]->source) }}</h4>
+
+                    <nav class="navbar navbar-light bg-light">
+                        <div class="container-fluid justify-content-start">
+                            <span class="navbar-brand mb-0 h1">{{ Str::ucfirst($source[0]->source) }}</span>
+
+                            <div class="ms-auto">
+                                <div class="col btn-group btn-group-sm me-2" role="group">
+                                    <button type="button" class="btn btn-outline-secondary" disabled>Favorites</button>
+                                    <button type="button" class="btn btn-outline-secondary">Add All</button>
+                                    <button type="button" class="btn btn-outline-secondary">Remove All</button>
+                                </div>
+
+                                <div class="col btn-group btn-group-sm" role="group">
+                                    <button type="button" class="btn btn-outline-secondary" disabled>Alerts</button>
+                                    <button type="button" class="btn btn-outline-secondary">Add All</button>
+                                    <button type="button" class="btn btn-outline-secondary">Remove All</button>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
 
                     <div class="row row-cols-1 row-cols-md-3 g-4">
                         @foreach ($source as $coin)
