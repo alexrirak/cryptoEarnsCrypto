@@ -271,6 +271,10 @@
             div button:disabled {
                 width: 3rem;
             }
+
+            [data-provider] {
+                margin: 1px 0px;
+            }
         }
     </style>
 @endsection
