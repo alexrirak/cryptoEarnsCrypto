@@ -31,6 +31,14 @@ Route::delete('favorite/{provider}/{coin}',[FavoriteController::class, 'deleteFa
      ->middleware('auth:api')
      ->name('deleteFavorite');
 
+Route::put('favorite/{provider}',[FavoriteController::class, 'addAll'])
+     ->middleware('auth:api')
+     ->name('addAllFavorite');
+
+Route::delete('favorite/{provider}',[FavoriteController::class, 'deleteAll'])
+     ->middleware('auth:api')
+     ->name('deleteAllFavorite');
+
 Route::put('alert/{provider}/{coin}',[AlertController::class, 'addAlert'])
      ->middleware('auth:api')
      ->name('addAlert');
@@ -38,6 +46,14 @@ Route::put('alert/{provider}/{coin}',[AlertController::class, 'addAlert'])
 Route::delete('alert/{provider}/{coin}',[AlertController::class, 'deleteAlert'])
      ->middleware('auth:api')
      ->name('deleteAlert');
+
+Route::put('alert/{provider}',[AlertController::class, 'addAll'])
+     ->middleware('auth:api')
+     ->name('addAllAlert');
+
+Route::delete('alert/{provider}',[AlertController::class, 'deleteAll'])
+     ->middleware('auth:api')
+     ->name('deleteAllAlert');
 
 Route::delete('/unsubscribe/{emailId}', [UnsubscribeController::class, 'processUnsubscribe'])
      ->name('unsubscribe-process');
