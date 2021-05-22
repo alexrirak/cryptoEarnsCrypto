@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\CoinMetadata;
 use App\Models\ProviderMetadata;
+use App\Models\Rate;
 use App\Models\UserFavorite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class FavoriteController extends Controller
 {
-    public function addFavorite(Request $request, $provider, $coin) {
+    public function addFavorite(Request $request, $provider, $coin)
+    {
 
         $provider = ProviderMetadata::where('name', $provider)->get();
 
@@ -39,11 +42,12 @@ class FavoriteController extends Controller
         $favorite->save();
 
 
-        return response("",201);
+        return response("", 201);
 
     }
 
-    public function deleteFavorite(Request $request, $provider, $coin) {
+    public function deleteFavorite(Request $request, $provider, $coin)
+    {
 
         $provider = ProviderMetadata::where('name', $provider)->get();
 
@@ -68,7 +72,61 @@ class FavoriteController extends Controller
 
         $existing[0]->delete();
 
-        return response("",204);
+        return response("", 204);
+
+    }
+
+    public function addAll(Request $request, string $provider)
+    {
+
+        $provider = ProviderMetadata::where('name', $provider)->get();
+
+        if (count($provider) == 0) {
+            abort(400);
+        }
+
+        $missingCoins = Rate::leftJoin('provider_metadata as pm', 'pm.name', '=', 'rates.source')
+                            ->leftJoin('user_favorites as uf', function ($join) use ($request) {
+                                $join->on('uf.coin_id', '=', 'rates.coin_id')
+                                     ->where('uf.user_id', '=', $request->user()->id);
+                            })
+                            ->select('rates.coin_id')
+                            ->where('pm.id', '=', $provider[0]->id)
+                            ->whereNull('uf.user_id')
+                            ->get();
+
+        $data = [];
+        foreach ($missingCoins as $coin) {
+            $data[] = [
+                'id' => (string)Str::uuid(),
+                'user_id' => $request->user()->id,
+                'coin_id' => $coin->coin_id,
+                'source_id' => $provider[0]->id
+            ];
+        }
+
+        if (count($data) > 0) {
+            UserFavorite::insert($data);
+        }
+
+        return response("", 201);
+
+    }
+
+    public function deleteAll(Request $request, string $provider)
+    {
+
+        $provider = ProviderMetadata::where('name', $provider)->get();
+
+        if (count($provider) == 0) {
+            abort(400);
+        }
+
+        UserFavorite::where('source_id', '=', $provider[0]->id)
+                    ->where('user_id', '=', $request->user()->id)
+                    ->delete();
+
+        return response("", 204);
 
     }
 }
