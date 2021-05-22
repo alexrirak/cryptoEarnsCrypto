@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\CoinMetadata;
 use App\Models\ProviderMetadata;
+use App\Models\Rate;
 use App\Models\UserAlert;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AlertController extends Controller
 {
-    public function addAlert(Request $request, $provider, $coin) {
+    public function addAlert(Request $request, $provider, $coin)
+    {
 
         $provider = ProviderMetadata::where('name', $provider)->get();
 
@@ -40,11 +43,12 @@ class AlertController extends Controller
         $notification->save();
 
 
-        return response("",201);
+        return response("", 201);
 
     }
 
-    public function deleteAlert(Request $request, $provider, $coin) {
+    public function deleteAlert(Request $request, $provider, $coin)
+    {
 
         $provider = ProviderMetadata::where('name', $provider)->get();
 
@@ -69,7 +73,62 @@ class AlertController extends Controller
 
         $existing[0]->delete();
 
-        return response("",204);
+        return response("", 204);
+
+    }
+
+    public function addAll(Request $request, string $provider)
+    {
+
+        $provider = ProviderMetadata::where('name', $provider)->get();
+
+        if (count($provider) == 0) {
+            abort(400);
+        }
+
+        $missingCoins = Rate::leftJoin('provider_metadata as pm', 'pm.name', '=', 'rates.source')
+                            ->leftJoin('user_alerts as ua', function ($join) use ($request) {
+                                $join->on('ua.coin_id', '=', 'rates.coin_id')
+                                     ->where('ua.user_id', '=', $request->user()->id);
+                            })
+                            ->select('rates.coin_id')
+                            ->where('pm.id', '=', $provider[0]->id)
+                            ->whereNull('ua.user_id')
+                            ->get();
+
+        $data = [];
+        foreach ($missingCoins as $coin) {
+            $data[] = [
+                'id' => (string)Str::uuid(),
+                'user_id' => $request->user()->id,
+                'coin_id' => $coin->coin_id,
+                'source_id' => $provider[0]->id,
+                'use_special' => 0
+            ];
+        }
+
+        if (count($data) > 0) {
+            UserAlert::insert($data);
+        }
+
+        return response("", 201);
+
+    }
+
+    public function deleteAll(Request $request, string $provider)
+    {
+
+        $provider = ProviderMetadata::where('name', $provider)->get();
+
+        if (count($provider) == 0) {
+            abort(400);
+        }
+
+        UserAlert::where('source_id', '=', $provider[0]->id)
+                 ->where('user_id', '=', $request->user()->id)
+                 ->delete();
+
+        return response("", 204);
 
     }
 }
