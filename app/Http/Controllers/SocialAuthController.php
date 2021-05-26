@@ -43,7 +43,7 @@ class SocialAuthController extends Controller
             return redirect('login')->withErrors([__('auth.no-email-error')]);
         }
 
-        // Find the suer by email, provider is not currently checked
+        // Find the user by email, provider is not currently checked
         $user       =   User::where(['email' => $userSocial->getEmail()])->first();
 
         // As per guidelines regenerate session
@@ -51,7 +51,7 @@ class SocialAuthController extends Controller
 
         if($user){
             // If the user is found log them in
-            Auth::login($user);
+            Auth::login($user); //pass true as 2nd param to stay logged in indefinitely
         }else{
             // If the user is not found create an account
             $user = User::create([
