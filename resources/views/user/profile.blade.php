@@ -45,7 +45,7 @@
                                 <div class="d-flex flex-column"> <span class="number-label">Member Since</span> <span class="number">{{ date('Y-m-d',strtotime($user->member_since)) }}</span> </div>
                             </div>
                             <div class="button mt-2 d-flex flex-row align-items-center">
-                                <a href="{{ route('unsubscribe', ["emailId"=>bin2hex($user->email)]) }}" class="btn btn-sm btn-outline-secondary w-100 me-1">Unsubscribe</a>
+                                <a href="@if ($user->alerts > 0){{ route('unsubscribe', ["emailId"=>bin2hex($user->email)]) }}@else#@endif" class="btn btn-sm btn-outline-secondary w-100 me-1 @if ($user->alerts < 1) disabled @endif">Unsubscribe</a>
                                 <a class="btn btn-sm btn-danger w-100 ms-1" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete Account</a>
                             </div>
                         </div>
