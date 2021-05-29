@@ -89,15 +89,14 @@ class RatesController extends Controller
     {
 
         $providerMetaData = ProviderMetadata::where('name', $provider)->first();
+        if (!$providerMetaData) {
+            abort(404);
+        }
         $diff = DB::select((DB::raw('SELECT TIMESTAMPDIFF(SECOND,"' . $providerMetaData->updated_at . '",NOW()) AS diff; ')))[0];
 
         $diff = $this->convertSeconds($diff->diff);
 
-        if ($providerMetaData) {
-            return view('rates', ['provider' => $provider, 'providerMetaData' => $providerMetaData, 'diff' => $diff]);
-        } else {
-            abort(404);
-        }
+        return view('rates', ['provider' => $provider, 'providerMetaData' => $providerMetaData, 'diff' => $diff]);
 
     }
 
