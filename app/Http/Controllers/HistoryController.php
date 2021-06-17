@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CoinMetadata;
 use App\Models\ProviderMetadata;
-use Illuminate\Http\Request;
+use App\Models\Rate;
 
 class HistoryController extends Controller
 {
@@ -20,7 +20,26 @@ class HistoryController extends Controller
             abort(404);
         }
 
-        return view('history.by-provider', ['providerMetaData' => $providerMetaData, 'coinMetaData' => $coinMetaData]);
+        $rates = Rate::where('coin_id', $coinMetaData->id)
+                     ->where('source', $providerMetaData->name)
+                     ->select('rate', 'special_rate', 'created_at')
+                     ->orderBy('created_at')
+                     ->get();
+
+        if (count($rates) == 0) {
+            abort(404);
+        }
+
+        $labels = [];
+        $data = [];
+        $specialData = [];
+        foreach ($rates as $rate) {
+            array_push($labels, $rate->created_at->toJson());
+            array_push($data, floatval($rate->rate) * 100);
+            array_push($specialData, floatval($rate->special_rate) * 100);
+        }
+
+        return view('history.by-provider', ['providerMetaData' => $providerMetaData, 'coinMetaData' => $coinMetaData, 'labels' => $labels, 'data' => $data, 'specialData' => $specialData]);
 
     }
 }

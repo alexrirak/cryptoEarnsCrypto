@@ -4,16 +4,18 @@
 
 @section('scripts')
     <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.2/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
 
     <script>
         $(document).ready(function () {
             var ctx = document.getElementById('rateChart');
             const data = {
-                labels: ['2021-03-30 04:33:22', '2021-04-30 04:33:22', '2021-05-30 04:33:22', '2021-06-16 04:33:22'],
+                labels: [@foreach ($labels as $label) "{{$label}}"@if (!$loop->last),@endif @endforeach],
                 datasets: [
                     {
                         label: '{{ $coinMetaData->symbol }}',
-                        data: [3.51, 7.25, 10.51, 7.50],
+                        data: [@foreach ($data as $data_elm) {{$data_elm}}@if (!$loop->last),@endif @endforeach],
                         backgroundColor: 'rgb(255, 99, 132)',
                         borderColor: 'rgb(255, 99, 132)',
                         fill: false,
@@ -36,8 +38,15 @@
                             display: true,
                             title: {
                                 display: true,
-                                text: 'Change Date'
+                                text: 'Change Date',
                             },
+                            type: 'time',
+                            time: {
+                                unit: 'week'
+                            },
+                            ticks: {
+                                source: 'data'
+                            }
                         },
                         y: {
                             display: true,
