@@ -45,7 +45,7 @@
                                 unit: 'week'
                             },
                             ticks: {
-                                source: 'data'
+                                source: '@if (count($labels) < 3){{"data"}}@else{{"auto"}}@endif'
                             }
                         },
                         y: {
