@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\RatesController;
 use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\UnsubscribeController;
@@ -23,6 +24,9 @@ Route::redirect('/home', '/');
 
 Route::get('/rates/{provider}', [RatesController::class, 'showRatesView'])
     ->name('rates');
+
+Route::get('/history/{provider}/{coin}', [HistoryController::class, 'showHistoryByProviderAndCoinView'])
+     ->name('history-by-provider-and-coin');
 
 Route::get('/disclaimer', function () {
     return view('disclaimer');
