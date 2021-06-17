@@ -53,8 +53,7 @@
                             title: {
                                 display: true,
                                 text: 'APY'
-                            },
-                            suggestedMin: 0
+                            }
                         }
                     }
                 }
