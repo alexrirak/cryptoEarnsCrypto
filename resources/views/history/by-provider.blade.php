@@ -28,6 +28,15 @@
                 type: 'line',
                 data: data,
                 options: {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (item) {
+                                    return item.dataset.label + ": " + item.formattedValue + "%";
+                                }
+                            }
+                        }
+                    },
                     responsive: true,
                     interaction: {
                         intersect: false,
@@ -52,7 +61,7 @@
                             display: true,
                             title: {
                                 display: true,
-                                text: 'APY'
+                                text: 'APY (%)'
                             }
                         }
                     }
