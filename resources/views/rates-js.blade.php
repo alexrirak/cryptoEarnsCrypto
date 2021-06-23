@@ -20,7 +20,7 @@
                             @elsedesktop
                                 [json[i].favorite * -1, "<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>"],
                             @enddesktop
-                                @else
+                                    @else
                                 ["<img class='coinLogo' src='" + json[i].image + "' alt='" + json[i].name + "' title='" + json[i].name + "'/>"],
                             @endauth
                                 json[i].name,
@@ -50,7 +50,12 @@
                                     + (rateChange * 100).toFixed(2) + " %"
                                     + "</span></span>"]
                                 : ["<span class='badge bg-secondary'>Unknown<sup>*</sup></span>"],
-                            json[i].latest_date ? new Date(json[i].latest_date).toDateString() : "<span class='badge bg-secondary'>Unknown<sup>*</sup></span>"
+                            json[i].latest_date ? new Date(json[i].latest_date).toDateString() + (Boolean(json[i].chartAvailable) ?
+                                '<a href="/history/celsius/' + json[i].symbol + '">' +
+                                '<button type="button" data-type="history" class="btn btn-outline-secondary btn-sm ms-1" style="margin-top: -0.3rem;">' +
+                                '<i class="bi bi-graph-up"></i>' +
+                                '</button></a>' : "")
+                                : "<span class='badge bg-secondary'>Unknown<sup>*</sup></span>"
                         ]);
                     }
                     return return_data;
