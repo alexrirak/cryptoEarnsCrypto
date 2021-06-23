@@ -31,6 +31,7 @@ class RatesController extends Controller
                                DB::raw('Max(coin_metadata.image) as image'),
                                DB::raw('(uf.coin_id is not NULL) as favorite'),
                                DB::raw('(ua.coin_id is not NULL) as alert'),
+                               DB::raw('(count(rates.created_at) > 2) as chartAvailable'),
                                'rates.source'
                            )
                            ->leftJoin('user_favorites as uf', function ($join) use ($user) {
