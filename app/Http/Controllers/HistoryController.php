@@ -28,6 +28,9 @@ class HistoryController extends Controller
 
         if (count($rates) == 0) {
             abort(404);
+        } else if (count($rates) < 3) {
+            return view('history.by-provider', ['providerMetaData' => $providerMetaData, 'coinMetaData' => $coinMetaData])
+                ->withErrors("We do not have enough data points for the requested coin. Please try again at a later time.");
         }
 
         $labels = [];
