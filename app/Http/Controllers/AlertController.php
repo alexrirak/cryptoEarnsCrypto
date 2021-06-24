@@ -7,6 +7,7 @@ use App\Models\ProviderMetadata;
 use App\Models\Rate;
 use App\Models\UserAlert;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class AlertController extends Controller
@@ -68,6 +69,9 @@ class AlertController extends Controller
                              ->get();
 
         if (count($existing) != 1) {
+            if (count($existing) > 1) {
+                Log::error("Duplicate subscriptions found for " + $request->user(),['coin_id'=>$coin[0]->id, 'source_id'=> $provider[0]->id]);
+            }
             abort(400);
         }
 

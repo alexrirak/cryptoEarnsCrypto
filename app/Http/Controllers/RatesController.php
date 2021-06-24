@@ -60,6 +60,7 @@ class RatesController extends Controller
                        DB::raw('(SELECT special_rate FROM rates crsr2 WHERE crsr2.coin_id = rates.coin_id AND crsr2.created_at = prior_date AND crsr2.source = rates.source LIMIT 1) as prior_special_rate'),
                        DB::raw('Max(coin_metadata.name) as name'),
                        DB::raw('Max(coin_metadata.image) as image'),
+                       DB::raw('(count(rates.created_at) > 2) as chartAvailable'),
                        'rates.source'
                    )
                    ->where('rates.source', '=', $source)
