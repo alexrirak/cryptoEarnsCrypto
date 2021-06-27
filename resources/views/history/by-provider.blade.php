@@ -70,6 +70,16 @@
                 };
 
                 new Chart(ctx, config);
+
+                $(".rateSwitchToggle").click(function() {
+                    @if(!is_null($providerMetaData->specialRateName))
+                        @if( key_exists('specialRate', request()->all()) )
+                            window.location.href = "{{ route('history-by-provider-and-coin', ["provider" => request()->provider, "coin" => request()->coin]) }}";
+                        @else
+                            window.location.href = "{{ route('history-by-provider-and-coin', ["provider" => request()->provider, "coin" => request()->coin, "specialRate"]) }}";
+                        @endif
+                    @endif
+                });
             });
         </script>
     @endif
@@ -77,7 +87,13 @@
 @endsection
 
 @section('styles')
-
+    <style>
+        .rateSwitchToggle {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -87,7 +103,7 @@
 
         <div class="card mx-auto mt-3 content-card">
             <div class="card-body">
-                <h4 class="card-title">{{ $coinMetaData->symbol }} History</h4>
+                <h4 class="card-title">{{ $coinMetaData->symbol }} History @if(!is_null($providerMetaData->specialRateName))@if( key_exists('specialRate', request()->all()) )({{ $providerMetaData->specialRateName }})@else{{ "(In-Kind Rates)" }}@endif @endif</h4>
 
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -98,6 +114,11 @@
                         </ul>
                     </div>
                 @else
+                    @if(!is_null($providerMetaData->specialRateName))
+                        <button type="button" class="btn btn-outline-secondary rateSwitchToggle">
+                            Switch to @if( key_exists('specialRate', request()->all()) ){{"In-Kind Rates"}}@else{{ $providerMetaData->specialRateName }}@endif
+                        </button>
+                    @endif
                     <canvas id="rateChart"></canvas>
                 @endif
 
