@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\CoinMetadata;
 use App\Models\ProviderMetadata;
 use App\Models\Rate;
+use Illuminate\Http\Request;
 
 class HistoryController extends Controller
 {
-    public function showHistoryByProviderAndCoinView(string $provider, string $coin)
+    public function showHistoryByProviderAndCoinView(Request $request, string $provider, string $coin)
     {
         $providerMetaData = ProviderMetadata::where('name', $provider)->first();
         if (!$providerMetaData) {
@@ -42,7 +43,11 @@ class HistoryController extends Controller
             array_push($specialData, floatval($rate->special_rate) * 100);
         }
 
-        return view('history.by-provider', ['providerMetaData' => $providerMetaData, 'coinMetaData' => $coinMetaData, 'labels' => $labels, 'data' => $data, 'specialData' => $specialData]);
+        if (key_exists('specialRate', $request->all())) {
+            return view('history.by-provider', ['providerMetaData' => $providerMetaData, 'coinMetaData' => $coinMetaData, 'labels' => $labels, 'data' => $specialData]);
+        } else {
+            return view('history.by-provider', ['providerMetaData' => $providerMetaData, 'coinMetaData' => $coinMetaData, 'labels' => $labels, 'data' => $data]);
+        }
 
     }
 }
