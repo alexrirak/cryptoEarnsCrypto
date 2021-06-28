@@ -64,6 +64,11 @@
                                 title: {
                                     display: true,
                                     text: 'APY (%)'
+                                },
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + "%";
+                                    }
                                 }
                             }
                         }
