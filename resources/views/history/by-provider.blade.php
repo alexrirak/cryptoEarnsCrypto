@@ -39,6 +39,7 @@
                             }
                         },
                         responsive: true,
+                        maintainAspectRatio: false,
                         interaction: {
                             intersect: false,
                             axis: 'x'
@@ -71,7 +72,7 @@
 
                 new Chart(ctx, config);
 
-                $(".rateSwitchToggle").click(function() {
+                $("#rateSwitchToggle").click(function() {
                     @if(!is_null($providerMetaData->specialRateName))
                         @if( key_exists('specialRate', request()->all()) )
                             window.location.href = "{{ route('history-by-provider-and-coin', ["provider" => request()->provider, "coin" => request()->coin]) }}";
@@ -87,13 +88,7 @@
 @endsection
 
 @section('styles')
-    <style>
-        .rateSwitchToggle {
-            position: absolute;
-            right: 16px;
-            top: 16px;
-        }
-    </style>
+
 @endsection
 
 @section('content')
@@ -103,7 +98,15 @@
 
         <div class="card mx-auto mt-3 content-card">
             <div class="card-body">
-                <h4 class="card-title">{{ $coinMetaData->symbol }} History @if(!is_null($providerMetaData->specialRateName))@if( key_exists('specialRate', request()->all()) )({{ $providerMetaData->specialRateName }})@else{{ "(In-Kind Rates)" }}@endif @endif</h4>
+                <div class="d-flex flex-wrap justify-content-between">
+                    <h4 class="card-title flex-grow-1">{{ $coinMetaData->symbol }} History @if(!is_null($providerMetaData->specialRateName))@if( key_exists('specialRate', request()->all()) )({{ $providerMetaData->specialRateName }})@else{{ "(In-Kind Rates)" }}@endif @endif</h4>
+
+                    @if(!is_null($providerMetaData->specialRateName))
+                        <button type="button" id="rateSwitchToggle" class="btn btn-outline-secondary @handheld{{"btn-sm"}}@endhandheld">
+                            Switch to @if( key_exists('specialRate', request()->all()) ){{"In-Kind Rates"}}@else{{ $providerMetaData->specialRateName }}@endif
+                        </button>
+                    @endif
+                </div>
 
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -114,12 +117,9 @@
                         </ul>
                     </div>
                 @else
-                    @if(!is_null($providerMetaData->specialRateName))
-                        <button type="button" class="btn btn-outline-secondary rateSwitchToggle">
-                            Switch to @if( key_exists('specialRate', request()->all()) ){{"In-Kind Rates"}}@else{{ $providerMetaData->specialRateName }}@endif
-                        </button>
-                    @endif
-                    <canvas id="rateChart"></canvas>
+                    <div class="chart-container" style="height:@mobile{{"22rem"}}@elsemobile{{"29rem"}}@endmobile;">
+                        <canvas id="rateChart"></canvas>
+                    </div>
                 @endif
 
                 <p class="card-text text-center mt-2">
