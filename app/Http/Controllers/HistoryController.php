@@ -37,10 +37,16 @@ class HistoryController extends Controller
         $labels = [];
         $data = [];
         $specialData = [];
-        foreach ($rates as $rate) {
+        foreach ($rates as $key => $rate) {
             array_push($labels, $rate->created_at->toJson());
             array_push($data, floatval($rate->rate) * 100);
             array_push($specialData, floatval($rate->special_rate) * 100);
+
+            if ($key === array_key_last($rates->toArray())) {
+                array_push($labels, date(DATE_ISO8601));
+                array_push($data, floatval($rate->rate) * 100);
+                array_push($specialData, floatval($rate->special_rate) * 100);
+            }
         }
 
         if (key_exists('specialRate', $request->all())) {
