@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\RatesController;
 use App\Http\Controllers\SocialAuthController;
@@ -67,4 +68,9 @@ Route::get('/delete-user', [UserController::class, 'deleteUser'])
 Route::get('/subscriptions', [UserController::class, 'showSubscriptions'])
      ->middleware('auth')
      ->name('subscriptions');
+
+Route::get('/admin', [AdminController::class, 'showAdminDashboardView'])
+     ->middleware('auth')
+     ->middleware('isAdmin')
+     ->name('admin-dashboard');
 
