@@ -69,7 +69,7 @@ Route::get('/subscriptions', [UserController::class, 'showSubscriptions'])
      ->middleware('auth')
      ->name('subscriptions');
 
-Route::get('/admin', [AdminController::class, 'showAdminDashboardView'])
+Route::get('/admin', [AdminController::class, 'showUserStatView'])
      ->middleware('auth')
      ->middleware('isAdmin')
      ->name('admin-dashboard');
