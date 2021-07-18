@@ -22,6 +22,13 @@
             z-index: 2;
             position: relative;
         }
+
+        .panel-control-button {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.8rem;
+        }
     </style>
 @endsection
 
@@ -107,6 +114,18 @@
                 new Chart(alertsByCoinChart, getBarGraphConfig(alertData));
                 new Chart(favoritesByCoinChart, getBarGraphConfig(favoritesData));
 
+                $(".panel-control-button").click(function() {
+                    if ($(this).find("i").hasClass("bi-dash-square")) {
+                        $("#" + $(this).attr("data-chart")).parent().hide();
+                        $(this).find("i").removeClass("bi-dash-square");
+                        $(this).find("i").addClass("bi-plus-square");
+                    } else {
+                        $("#" + $(this).attr("data-chart")).parent().show();
+                        $(this).find("i").removeClass("bi-plus-square");
+                        $(this).find("i").addClass("bi-dash-square");
+                    }
+                })
+
             });
 
         </script>
@@ -147,7 +166,9 @@
         <div class="card mx-auto mt-3">
             <div class="card-body">
                 <h4 class="card-title">Alerts by Coin</h4>
-
+                <button type="button" class="btn btn-outline-secondary btn-sm panel-control-button" style="border: 0px;" data-chart="alertsByCoinChart">
+                    <i class="bi bi-dash-square"></i>
+                </button>
                 <div class="chart-container" style="height:auto">
                     <canvas id="alertsByCoinChart"></canvas>
                 </div>
@@ -158,7 +179,9 @@
         <div class="card mx-auto mt-3">
             <div class="card-body">
                 <h4 class="card-title">Favorites by Coin</h4>
-
+                <button type="button" class="btn btn-outline-secondary btn-sm panel-control-button" style="border: 0px;" data-chart="favoritesByCoinChart">
+                    <i class="bi bi-dash-square"></i>
+                </button>
                 <div class="chart-container" style="height:auto">
                     <canvas id="favoritesByCoinChart"></canvas>
                 </div>
