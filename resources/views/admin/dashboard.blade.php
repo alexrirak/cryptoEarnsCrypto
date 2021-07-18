@@ -84,7 +84,10 @@
                 var barGraphConfig = getBarGraphConfig(dataArray);
                 barGraphConfig['options']['scales'] = {
                                 x: {
-                                    type: 'time'
+                                    type: 'time',
+                                    time: {
+                                        unit: 'day'
+                                    }
                                 }
                 }
                 return barGraphConfig;
