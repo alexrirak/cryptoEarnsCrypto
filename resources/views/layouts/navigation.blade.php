@@ -33,7 +33,7 @@
                     @if ( Auth::user()->isAdmin )
                         <li><hr class="dropdown-divider"></li>
                         <li class="nav-item d-md-none">
-                            <a class="nav-link" aria-current="page" href="{{ route('admin-dashboard') }}">Admin Dashboard</a>
+                            <a class="nav-link" aria-current="page" href="{{ route('admin-dashboard') }}">User Stats Dashboard</a>
                         </li>
                     @endif
                     <li class="nav-item d-md-none">
@@ -60,7 +60,7 @@
                             <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
                             @if ( Auth::user()->isAdmin )
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{ route('admin-dashboard') }}">Admin Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin-dashboard') }}">User Stats Dashboard</a></li>
                             @endif
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}">Sign out</a></li>

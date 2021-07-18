@@ -1,6 +1,6 @@
 @extends('template')
 
-@section('title', 'Admin Dashboard')
+@section('title', 'User Stats Dashboard')
 
 @section('styles')
 
@@ -79,9 +79,25 @@
                 }
             }
 
+            function getTimeBarGraphConfig(dataArray) {
+
+                var barGraphConfig = getBarGraphConfig(dataArray);
+                barGraphConfig['options']['scales'] = {
+                                x: {
+                                    type: 'time',
+                                    time: {
+                                        unit: 'day'
+                                    }
+                                }
+                }
+                return barGraphConfig;
+
+            }
+
             $(document).ready(function () {
                 var alertsByCoinChart = document.getElementById('alertsByCoinChart');
                 var favoritesByCoinChart = document.getElementById('favoritesByCoinChart');
+                var usersByDateChart = document.getElementById('usersByDateChart');
 
                 const alertData = {
                     labels: {!! collect(array_keys(collect($alertsCountByCoin)->first()))->toJson() !!},
@@ -111,8 +127,21 @@
                     ]
                 };
 
+                const usersData = {
+                    labels: {!! collect(array_keys($usersCountByDate))->toJson() !!},
+                    datasets: [
+                        {
+                            label: 'User Registrations',
+                            data: {{ collect(array_values($usersCountByDate))->toJson() }},
+                            backgroundColor: namedColor(0),
+                            borderColor: namedColor(0),
+                        },
+                    ]
+                };
+
                 new Chart(alertsByCoinChart, getBarGraphConfig(alertData));
                 new Chart(favoritesByCoinChart, getBarGraphConfig(favoritesData));
+                new Chart(usersByDateChart, getTimeBarGraphConfig(usersData));
 
                 $(".panel-control-button").click(function() {
                     if ($(this).find("i").hasClass("bi-dash-square")) {
@@ -137,7 +166,7 @@
         <h1 class="text-center">User Stats Dashboard</h1>
 
         <div class="d-flex justify-content-evenly flex-column flex-sm-row flex-wrap my-3">
-            <div class="card text-white bg-success mx-3 my-1 flex-fill">
+            <div class="card text-white bg-secondary mx-3 my-1 flex-fill">
                 <div class="card-body stat-card">
                     <h3 class="stat-card-text">{{ $usersCount }}</h3>
                     <p class="stat-card-text">Registered Users</p>
@@ -145,7 +174,7 @@
                 </div>
             </div>
 
-            <div class="card text-white bg-success mx-3 my-1 flex-fill">
+            <div class="card text-white bg-secondary mx-3 my-1 flex-fill">
                 <div class="card-body stat-card">
                     <h3 class="stat-card-text">{{ $alertsCount }}</h3>
                     <p class="stat-card-text">Alerts Created</p>
@@ -153,7 +182,7 @@
                 </div>
             </div>
 
-            <div class="card text-white bg-success mx-3 my-1 flex-fill">
+            <div class="card text-white bg-secondary mx-3 my-1 flex-fill">
                 <div class="card-body stat-card">
                     <h3 class="stat-card-text">{{ $favoritesCount }}</h3>
                     <p class="stat-card-text">Favorites Saved</p>
@@ -184,6 +213,19 @@
                 </button>
                 <div class="chart-container" style="height:auto">
                     <canvas id="favoritesByCoinChart"></canvas>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card mx-auto mt-3">
+            <div class="card-body">
+                <h4 class="card-title">Users by Registration Date</h4>
+                <button type="button" class="btn btn-outline-secondary btn-sm panel-control-button" style="border: 0px;" data-chart="usersByDateChart">
+                    <i class="bi bi-dash-square"></i>
+                </button>
+                <div class="chart-container" style="height:auto">
+                    <canvas id="usersByDateChart"></canvas>
                 </div>
 
             </div>
