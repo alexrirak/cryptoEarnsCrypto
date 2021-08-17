@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EmailAuthController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\RatesController;
 use App\Http\Controllers\SocialAuthController;
@@ -24,7 +25,7 @@ Route::redirect('/', '/rates/celsius')->name('home');
 Route::redirect('/home', '/');
 
 Route::get('/rates/{provider}', [RatesController::class, 'showRatesView'])
-    ->name('rates');
+     ->name('rates');
 
 Route::get('/history/{provider}/{coin}', [HistoryController::class, 'showHistoryByProviderAndCoinView'])
      ->name('history-by-provider-and-coin');
@@ -49,10 +50,20 @@ Route::get('/unsubscribe/{emailId}', [UnsubscribeController::class, 'showUnsubsc
 Route::get('login/{provider}', [SocialAuthController::class, 'redirect'])
      ->name('login-provider');
 
-Route::get('login/{provider}/callback', [SocialAuthController::class, 'callback']);
+Route::get('login/{provider}/callback', [SocialAuthController::class, 'callback'])
+     ->middleware('guest');
 
 Route::get('login', [SocialAuthController::class, 'landing'])
+     ->middleware('guest')
      ->name('login');
+
+Route::get('email-login', [EmailAuthController::class, 'landing'])
+     ->middleware('guest')
+     ->name('email-login-landing');
+
+Route::post('email-login', [EmailAuthController::class, 'login'])
+     ->middleware('guest')
+     ->name('email-login');
 
 Route::get('logout', [SocialAuthController::class, 'logout'])
      ->name('logout');

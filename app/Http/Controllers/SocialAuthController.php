@@ -13,7 +13,7 @@ class SocialAuthController extends Controller
 {
     public function landing()
     {
-        return view('login');
+        return view('auth.login');
     }
 
     public function redirect($provider)

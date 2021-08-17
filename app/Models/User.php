@@ -82,4 +82,9 @@ class User extends Authenticatable
             $initials .= $words[count($words)-1][0];
         return Str::upper($initials);
     }
+
+    public function sendLoginLink()
+    {
+        // TODO
+    }
 }
