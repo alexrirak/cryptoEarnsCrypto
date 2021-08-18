@@ -65,6 +65,10 @@ Route::post('email-login', [EmailAuthController::class, 'login'])
      ->middleware('guest')
      ->name('email-login');
 
+Route::get('verify-login/{token}', [EmailAuthController::class, 'verifyLogin'])
+     ->middleware('guest')
+     ->name('verify-login');
+
 Route::get('logout', [SocialAuthController::class, 'logout'])
      ->name('logout');
 
