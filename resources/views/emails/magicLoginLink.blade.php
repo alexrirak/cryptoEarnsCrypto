@@ -71,7 +71,7 @@
                         <table border="0" cellpadding="0" cellspacing="0" width="100%"
                                style="border-collapse: collapse;">
                             <tr>
-                                <td style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 20px 0 30px 0;">
+                                <td style="color: #153643!important; font-family: Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 20px 0 30px 0;">
                                     <p style="margin: 0px 0px 20px;">Please click the link below to log in to your {{ config('app.name') }} account.</p>
                                     <p style="margin: 0px 0px 20px;">This link will expire in 15 minutes and can only be used once.</p>
                                     <a href="{{$url}}" class="loginButton">
