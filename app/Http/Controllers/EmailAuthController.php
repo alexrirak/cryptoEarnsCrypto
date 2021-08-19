@@ -6,6 +6,7 @@ use App\Models\LoginToken;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\MessageBag;
 
 class EmailAuthController extends Controller
 {
@@ -45,7 +46,10 @@ class EmailAuthController extends Controller
     public function verifyLogin(Request $request, $token)
     {
         $token = LoginToken::whereToken(hash('sha256', $token))->firstOrFail();
-        abort_unless($request->hasValidSignature() && $token->isValid(), 401);
+        if (!$request->hasValidSignature() || !$token->isValid()) {
+            session()->flash('errors', new MessageBag(["invalidLink"=>"The link the brought you here has expired. You can use the form below to request a new link."]));
+            return redirect()->route('email-login-landing');
+        }
 
         $token->consume();
         Auth::login($token->user);
