@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Mail\MagicLoginLink;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class User extends Authenticatable
@@ -70,6 +72,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Association with LoginToken
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function loginTokens()
+    {
+        return $this->hasMany(LoginToken::class);
+    }
+
+    /**
      * Returns two initials based on the user's name
      * @return string
      */
@@ -81,5 +92,16 @@ class User extends Authenticatable
         if(count($words) > 1)
             $initials .= $words[count($words)-1][0];
         return Str::upper($initials);
+    }
+
+    public function sendLoginLink()
+    {
+        $plaintext = Str::random(32);
+        $token = $this->loginTokens()->create([
+                                                  'token' => hash('sha256', $plaintext),
+                                                  'expires_at' => now()->addMinutes(15),
+                                              ]);
+
+        Mail::to($this->email)->queue(new MagicLoginLink($plaintext, $token->expires_at));
     }
 }
