@@ -32,6 +32,8 @@
                         <a href="{{ route('login-provider', ['provider'=>'facebook']) }}" class="btn" style="font-size: x-large;"><i class="bi bi-facebook"></i></a>
                         <a href="{{ route('login-provider', ['provider'=>'facebook']) }}" class="btn" style="width: 193px;">@yield('type') With Facebook</a>
                     </div>
+
+                    @yield('buttons')
                 </div>
             </div>
         </div>

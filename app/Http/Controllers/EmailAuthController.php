@@ -47,7 +47,7 @@ class EmailAuthController extends Controller
     {
         $token = LoginToken::whereToken(hash('sha256', $token))->firstOrFail();
         if (!$request->hasValidSignature() || !$token->isValid()) {
-            session()->flash('errors', new MessageBag(["invalidLink"=>"The link the brought you here has expired. You can use the form below to request a new link."]));
+            session()->flash('errors', new MessageBag(["invalidLink"=>"The link that brought you here has expired. You can use the form below to request a new link."]));
             return redirect()->route('email-login-landing');
         }
 
