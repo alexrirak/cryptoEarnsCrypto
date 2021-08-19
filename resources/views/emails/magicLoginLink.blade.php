@@ -10,33 +10,6 @@
             color: inherit !important;
         }
 
-        .coinLogo {
-            width: 2em;
-            height: 2em;
-            margin: auto;
-        }
-
-        .bg-danger {
-            background-color: #dc3545 !important;
-        }
-
-        .bg-success {
-            background-color: #198754 !important;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: .35em .65em;
-            font-size: .75em;
-            font-weight: 700;
-            line-height: 1;
-            color: #fff;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: baseline;
-            border-radius: .25rem;
-        }
-
         #disclaimer a {
             color: #ffffff;
         }
@@ -49,16 +22,21 @@
             text-align: center;
         }
 
-        #rateTable table, #rateTable th, #rateTable td {
-            border: 1px black solid;
-        }
-
-        #rateTable th, #rateTable tr:nth-child(even) {
-            background-color: #eee;
-        }
-
         table {
             border-collapse: collapse;
+        }
+
+        .loginButton {
+            background-color: #6c757d;
+            font-size: 18px;
+            font-family: Helvetica, Arial, sans-serif;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 14px 20px;
+            color: #ffffff;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0px;
         }
     </style>
 
@@ -93,17 +71,33 @@
                         <table border="0" cellpadding="0" cellspacing="0" width="100%"
                                style="border-collapse: collapse;">
                             <tr>
-                                <td style="color: #153643; font-family: Arial, sans-serif;">
-                                    <h1 style="font-size: 24px; margin: 0;">{{config('app.name')}} Login Verification!</h1>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td style="color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 24px; padding: 20px 0 30px 0;">
-                                    <p style="margin: 0px 0px 20px;">Hello, to finish logging in please click the link below</p>
-                                    <a href="{{$url}}" >
-                                        <button>Click to login</button>
+                                    <p style="margin: 0px 0px 20px;">Please click the link below to log in to your {{ config('app.name') }} account.</p>
+                                    <p style="margin: 0px 0px 20px;">This link will expire in 15 minutes and can only be used once.</p>
+                                    <a href="{{$url}}" class="loginButton">
+                                        <span>Click to login</span>
                                     </a>
 
+                                    <p style="margin: 20px 0px 0px;">If the button above doesn’t work, paste this link into your web browser:</p>
+                                    <p style="margin: 0px 0px 20px;font-size: 0.8rem;max-width: 42rem;"> {{$url}}</p>
+
+                                    <p style="margin: 40px 0px 10px;color:#b3b3b1;">If you did not make this request, you can safely ignore this email.</p>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor="#f7a449" style="padding: 30px 30px;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;" id="disclaimer">
+                            <tr>
+                                <td style="padding-bottom: 10px;">
+                                    <a href="{{ route('disclaimer') }}" >[Disclaimer]</a>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: middle;">
+                                        <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    </svg>
+                                    <a href="{{ route('support-us') }}" >[Support Us]</a>
                                 </td>
                             </tr>
                         </table>
