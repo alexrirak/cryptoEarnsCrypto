@@ -33,7 +33,7 @@
             font-weight: bold;
             text-decoration: none;
             padding: 14px 20px;
-            color: #ffffff;
+            color: #ffffff!important;
             border-radius: 5px;
             display: inline-block;
             margin: 20px 0px;
