@@ -53,8 +53,15 @@ Route::get('login/{provider}', [SocialAuthController::class, 'redirect'])
 Route::get('login/{provider}/callback', [SocialAuthController::class, 'callback'])
      ->middleware('guest');
 
-Route::get('login', [SocialAuthController::class, 'landing'])
+Route::get('signin', [SocialAuthController::class, 'signin'])
      ->middleware('guest')
+     ->name('signin');
+
+Route::get('signup', [SocialAuthController::class, 'signup'])
+     ->middleware('guest')
+     ->name('signup');
+
+Route::redirect('/login', '/signin')
      ->name('login');
 
 Route::get('email-login', [EmailAuthController::class, 'landing'])

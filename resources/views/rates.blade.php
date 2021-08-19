@@ -50,8 +50,8 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Back</button>
                     <div>
-                        <a class="btn btn-outline-secondary" href="{{ route('login') }}" role="button">Login</a>
-                        <a class="btn btn-outline-secondary" href="{{ route('login') }}" role="button">Sign-up</a>
+                        <a class="btn btn-outline-secondary" href="{{ route('signin') }}" role="button">Login</a>
+                        <a class="btn btn-outline-secondary" href="{{ route('signup') }}" role="button">Sign-up</a>
                     </div>
                 </div>
             </div>
@@ -68,8 +68,8 @@
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Back</button>
                     <div>
-                        <a class="btn btn-outline-secondary" href="{{ route('login') }}" role="button">Login</a>
-                        <a class="btn btn-outline-secondary" href="{{ route('login') }}" role="button">Sign-up</a>
+                        <a class="btn btn-outline-secondary" href="{{ route('signin') }}" role="button">Login</a>
+                        <a class="btn btn-outline-secondary" href="{{ route('signup') }}" role="button">Sign-up</a>
                     </div>
                 </div>
             </div>
