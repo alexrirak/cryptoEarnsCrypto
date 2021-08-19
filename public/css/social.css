@@ -2,6 +2,7 @@
     background-color: #dd4b39;
     border-color: rgba(0,0,0,0.2);
     color: #fff;
+    text-align: start;
 }
 
 .google-btn a:hover {
@@ -14,10 +15,24 @@
     background-color: #3b5998;
     border-color: rgba(0,0,0,0.2);
     color: #fff;
+    text-align: start;
 }
 
 .facebook-btn a:hover {
     background-color:#2d4373;
+    border-color: rgba(0,0,0,0.2);
+    color: #fff;
+}
+
+.email-btn a {
+    background-color: #6c757d;
+    border-color: rgba(0,0,0,0.2);
+    color: #fff;
+    text-align: start;
+}
+
+.email-btn a:hover {
+    background-color:#565e64;
     border-color: rgba(0,0,0,0.2);
     color: #fff;
 }

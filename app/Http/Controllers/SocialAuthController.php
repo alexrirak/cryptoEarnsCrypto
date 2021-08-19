@@ -11,9 +11,14 @@ use App\Models\User;
 
 class SocialAuthController extends Controller
 {
-    public function landing()
+    public function signin()
     {
-        return view('login');
+        return view('auth.signin');
+    }
+
+    public function signup()
+    {
+        return view('auth.signup');
     }
 
     public function redirect($provider)
