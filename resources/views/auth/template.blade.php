@@ -35,6 +35,8 @@
 
                     @yield('buttons')
                 </div>
+
+                    @yield('jump-link')
             </div>
         </div>
 
