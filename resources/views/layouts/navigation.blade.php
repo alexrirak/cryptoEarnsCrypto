@@ -41,8 +41,8 @@
                     </li>
                 @else
                     <li class="nav-item d-md-none">
-                        <a class="nav-link" aria-current="page" href="{{ route('signin') }}">Sign-In</a>
-                        <a class="nav-link" aria-current="page" href="{{ route('signup') }}">Sign-Up</a>
+                        <a class="nav-link" aria-current="page" href="{{ route('signin') }}">Sign In</a>
+                        <a class="nav-link" aria-current="page" href="{{ route('signup') }}">Register</a>
                     </li>
                 @endauth
             </ul>
@@ -68,8 +68,8 @@
                         </ul>
                     </div>
                 @else
-                    <a class="btn btn-outline-light me-2" href="{{ route('signin') }}" role="button">Sign-In</a>
-                    <a class="btn btn-warning" href="{{ route('signup') }}" role="button">Sign-Up</a>
+                    <a class="btn btn-outline-light me-2" href="{{ route('signin') }}" role="button">Sign In</a>
+                    <a class="btn btn-warning" href="{{ route('signup') }}" role="button">Register</a>
                 @endauth
             </div>
         </div>
