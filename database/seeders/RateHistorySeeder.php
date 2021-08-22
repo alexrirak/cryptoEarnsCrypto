@@ -97,7 +97,7 @@ class RateHistorySeeder extends Seeder
                                        'rate' => 0.0325,
                                        'special_rate' => 0.0441,
                                        'source' => config('sources.celsius_source_id'),
-                                       'created_at' => '2020-04-08 12:00:00'
+                                       'created_at' => '2020-04-01 12:00:00'
                                    ]);
     }
 
