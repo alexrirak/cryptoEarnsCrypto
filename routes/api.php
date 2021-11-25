@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CelsiusTrackerMigrationController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\RatesController;
@@ -57,3 +58,9 @@ Route::delete('alert/{provider}',[AlertController::class, 'deleteAll'])
 
 Route::delete('/unsubscribe/{emailId}', [UnsubscribeController::class, 'processUnsubscribe'])
      ->name('unsubscribe-process');
+
+Route::get('/celsiusTracker/user/{emailId}', [CelsiusTrackerMigrationController::class, 'userCheck'])
+     ->name('celsiusTracker-userLookup');
+
+Route::put('/celsiusTracker/user/{emailId}', [CelsiusTrackerMigrationController::class, 'migrateUser'])
+     ->name('celsiusTracker-migrateUser');

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CelsiusTrackerMigrationController;
 use App\Http\Controllers\EmailAuthController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\RatesController;
@@ -95,4 +96,13 @@ Route::get('/admin', [AdminController::class, 'showUserStatView'])
      ->middleware('auth')
      ->middleware('isAdmin')
      ->name('admin-dashboard');
+
+// Celsius tracker Migration
+Route::get('celsiusTracker', [CelsiusTrackerMigrationController::class, 'landing'])
+     ->middleware('guest')
+     ->name('celsiusTrackerMigration-landing');
+
+Route::get('celsiusTracker/{emailId}', [CelsiusTrackerMigrationController::class, 'migrateView'])
+     ->middleware('guest')
+     ->name('celsiusTrackerMigration-migrate');
 
