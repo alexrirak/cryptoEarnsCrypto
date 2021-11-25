@@ -6,6 +6,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#migrateAccount").click(function () {
+                $("#dots").show();
                 $("#lookupFailure").hide();
                 $.ajax({
                     url: '{{ route('celsiusTracker-migrateUser', [$emailId]) }}',
@@ -19,6 +20,7 @@
                 }).fail(function () {
                     $("#lookupFailure").show();
                 });
+                $("#dots").hide();
             });
         });
     </script>
@@ -31,6 +33,108 @@
             height: 2em;
             margin: auto;
         }
+
+        /**===== dots =====*/
+        #dots {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 35px;
+            width: 170px;
+            margin: -35px 0 0 -85px;
+            z-index: 1;
+        }
+
+        #dots span {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 50%;
+            -webkit-animation: dots 1s infinite ease-in-out;
+            animation: dots 1s infinite ease-in-out;
+        }
+
+        #dots span:nth-child(1) {
+            left: 0px;
+            -webkit-animation-delay: 0.2s;
+            animation-delay: 0.2s;
+        }
+
+        #dots span:nth-child(2) {
+            left: 45px;
+            -webkit-animation-delay: 0.3s;
+            animation-delay: 0.3s;
+        }
+
+        #dots span:nth-child(3) {
+            left: 90px;
+            -webkit-animation-delay: 0.4s;
+            animation-delay: 0.4s;
+        }
+
+        #dots span:nth-child(4) {
+            left: 135px;
+            -webkit-animation-delay: 0.5s;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes dots {
+            0% {
+                -webkit-transform: translateY(0px);
+                transform: translateY(0px);
+                -webkit-transform: translateY(0px);
+                transform: translateY(0px);
+                background: #d62d20;
+            }
+            25% {
+                -webkit-transform: translateY(10px);
+                transform: translateY(10px);
+                -webkit-transform: translateY(10px);
+                transform: translateY(10px);
+                background: #ffa700;
+            }
+            50% {
+                -webkit-transform: translateY(10px);
+                transform: translateY(10px);
+                -webkit-transform: translateY(10px);
+                transform: translateY(10px);
+                background: #008744;
+            }
+            100% {
+                -webkit-transform: translateY(0px);
+                transform: translateY(0px);
+                -webkit-transform: translateY(0px);
+                transform: translateY(0px);
+                background: #0057e7;
+            }
+        }
+
+        @-webkit-keyframes dots {
+            0% {
+                -webkit-transform: translateY(0px);
+                transform: translateY(0px);
+                background: #d62d20;
+            }
+            25% {
+                -webkit-transform: translateY(10px);
+                transform: translateY(10px);
+                background: #ffa700;
+            }
+            50% {
+                -webkit-transform: translateY(10px);
+                transform: translateY(10px);
+                background: #008744;
+            }
+            100% {
+                -webkit-transform: translateY(0px);
+                transform: translateY(0px);
+                background: #0057e7;
+            }
+        }
+
+        /** END of dots */
     </style
 @endsection
 
@@ -52,6 +156,13 @@
                     <h4 class="alert-heading"><i class="bi bi-x-square"></i> Success! Account Migrated!</h4>
                     <p>Your account has been migrated. You can now use the login page to access your account.</p>
                     <p>Redirecting you to the home page...</p>
+                </div>
+
+                <div id="dots" style="display:none;">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
 
                 <p class="card-text">
