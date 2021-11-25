@@ -19,8 +19,9 @@
                     }
                 }).fail(function () {
                     $("#lookupFailure").show();
+                }).always(function() {
+                    $("#dots").hide();
                 });
-                $("#dots").hide();
             });
         });
     </script>
