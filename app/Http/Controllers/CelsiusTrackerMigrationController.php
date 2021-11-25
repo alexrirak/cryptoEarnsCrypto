@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CTAccountMigrgationSuccess;
 use App\Models\CoinMetadata;
 use App\Models\ProviderMetadata;
 use App\Models\User;
 use App\Models\UserAlert;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class CelsiusTrackerMigrationController extends Controller
@@ -33,15 +37,17 @@ class CelsiusTrackerMigrationController extends Controller
     private function subscriptionList(string $emailId)
     {
 
-        return DB::connection('coinTrackerMySQL')
-                 ->table('coinAlerts')
-                 ->select('coin')
-                 ->where('email', '=', $emailId)
-                 ->where('active', '=', 1)
-                 ->get()
-                 ->map(function ($i) {
-                     return $i->coin;
-                 });
+        $oldSubscriptions = DB::connection('coinTrackerMySQL')
+                              ->table('coinAlerts')
+                              ->select('coin')
+                              ->where('email', '=', $emailId)
+                              ->where('active', '=', 1)
+                              ->get()
+                              ->map(function ($i) {
+                                  return $i->coin;
+                              });
+
+        return CoinMetadata::whereIn('symbol', $oldSubscriptions)->get();
 
     }
 
@@ -55,6 +61,7 @@ class CelsiusTrackerMigrationController extends Controller
         return view('celsiusTracker.migrate', ['subscriptions' => $this->subscriptionList($emailId), 'emailId' => $emailId]);
     }
 
+    // pulls data from celsius tracker and migrates to crypto earns crypto
     public function migrateUser(string $emailId)
     {
 
@@ -65,6 +72,8 @@ class CelsiusTrackerMigrationController extends Controller
             abort(400, "User already exists");
         }
 
+        Log::info(sprintf("[CT Migration] Migrating Data for: %s", $emailId));
+
         //create a new user
         $user = User::create([
                                  'name' => "User",
@@ -74,13 +83,10 @@ class CelsiusTrackerMigrationController extends Controller
                              ]);
 
         //fetch the user's old subscriptions
-        $oldSubscriptions = $this->subscriptionList($emailId);
+        $coins = $this->subscriptionList($emailId);
 
         // provider is always celsius
         $provider = ProviderMetadata::where("name", "=", "Celsius")->first();
-
-        //convert old subscriptions into coin metadatas
-        $coins = CoinMetadata::whereIn('symbol', $oldSubscriptions)->get();
 
         // prepare data for alerts to do a bulk insert
         $alerts = [];
@@ -98,6 +104,22 @@ class CelsiusTrackerMigrationController extends Controller
         if (count($alerts) > 0) {
             UserAlert::insert($alerts);
         }
+
+        Log::info(sprintf("[CT Migration] Subscriptions migrated for: %s", $emailId));
+
+        //delete old subscriptions
+        $response = Http::delete('https://' . env('CT_API_HOST') . "/unsubscribe/" . bin2hex($emailId));
+
+        if ($response->successful()) {
+            Log::info(sprintf("[CT Migration] Deleted old subscriptions for: %s", $emailId));
+        } else {
+            Log::warning(sprintf("[CT Migration] Failed to delete old subscriptions for: %s", $emailId));
+        }
+
+        Mail::to($user->email)
+            ->send(new CTAccountMigrgationSuccess());
+
+        Log::info(sprintf("[CT Migration] Sent Email to: %s", $emailId));
 
         return response($coins, 201);
 

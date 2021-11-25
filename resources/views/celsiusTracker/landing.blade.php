@@ -21,6 +21,12 @@
                     } else {
                         window.location.href = "{{ route('celsiusTrackerMigration-migrate', [$emailId='']) }}/" + email;
                     }
+                }).fail(function (jqXHR) {
+                    if(JSON.parse(jqXHR.responseText).message == "User already exists") {
+                        $("#accountExistsFailure").show();
+                    } else {
+                        $("#lookupFailure").show();
+                    }
                 });
             });
 
@@ -44,6 +50,12 @@
                     <div class="alert alert-danger" role="alert" id="lookupFailure" style="display: none;">
                         <h4 class="alert-heading"><i class="bi bi-x-square"></i> Oops! Something went wrong!</h4>
                         <p>We could not find your account. If you have already migrated your account you will not be able to migrate it again.</p>
+                        <p>Please confirm you entered your email correctly or try again later. If this problem persist please contact us.</p>
+                    </div>
+
+                    <div class="alert alert-danger" role="alert" id="accountExistsFailure" style="display: none;">
+                        <h4 class="alert-heading"><i class="bi bi-x-square"></i> Oops! Something went wrong!</h4>
+                        <p>We can not migrate your Celsius Tracker account since it looks like you already have a CryptoEarnsCrypto account.</p>
                         <p>Please confirm you entered your email correctly or try again later. If this problem persist please contact us.</p>
                     </div>
 
