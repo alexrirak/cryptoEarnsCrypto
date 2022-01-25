@@ -93,7 +93,7 @@ class AlertController extends Controller
         $missingCoins = Rate::select('coin_id')
                             ->distinct()
                             ->where('source', $provider[0]->name)
-                            ->whereRaw("coin_id not in (select distinct(coin_id) from user_alerts where user_id = '?')", [$request->user()->id])
+                            ->whereRaw("coin_id not in (select distinct(coin_id) from user_alerts where user_id = ?)", [$request->user()->id])
                             ->get();
 
         $data = [];
