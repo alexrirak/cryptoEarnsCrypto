@@ -85,14 +85,10 @@ class FavoriteController extends Controller
             abort(400);
         }
 
-        $missingCoins = Rate::leftJoin('provider_metadata as pm', 'pm.name', '=', 'rates.source')
-                            ->leftJoin('user_favorites as uf', function ($join) use ($request) {
-                                $join->on('uf.coin_id', '=', 'rates.coin_id')
-                                     ->where('uf.user_id', '=', $request->user()->id);
-                            })
-                            ->select('rates.coin_id')
-                            ->where('pm.id', '=', $provider[0]->id)
-                            ->whereNull('uf.user_id')
+        $missingCoins = Rate::select('coin_id')
+                            ->distinct()
+                            ->where('source', $provider[0]->name)
+                            ->whereRaw("coin_id not in (select distinct(coin_id) from user_favorites where user_id = '?')", [$request->user()->id])
                             ->get();
 
         $data = [];
