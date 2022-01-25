@@ -70,7 +70,7 @@ class AlertController extends Controller
 
         if (count($existing) != 1) {
             if (count($existing) > 1) {
-                Log::error("Duplicate subscriptions found for " + $request->user(),['coin_id'=>$coin[0]->id, 'source_id'=> $provider[0]->id]);
+                Log::error("Duplicate subscriptions found for " + $request->user(), ['coin_id' => $coin[0]->id, 'source_id' => $provider[0]->id]);
             }
             abort(400);
         }
@@ -90,14 +90,10 @@ class AlertController extends Controller
             abort(400);
         }
 
-        $missingCoins = Rate::leftJoin('provider_metadata as pm', 'pm.name', '=', 'rates.source')
-                            ->leftJoin('user_alerts as ua', function ($join) use ($request) {
-                                $join->on('ua.coin_id', '=', 'rates.coin_id')
-                                     ->where('ua.user_id', '=', $request->user()->id);
-                            })
-                            ->select('rates.coin_id')
-                            ->where('pm.id', '=', $provider[0]->id)
-                            ->whereNull('ua.user_id')
+        $missingCoins = Rate::select('coin_id')
+                            ->distinct()
+                            ->where('source', $provider[0]->name)
+                            ->whereRaw("coin_id not in (select distinct(coin_id) from user_alerts where user_id = ?)", [$request->user()->id])
                             ->get();
 
         $data = [];
