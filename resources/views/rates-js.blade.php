@@ -59,12 +59,12 @@
                                     + ((rateChange/parseFloat(json[i].prior_rate)) * 100).toFixed(2) + " %"
                                     + "</span></span>"]
                                 : ["<span class='badge bg-secondary'>Unknown<sup>*</sup></span>"],
-                            json[i].latest_date ? new Date(json[i].latest_date).toDateString() + (Boolean(json[i].chartAvailable) ?
+                            json[i].latest_date ? [json[i].latest_date,new Date(json[i].latest_date).toDateString() + (Boolean(json[i].chartAvailable) ?
                                 '<a href="/history/celsius/' + json[i].symbol + '">' +
                                 '<button type="button" data-type="history" class="btn btn-outline-secondary btn-sm ms-1" style="margin-top: -0.3rem;">' +
                                 '<i class="bi bi-graph-up"></i>' +
-                                '</button></a>' : "")
-                                : "<span class='badge bg-secondary'>Unknown<sup>*</sup></span>"
+                                '</button></a>' : "")]
+                                : ["<span class='badge bg-secondary'>Unknown<sup>*</sup></span>"]
                         ]);
                     }
                     return return_data;
@@ -116,16 +116,33 @@
                 },
                 {  // change amount, decimal for sort, converted to amount for display or unknown if none
                     render: function (data, type) {
-                        return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
+                        if ( type === 'display' || type === 'filter' ) {
+                            return data[1] ? data[1] : data[0];
+                        }
+
+                        return data[0] * 100;
                     }
                 },
                 {  // change percent, decimal for sort, converted to percent for display or unknown if none
                     render: function (data, type) {
-                        return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
+
+                        if ( type === 'display' || type === 'filter' ) {
+                            return data[1] ? data[1] : data[0];
+                        }
+
+                        return data[0] * 100;
                     }
                 },
                 {
-                    // date string or unknown fixme: make this sortable
+                    // date string or unknown
+                    render: function (data, type) {
+
+                        if ( type === 'display' || type === 'filter' ) {
+                            return data[1] ? data[1] : data[0];
+                        }
+
+                        return data[0];
+                    }
                 }
             ],
             "order": [[0, 'asc'], [1, 'asc']],
