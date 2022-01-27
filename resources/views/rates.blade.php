@@ -32,7 +32,8 @@
                     @auth <th>Alerts</th> @endauth
                     <th>Current Rate</th>
                     <th>Prior Rate</th>
-                    <th>Change</th>
+                    <th>Change Amount</th>
+                    <th>Change Percent</th>
                     <th>Change Date</th>
                 </tr>
             </thead>

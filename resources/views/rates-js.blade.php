@@ -45,9 +45,18 @@
                                 ? [rateChange,
                                     "<span class='badge " + (rateChange > 0 ? "bg-success" : "bg-danger") + "'>"
                                     + "<span data-type='specialRate' style='display: none'>"
-                                    + (specialRateChange * 100).toFixed(2) + " %"
+                                    + (specialRateChange * 100).toFixed(2)
                                     + "</span><span data-type='rate'>"
-                                    + (rateChange * 100).toFixed(2) + " %"
+                                    + (rateChange * 100).toFixed(2)
+                                    + "</span></span>"]
+                                : ["<span class='badge bg-secondary'>Unknown<sup>*</sup></span>"],
+                            json[i].prior_rate
+                                ? [rateChange,
+                                    "<span class='badge " + (rateChange > 0 ? "bg-success" : "bg-danger") + "'>"
+                                    + "<span data-type='specialRate' style='display: none'>"
+                                    + ((specialRateChange/parseFloat(json[i].prior_special_rate)) * 100).toFixed(2) + " %"
+                                    + "</span><span data-type='rate'>"
+                                    + ((rateChange/parseFloat(json[i].prior_rate)) * 100).toFixed(2) + " %"
                                     + "</span></span>"]
                                 : ["<span class='badge bg-secondary'>Unknown<sup>*</sup></span>"],
                             json[i].latest_date ? new Date(json[i].latest_date).toDateString() + (Boolean(json[i].chartAvailable) ?
@@ -105,7 +114,12 @@
                         return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
                     }
                 },
-                {  // change, decimal for sort, converted to percent for display or unknown if none
+                {  // change amount, decimal for sort, converted to amount for display or unknown if none
+                    render: function (data, type) {
+                        return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
+                    }
+                },
+                {  // change percent, decimal for sort, converted to percent for display or unknown if none
                     render: function (data, type) {
                         return type === 'sort' ? data[0] : data[1] ? data[1] : data[0];
                     }
