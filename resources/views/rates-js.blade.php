@@ -51,7 +51,7 @@
                                     + "</span></span>"]
                                 : ["<span class='badge bg-secondary'>Unknown<sup>*</sup></span>"],
                             json[i].prior_rate
-                                ? [rateChange,
+                                ? [rateChange/parseFloat(json[i].prior_rate),
                                     "<span class='badge " + (rateChange > 0 ? "bg-success" : "bg-danger") + "'>"
                                     + "<span data-type='specialRate' style='display: none'>"
                                     + ((specialRateChange/parseFloat(json[i].prior_special_rate)) * 100).toFixed(2) + " %"
