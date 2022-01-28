@@ -60,6 +60,13 @@
         table {
             border-collapse: collapse;
         }
+
+        .history_button {
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.2rem;
+            border-width: 1px;
+        }
     </style>
 
 </head>
@@ -109,8 +116,10 @@
                                             <th>Ticker</th>
                                             <th>Current Rate</th>
                                             <th>Prior Rate</th>
-                                            <th>Change</th>
+                                            <th>Change Amount</th>
+                                            <th>Change Percent</th>
                                             <th>Change Date</th>
+                                            <th>History</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -129,10 +138,24 @@
                                                     {{ sprintf("%0.2f %%", (float) $rate->prior_rate * 100)  }}
                                                 </td>
                                                 <td>
-                                                    <span class="badge @if ((float) $rate->latest_rate - (float) $rate->prior_rate  < 0) bg-danger @else bg-success @endif">{{ sprintf("%0.2f %%", ((float) $rate->latest_rate - (float) $rate->prior_rate) * 100) }}</span>
+                                                    <span class="badge @if ((float) $rate->latest_rate - (float) $rate->prior_rate  < 0) bg-danger @else bg-success @endif">{{ sprintf("%0.2f", ((float) $rate->latest_rate - (float) $rate->prior_rate) * 100) }}</span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge @if ((float) $rate->latest_rate - (float) $rate->prior_rate  < 0) bg-danger @else bg-success @endif">{{ sprintf("%0.2f %%", (((float) $rate->latest_rate - (float) $rate->prior_rate) / (float) $rate->prior_rate) * 100) }}</span>
                                                 </td>
                                                 <td>
                                                     {{ date('Y-m-d',strtotime($rate->latest_date)) }}
+                                                </td>
+                                                <td>
+                                                    @if ($rate->chartAvailable == 1)
+                                                        <a href="{{ route('history-by-provider-and-coin', ["provider"=>$provider->name, "coin"=>$rate->symbol]) }}">
+                                                            <button type="button" class="history_button">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/>
+                                                                </svg>
+                                                            </button>
+                                                        </a>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
