@@ -18,6 +18,9 @@
 
             gtag('config', 'G-RTD1DPSRHB');
         </script>
+        
+        <!-- BeamPipe -->
+        <script async defer src="https://beampipe.io/js/tracker.js" data-beampipe-domain="cryptoearnscrypto.com"></script>
 
     </head>
 
