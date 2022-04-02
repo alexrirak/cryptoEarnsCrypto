@@ -9,18 +9,11 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         @yield('styles')
 
-        <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-RTD1DPSRHB"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-RTD1DPSRHB');
-        </script>
-        
         <!-- BeamPipe -->
         <script async defer src="https://beampipe.io/js/tracker.js" data-beampipe-domain="cryptoearnscrypto.com"></script>
+
+        <!-- MicroAnalytics -->
+        <script data-host="https://microanalytics.io" data-dnt="false" src="https://microanalytics.io/js/script.js" id="ZwSg9rf6GA" async defer></script>
 
     </head>
 
