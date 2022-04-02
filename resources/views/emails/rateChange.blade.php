@@ -141,7 +141,9 @@
                                                     <span class="badge @if ((float) $rate->latest_rate - (float) $rate->prior_rate  < 0) bg-danger @else bg-success @endif">{{ sprintf("%0.2f", ((float) $rate->latest_rate - (float) $rate->prior_rate) * 100) }}</span>
                                                 </td>
                                                 <td>
-                                                    <span class="badge @if ((float) $rate->latest_rate - (float) $rate->prior_rate  < 0) bg-danger @else bg-success @endif">{{ sprintf("%0.2f %%", (((float) $rate->latest_rate - (float) $rate->prior_rate) / (float) $rate->prior_rate) * 100) }}</span>
+                                                    @if ($rate->prior_rate  > 0)
+                                                        <span class="badge @if ((float) $rate->latest_rate - (float) $rate->prior_rate  < 0) bg-danger @else bg-success @endif">{{ sprintf("%0.2f %%", (((float) $rate->latest_rate - (float) $rate->prior_rate) / (float) $rate->prior_rate) * 100) }}</span>
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     {{ date('Y-m-d',strtotime($rate->latest_date)) }}
