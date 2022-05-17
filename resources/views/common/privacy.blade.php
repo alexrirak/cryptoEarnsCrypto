@@ -15,7 +15,7 @@
 
                 <h4 class="card-title">Delete My Data</h4>
 
-                <p>To delete your data, first log in to your account. Then navigate to the <a href="{{ route('profile') }}">profile page</a> and use the "Delete my Account" button.</p>
+                <p>This website collects and stores your name and email. These are used to facilitate login and to personalize your experience. To delete your data, first log in to your account. Then navigate to the <a href="{{ route('profile') }}">profile page</a> and use the "Delete my Account" button.</p>
 
                 <h4 id="cookie-policy" class="card-title">Cookie Policy</h4>
 
