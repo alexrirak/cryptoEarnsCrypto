@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\AlertController;
 use App\Http\Controllers\CelsiusTrackerMigrationController;
 use App\Http\Controllers\FavoriteController;
-use App\Http\Controllers\AlertController;
 use App\Http\Controllers\RatesController;
 use App\Http\Controllers\UnsubscribeController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,8 +26,8 @@ Route::get('/rate-stats/{source}',[RatesController::class, 'getRates'])
      ->name('getRates');
 
 Route::put('favorite/{provider}/{coin}',[FavoriteController::class, 'addFavorite'])
-    ->middleware('auth:api')
-    ->name('addFavorite');
+     ->middleware('auth:api')
+     ->name('addFavorite');
 
 Route::delete('favorite/{provider}/{coin}',[FavoriteController::class, 'deleteFavorite'])
      ->middleware('auth:api')

@@ -25,7 +25,7 @@
         @endif
 
 
-        @include('cookieConsent::index')
+        @include('cookie-consent::index')
 
         @include('layouts.navigation')
 
