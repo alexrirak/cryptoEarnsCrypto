@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +20,8 @@ class ProviderMetadataSeeder extends Seeder
             'name' => 'Celsius',
             'specialRateName' => 'Cel Rates',
             'notes' => 'Rates shown are international rates.',
-            'referralUrl' => 'https://celsiusnetwork.app.link/190554d731'
+            'referralUrl' => 'https://celsiusnetwork.app.link/190554d731',
+            'updated_at' => Carbon::now()
         ]);
     }
 }
