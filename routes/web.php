@@ -105,4 +105,3 @@ Route::get('celsiusTracker', [CelsiusTrackerMigrationController::class, 'landing
 Route::get('celsiusTracker/{emailId}', [CelsiusTrackerMigrationController::class, 'migrateView'])
      ->middleware('guest')
      ->name('celsiusTrackerMigration-migrate');
-

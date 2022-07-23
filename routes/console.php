@@ -1,18 +1,18 @@
 <?php
 
 use App\Events\RatesProcessed;
+use App\Helpers\CoinHelper;
+use App\Helpers\RateHelper;
+use App\Models\CoinMetadata;
 use App\Models\ProviderMetadata;
+use App\Models\Rate;
+use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
-
-use App\Helpers\RateHelper;
-use App\Helpers\CoinHelper;
-use App\Models\CoinMetadata;
-use App\Models\Rate;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +24,6 @@ use App\Models\Rate;
 | simple approach to interacting with each command's IO methods.
 |
 */
-
 
 /**
  * Queries the Celsius API to get the latest rates nad inserts them into the DB is they have been updated

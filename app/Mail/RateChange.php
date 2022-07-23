@@ -30,12 +30,6 @@ class RateChange extends Mailable
         $this->user = $user;
         $this->provider = $provider;
 
-        // This is to get the mailer to work on cli
-        $mailTransport = app()->make('mailer')->getSwiftMailer()->getTransport();
-
-        if ($mailTransport instanceof \Swift_SmtpTransport) {
-           $mailTransport->setLocalDomain('0.0.0.0');
-        }
     }
 
     /**
