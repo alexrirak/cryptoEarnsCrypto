@@ -31,15 +31,6 @@
                         <span class="input-group-text"><button type="button" id="btc-copy" class="btn btn-outline-secondary btn-sm" data-bs-placement="bottom" title="Copied!">COPY</button></span>
                     </div>
 
-                    <h4 class="card-title">Referral Link</h4>
-                    <p class="card-text">
-                        If you do not yet have a Celsius Network account you can sign up using our referral link which will give both you and us a reward ($30 at time of writing) when you sign up and complete the terms of the offer. Download the app using the link below and use the referral code during sign up.
-                        <br><br>
-                        <b>Celsius App Download:</b> <a href="https://celsiusnetwork.app.link/190554d731">https://celsiusnetwork.app.link/190554d731</a>
-                        <br />
-                        <b>Referral Code:</b> 190554d731
-                    </p>
-
                     <h4 class="card-title">Contact Us</h4>
                     <p class="card-text">If you need to contact us you can reach out to <i>hi<!---->@<!---->crypto<!---->earns<!---->crypto<!---->.com</i></p>
 
