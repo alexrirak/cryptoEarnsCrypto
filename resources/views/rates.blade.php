@@ -22,6 +22,14 @@
 @section('content')
     <div class="text-center">
         <h1 data-provider="{{ Str::lower($provider) }}" data-provider-rate="{{ $providerMetaData->specialRateName }}">{{ Str::ucfirst($provider) }} APY Tracker</h1>
+        @if($providerMetaData->warning)
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2 fs-1"></i>
+                <div>
+                    {{ $providerMetaData->warning }}
+                </div>
+            </div>
+        @endif
         <table id="rateTable" class="table table-striped" style="width:100%;">
             <thead>
                 <tr>
