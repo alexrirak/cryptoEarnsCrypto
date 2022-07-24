@@ -36,7 +36,7 @@ Route::get('/disclaimer', function () {
 })->name('disclaimer');
 
 Route::get('/support-us', function () {
-    return view('support');
+    return view('common.support');
 })->name('support-us');
 
 Route::get('/privacy-center', function () {
