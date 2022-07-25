@@ -15,19 +15,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // Celsius tends to update rates on Fridays or Mondays, so we check more frequently on those days
+        // Check Celsius Rates
         $schedule->command('getCelsiusRates')
-                 ->everySixHours()
-                 ->days([Schedule::TUESDAY,
-                         Schedule::WEDNESDAY,
-                         Schedule::THURSDAY,
-                         Schedule::SATURDAY,
-                         Schedule::SUNDAY]);
+                 ->everySixHours();
 
-        $schedule->command('getCelsiusRates')
-                 ->everyTwoHours()
-                 ->days([Schedule::MONDAY,
-                         Schedule::FRIDAY]);
+        // Check Gemini Rates
+        $schedule->command('getGeminiRates')
+                 ->everySixHours();
     }
 
     /**
