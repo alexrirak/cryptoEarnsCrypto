@@ -25,14 +25,19 @@ use Illuminate\Support\Str;
 |
 */
 
-
 /**
  * Queries the Gemini Website to get the latest rates and inserts them into the DB if they have been updated
  */
 Artisan::command('getGeminiRates', function () {
 
-    $url = config('sources.gemini_url');
-    $response = Http::get($url);
+    // Find and extract the 'build' id so that we can form the data url
+    $url = config('sources.gemini_earn_url');
+    $web_response = Http::get($url);
+    $data_url = Str::replace('%%ID%%',
+                             Str::betweenFirst($web_response->body(), '"buildId":"', '"'),
+                             config('sources.gemini_data_url'));
+
+    $response = Http::get($data_url);
 
     if ($response->successful()) {
         $rates = $response->json()['pageProps']['earnRates']['interestRates'];
