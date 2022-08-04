@@ -2,6 +2,7 @@
       width: 2em;
       height: 2em;
       margin: auto;
+      border-radius: 50%;
   }
 
   .coinLogoHolder img {

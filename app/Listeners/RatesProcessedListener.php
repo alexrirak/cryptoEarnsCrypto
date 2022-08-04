@@ -55,6 +55,7 @@ class RatesProcessedListener
         $usersTonotify = Rate::join('user_alerts', 'rates.coin_id', '=', 'user_alerts.coin_id')
                              ->join('users', 'user_alerts.user_id', '=', 'users.id')
                              ->select('users.id', 'users.name', 'users.email')
+                             ->where('user_alerts.source_id', '=', $provider->id)
                              ->where('rates.source', '=', $provider->name)
                              ->whereBetween('rates.created_at', [$lastUpdate, $currentDate])
                              ->groupBy('users.id', 'users.name', 'users.email')

@@ -26,6 +26,116 @@ use Illuminate\Support\Str;
 */
 
 /**
+ * Queries the Gemini Website to get the latest rates and inserts them into the DB if they have been updated
+ */
+Artisan::command('getGeminiRates', function () {
+
+    // Find and extract the 'build' id so that we can form the data url
+    $url = config('sources.gemini_earn_url');
+    $web_response = Http::get($url);
+    $data_url = Str::replace('%%ID%%',
+                             Str::betweenFirst($web_response->body(), '"buildId":"', '"'),
+                             config('sources.gemini_data_url'));
+
+    $response = Http::get($data_url);
+
+    if ($response->successful()) {
+        $rates = $response->json()['pageProps']['earnRates']['interestRates'];
+
+        $currentRates = RateHelper::getRates("gemini");
+
+
+        $data = [];
+        foreach ($rates as $rate) {
+
+            // Grab current info and get the conversions out of the way
+            $currRate = RateHelper::filterRatesArray($currentRates, $rate["symbol"]);
+            $newApyRate = $rate["apy"];
+
+            // if the count is not 1 then this is a new coin we dont have rates for yet
+            if (count($currRate) != 1) {
+                Log::info("[Gemini] New coin available: " . $rate["symbol"]);
+
+                // Get the coin id for this coin if it already exists
+                $coinId = CoinHelper::getCoinBySymbolOrName($rate["symbol"], $rate["value"]);
+
+                // if it doesnt exist we need to create it
+                if (!$coinId) {
+                    Log::notice("[Gemini] Coin doesnt exist");
+                    $coinId = (string)Str::uuid();
+
+                    $coinMetadata = new CoinMetadata;
+                    $coinMetadata->id = $coinId;
+                    $coinMetadata->name = $rate["value"];
+                    $coinMetadata->symbol = $rate["symbol"];
+                    $coinMetadata->image = "https://www.gemini.com/images/currencies/icons/default/" . Str::lower($rate["symbol"]) .".svg";
+
+                    Log::notice("[Gemini] Creating: " . json_encode($coinMetadata));
+                    $coinMetadata->save();
+
+                    //TODO: send notification (at least to myself) that new rate is available
+
+                }
+
+                // Insert the rate for the coin
+                $data[] = [
+                    'id' => (string)Str::uuid(),
+                    'coin_id' => $coinId,
+                    'rate' => $newApyRate,
+                    'source' => config('sources.gemini_source_id')
+                ];
+
+                // No need to continue
+                continue;
+            }
+
+            // we have an array with one item, so reference the item directly
+            $currRate = Arr::first($currRate, function () {
+                return true;
+            });
+
+            // if the rate has changed prep the data we will insert into db
+            if ($currRate->rate != $newApyRate) {
+
+                Log::info("[Gemini] Updated rate available for " . $currRate->symbol);
+                Log::debug("[Gemini] Old Rate:" . $currRate->rate . " New Rate: " . $newApyRate);
+
+                $data[] = [
+                    'id' => (string)Str::uuid(),
+                    'coin_id' => $currRate->coin_id,
+                    'rate' => $newApyRate,
+                    'source' => config('sources.gemini_source_id')
+                ];
+            } else {
+                Log::debug("[Gemini] No update needed for " . $currRate->symbol);
+            }
+
+        }
+
+        // insert the data in one action
+        if (count($data) > 0) {
+            Log::info("[Gemini] Inserting updated data");
+            Rate::insert($data);
+        } else {
+            Log::info("[Gemini] No updated data");
+        }
+
+        RatesProcessed::dispatch("gemini");
+
+        // We want to have a record of when we last updated rates
+        $provider = ProviderMetadata::where('name','=', 'Gemini')->first();
+        $provider->updated_at = DB::raw("now()");
+        $provider->save();
+
+
+    } else {
+        Log::critical("[Gemini] API call for rates failed! Error Code: " . $response->status());
+    }
+
+
+})->purpose('Fetch latest rates from Gemini website');
+
+/**
  * Queries the Celsius API to get the latest rates nad inserts them into the DB is they have been updated
  * Also does conversion and saves 'Cel' rate
  */
