@@ -60,7 +60,7 @@
                                     + "</span></span>"]
                                 : ["<span class='badge bg-secondary'>Unknown<sup>*</sup></span>"],
                             json[i].latest_date ? [json[i].latest_date,new Date(json[i].latest_date).toDateString() + (Boolean(json[i].chartAvailable) ?
-                                '<a href="/history/celsius/' + json[i].symbol + '">' +
+                                '<a href="/history/' + $("h1[data-provider]").attr('data-provider') + '/' + json[i].symbol + '">' +
                                 '<button type="button" data-type="history" class="btn btn-outline-secondary btn-sm ms-1" style="margin-top: -0.3rem;">' +
                                 '<i class="bi bi-graph-up"></i>' +
                                 '</button></a>' : "")]
