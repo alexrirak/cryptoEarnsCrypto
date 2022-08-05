@@ -182,6 +182,16 @@
 
             });
 
+            $("[data-bs-toggle='collapse']").click(function () {
+
+                if ($(this).hasClass( "collapsed" )) {
+                    $(this).html("Expand")
+                } else {
+                    $(this).html("Collapse")
+                }
+
+            });
+
             toastr.options = {
                 "positionClass": "toast-bottom-right",
             }
@@ -289,7 +299,7 @@
                 @foreach ($data as $source)
                     <a name="{{$source[0]->source}}_coins"></a>
 
-                    <nav class="navbar navbar-light bg-light">
+                    <nav class="navbar navbar-light bg-light mb-2">
                         <div class="container-fluid justify-content-start">
                             <span class="navbar-brand mb-0 h1">{{ Str::ucfirst($source[0]->source) }}</span>
 
@@ -305,11 +315,17 @@
                                     <button type="button" class="btn btn-outline-secondary" data-type="alert-add-all">Add All</button>
                                     <button type="button" class="btn btn-outline-secondary" data-type="alert-remove-all">Remove All</button>
                                 </div>
+
+                                <div class="col btn-group btn-group-sm" role="group" data-provider="{{ $source[0]->source }}">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#{{$source[0]->source}}_coins">
+                                        Collapse
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </nav>
 
-                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="row row-cols-1 row-cols-md-3 g-4 collapse show" id="{{$source[0]->source}}_coins">
                         @foreach ($source as $coin)
                             <div class="col">
                                 <div class="card mb-1">
