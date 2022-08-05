@@ -309,28 +309,32 @@
     });
 
     @auth
-    function favoriteAddedToast(coin) {
-        toastr.success(coin + " added to favorites!");
+    function favoriteAddedToast(coin, provider) {
+        toastr.success(coin + " from " + capitalize(provider) + " added to favorites!");
     }
 
-    function favoriteRemovedToast(coin) {
-        toastr.success(coin + " removed from favorites!");
+    function favoriteRemovedToast(coin, provider) {
+        toastr.success(coin + " from " + capitalize(provider) + " removed from favorites!");
     }
 
     function favoriteErrorToast() {
         toastr.error("Error occurred updating favorites. Please try again.");
     }
 
-    function alertAddedToast(coin) {
-        toastr.success("Subscribed to alerts for " + coin);
+    function alertAddedToast(coin, provider) {
+        toastr.success("Subscribed to alerts for " + coin + " from " + capitalize(provider));
     }
 
-    function alertRemovedToast(coin) {
-        toastr.success("Unsubscribed from alerts for " + coin);
+    function alertRemovedToast(coin, provider) {
+        toastr.success("Unsubscribed from alerts for " + coin + " from " + capitalize(provider));
     }
 
     function alertErrorToast() {
         toastr.error("Error occurred updating alerts. Please try again.");
+    }
+
+    function capitalize(word) {
+        return word.substring(0, 1).toUpperCase() + word.substring(1);
     }
 
     function alertButtonBinding(rateTable) {
@@ -348,7 +352,7 @@
                     success: function () {
                         $(element).find("i").removeClass("bi-hourglass-split");
                         $(element).find("i").addClass("bi-envelope-fill");
-                        alertAddedToast($(element).attr('coin'))
+                        alertAddedToast($(element).attr('coin'), $("h1[data-provider]").attr('data-provider'))
                         $(element).blur();
                         if (rateTable) {
                             rateTable.ajax.reload(null, false);
@@ -377,7 +381,7 @@
                     success: function () {
                         $(element).find("i").removeClass("bi-hourglass-split");
                         $(element).find("i").addClass("bi-envelope");
-                        alertRemovedToast($(element).attr('coin'));
+                        alertRemovedToast($(element).attr('coin'), $("h1[data-provider]").attr('data-provider'));
                         $(element).blur();
                         if (rateTable) {
                             rateTable.ajax.reload(null, false);
@@ -415,7 +419,7 @@
                     success: function () {
                         $(element).find("i").removeClass("bi-hourglass-split");
                         $(element).find("i").addClass("bi-star-fill");
-                        favoriteAddedToast($(element).attr('coin'))
+                        favoriteAddedToast($(element).attr('coin'), $("h1[data-provider]").attr('data-provider'))
                         $(element).blur();
                         if (rateTable) {
                             rateTable.ajax.reload(null, false);
@@ -452,7 +456,7 @@
                     success: function () {
                         $(element).find("i").removeClass("bi-hourglass-split");
                         $(element).find("i").addClass("bi-star");
-                        favoriteRemovedToast($(element).attr('coin'));
+                        favoriteRemovedToast($(element).attr('coin'), $("h1[data-provider]").attr('data-provider'));
                         $(element).blur();
                         if (rateTable) {
                             rateTable.ajax.reload(null, false);
@@ -495,7 +499,7 @@
                     success: function () {
                         $(element).removeClass("bi-hourglass-split");
                         $(element).addClass("bi-star-fill");
-                        favoriteAddedToast($(element).attr('coin'));
+                        favoriteAddedToast($(element).attr('coin'), $("h1[data-provider]").attr('data-provider'));
                         if (rateTable) {
                             rateTable.ajax.reload(null, false);
                         }
@@ -526,7 +530,7 @@
                     success: function () {
                         $(element).removeClass("bi-hourglass-split");
                         $(element).addClass("bi-star");
-                        favoriteRemovedToast($(element).attr('coin'))
+                        favoriteRemovedToast($(element).attr('coin'), $("h1[data-provider]").attr('data-provider'))
                         if (rateTable) {
                             rateTable.ajax.reload(null, false);
                         }

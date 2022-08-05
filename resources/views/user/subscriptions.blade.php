@@ -228,7 +228,7 @@
         }
 
         function capitalize(word) {
-            return word.substr(0, 1).toUpperCase() + word.substr(1);
+            return word.substring(0, 1).toUpperCase() + word.substring(1);
         }
     </script>
 @endsection
