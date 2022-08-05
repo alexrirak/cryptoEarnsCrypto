@@ -16,8 +16,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // Check Celsius Rates
-        $schedule->command('getCelsiusRates')
-                 ->everySixHours();
+//        $schedule->command('getCelsiusRates')
+//                 ->everySixHours();
 
         // Check Gemini Rates
         $schedule->command('getGeminiRates')
