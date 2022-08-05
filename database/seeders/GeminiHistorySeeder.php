@@ -451,7 +451,7 @@ class GeminiHistorySeeder extends Seeder
 
         //Fetch coin
         $coin = DB::table('coin_metadata')
-                  ->where('symbol', '=', 'AMP')
+                  ->where('symbol', '=', 'ANKR')
                   ->first();
 
         // Update old rate
@@ -748,7 +748,7 @@ class GeminiHistorySeeder extends Seeder
 
         //Fetch coin
         $coin = DB::table('coin_metadata')
-                  ->where('symbol', '=', 'UMA')
+                  ->where('symbol', '=', 'ZEC')
                   ->first();
 
         // Update old rate
