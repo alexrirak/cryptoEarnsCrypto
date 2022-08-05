@@ -6,6 +6,7 @@ use App\Models\ProviderMetadata;
 use App\Models\Rate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class RatesController extends Controller
 {
@@ -34,13 +35,18 @@ class RatesController extends Controller
                                DB::raw('(count(rates.created_at) > 2) as chartAvailable'),
                                'rates.source'
                            )
+                            ->leftJoin('provider_metadata as pm', function ($join) use ($source) {
+                                $join->where('pm.name', '=', Str::ucfirst($source));
+                            })
                            ->leftJoin('user_favorites as uf', function ($join) use ($user) {
                                $join->on('uf.coin_id', '=', 'rates.coin_id')
-                                    ->where('uf.user_id', '=', $user->id);
+                                    ->where('uf.user_id', '=', $user->id)
+                                    ->where('uf.source_id', '=', DB::raw('pm.id'));
                            })
                            ->leftJoin('user_alerts as ua', function ($join) use ($user) {
                                $join->on('ua.coin_id', '=', 'rates.coin_id')
-                                    ->where('ua.user_id', '=', $user->id);
+                                    ->where('ua.user_id', '=', $user->id)
+                                    ->where('ua.source_id', '=', DB::raw('pm.id'));
                            })
                            ->where('rates.source', '=', $source)
                            ->groupBy('rates.coin_id', 'rates.source', 'uf.coin_id', 'ua.coin_id')
