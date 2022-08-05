@@ -17,7 +17,7 @@
                         APY Trackers
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        @foreach (\App\Models\ProviderMetadata::all() as $provider)
+                        @foreach (\App\Models\ProviderMetadata::orderBy('name')->get() as $provider)
                             <li><a class="dropdown-item" href="{{ route('rates',['provider' => Str::lower($provider->name)]) }}">{{ $provider->name }}</a></li>
                         @endforeach
                     </ul>

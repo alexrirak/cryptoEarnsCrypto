@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::redirect('/', '/rates/celsius')->name('home');
+Route::redirect('/', '/rates/gemini')->name('home');
 
 Route::redirect('/home', '/');
 
