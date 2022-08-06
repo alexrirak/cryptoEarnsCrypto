@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\UserAlert;
 use Illuminate\Support\Facades\Log;
 
@@ -12,14 +13,18 @@ class UnsubscribeController extends Controller
 
         $email = hex2bin($emailId);
 
-        $userAlerts = UserAlert::whereRaw("user_id in (select id from users where email = ?)", [$email])
-                               ->get();
+        $user = User::whereEmail($email)->first();
 
-        if ($userAlerts->count() == 0) {
-            Log::error(sprintf("[Unsubscribe] Unsubscribe lookup failed for: %s, [%s]", $email, $emailId));
+        if ($user) {
+            $userAlerts = UserAlert::whereRaw("user_id in (select id from users where email = ?)", [$email])
+                                   ->get();
         }
 
-        return view('unsubscribe', ["email" => $email, "emailId" => $emailId, "userAlertsCount" => $userAlerts->count()]);
+        if (!isset($userAlerts)) {
+            Log::error(sprintf("[Unsubscribe] Unsubscribe lookup failed with invalid user for: %s, [%s]", $email, $emailId));
+        }
+
+        return view('unsubscribe', ["email" => $email, "emailId" => $emailId, "userAlertsCount" => isset($userAlerts) ? $userAlerts->count() : null]);
 
     }
 

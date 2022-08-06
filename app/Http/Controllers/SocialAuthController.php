@@ -11,8 +11,11 @@ use App\Models\User;
 
 class SocialAuthController extends Controller
 {
-    public function signin()
+    public function signin(Request $request)
     {
+        if ($request->session()->missing('url.intended')) {
+            session()->put('url.intended', url()->previous());
+        }
         return view('auth.signin');
     }
 
@@ -68,7 +71,7 @@ class SocialAuthController extends Controller
             Auth::login($user);
         }
 
-        return redirect()->route('home');
+        return redirect()->intended();
     }
 
     public function logout(Request $request)

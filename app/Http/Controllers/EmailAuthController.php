@@ -54,6 +54,6 @@ class EmailAuthController extends Controller
         $token->consume();
         Auth::login($token->user);
 
-        return redirect()->route('home');
+        return redirect()->intended();
     }
 }

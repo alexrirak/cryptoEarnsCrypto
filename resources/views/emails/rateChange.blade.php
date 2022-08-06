@@ -184,7 +184,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Visit <a href="{{ route('home') }}" >{{ config('app.name') }}</a> for the latest information and to update your preferences.
+                                    Visit <a href="{{ route('home') }}" >{{ config('app.name') }}</a> for the latest information and to update your preferences. If you no longer wish to receive alerts, <a href="{{ route('unsubscribe', ["emailId"=>bin2hex($user->email)]) }}" >unsubscribe here</a>.
                                 </td>
                             </tr>
                             <tr>

@@ -16,10 +16,8 @@ class UserController extends Controller
         $user = User::select('users.name',
                              'users.email',
                              'users.created_at as member_since',
-                             DB::raw('count(Distinct(uf.coin_id)) as favorites'),
-                             DB::raw('count(Distinct(ua.coin_id)) as alerts'))
-                    ->leftJoin('user_favorites as uf', 'users.id', '=', 'uf.user_id')
-                    ->leftJoin('user_alerts as ua', 'users.id', '=', 'ua.user_id')
+                             DB::raw('(SELECT count(coin_id) FROM user_favorites where user_id = users.id) as favorites'),
+                             DB::raw('(SELECT count(coin_id) FROM user_alerts where user_id = users.id) as alerts'))
                     ->where('users.id', '=', Auth::user()->id)
                     ->groupBy('users.id', 'users.name', 'users.email', 'users.created_at')
                     ->first();
