@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
-
-use App\Models\User;
 
 class SocialAuthController extends Controller
 {
@@ -33,7 +32,7 @@ class SocialAuthController extends Controller
     {
         // Try to catch errors coming back from the providers
         if (!$request->has('code') || $request->has('error')) {
-            return redirect('login')->withErrors([__('auth.external-error')]);
+            return redirect('signin')->withErrors([__('auth.external-error')]);
         }
 
         $userSocial =   Socialite::driver($provider)->user();
@@ -48,7 +47,7 @@ class SocialAuthController extends Controller
                 $http->delete("https://graph.facebook.com/v3.0/".$userSocial->getId()."/permissions?access_token=".$userSocial->token);
             }
 
-            return redirect('login')->withErrors([__('auth.no-email-error')]);
+            return redirect('signup')->withErrors([__('auth.no-email-error')]);
         }
 
         // Find the user by email, provider is not currently checked
