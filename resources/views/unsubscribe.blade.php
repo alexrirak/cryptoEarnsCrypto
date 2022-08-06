@@ -35,11 +35,10 @@
     <div>
         <h1 class="text-center">Unsubscribe?</h1>
 
-        @if ($userAlertsCount === 0)
-
-            <div class="alert alert-danger" role="alert" id="signupFailure">
+        @if (!isset($userAlertsCount))
+            <div class="alert alert-danger" role="alert">
                 <h4 class="alert-heading"><i class="bi bi-x-square"></i> Oops! Something went wrong!</h4>
-                <p>Please confirm you entered the correct URL or try again later. If this problem persist please contact us.</p>
+                <p>Please confirm you entered the correct URL or try again later. If this problem persists please contact us.</p>
                 <p><a href="{{ route('home') }}">Click here to go back to the main page</a></p>
             </div>
 
@@ -57,20 +56,28 @@
 
                     <div class="alert alert-danger" role="alert" id="unsubscribeFailure" style="display: none;">
                         <h4 class="alert-heading"><i class="bi bi-x-square"></i> Oops! Something went wrong!</h4>
-                        <p>Please refresh the page or try again later. If this problem persist please contact us.</p>
+                        <p>Please refresh the page or try again later. If this problem persists please contact us.</p>
                         <p><a href="{{ route('home') }}">Click here to go back to the main page</a></p>
                     </div>
 
                     <p class="card-text">You are currently subscribed as <b style='font-family: "Lucida Console", "Courier New", monospace;'>{{ $email }}</b> to
                         <b style='font-family: "Lucida Console", "Courier New", monospace;'>{{ $userAlertsCount }}</b> alerts.</p>
 
-                    <div class="alert alert-warning mb-3" style="max-width: 800px;margin: auto;" role="alert">
-                        <h4 class="alert-heading">Warning!</h4>
-                        <p>This will unsubscribe you from all the alerts you are currently subscribed to. If you would instead like to change which coins you
-                            get alerts for you can do so from the main page.</p>
-                    </div>
+                    @if ($userAlertsCount === 0)
+                        <div class="alert alert-danger mb-3" style="max-width: 800px;margin: auto;" role="alert">
+                            <h4 class="alert-heading"><i class="bi bi-x-square"></i> Oops! Something went wrong!</h4>
+                            <p>We could not find any subscriptions for your email. If you believe this is an error please contact us.</p>
+                            <p><a href="{{ route('home') }}">Click here to go back to the main page</a></p>
+                        </div>
+                    @else
+                        <div class="alert alert-warning mb-3" style="max-width: 800px;margin: auto;" role="alert">
+                            <h4 class="alert-heading">Warning!</h4>
+                            <p>This will unsubscribe you from <b><i>all</i></b> the alerts you are currently subscribed to. If you would instead like to change which coins you
+                                get alerts for you can do so from the <a href="{{ route('subscriptions') }}">subscriptions page</a>.</p>
+                        </div>
+                    @endif
 
-                    <a href="#" class="btn btn-danger" id="unsubscribeButton">Unsubscribe</a>
+                    <a href="#" class="btn btn-danger @if ($userAlertsCount === 0) disabled @endif" id="unsubscribeButton">Unsubscribe</a>
                     <a href="{{ route('home') }}" class="btn btn-primary">Cancel</a>
                 </div>
             </div>
