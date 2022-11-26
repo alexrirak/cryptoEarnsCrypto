@@ -20,8 +20,8 @@ class Kernel extends ConsoleKernel
 //                 ->everySixHours();
 
         // Check Gemini Rates
-        $schedule->command('getGeminiRates')
-                 ->everySixHours();
+//        $schedule->command('getGeminiRates')
+//                 ->everySixHours();
     }
 
     /**
