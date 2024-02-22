@@ -17,7 +17,7 @@
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="container-lg">
+    <div class="container-lg justify-content-center">
         <a class="navbar-brand" href="{{ config('app.url') }}">Crypto Earns Crypto</a>
     </div>
 </nav>
@@ -36,7 +36,7 @@
                 What’s Next:
                 <ul>
                     <li>
-                        <b>Rate Data Availability</b>: In case you are interested in the historical data we’ve collected, all the rate data is available for download below. Downloading the data will allow you to access this information after the website is taken offline.
+                        <b>Rate Data Availability<sup>1</sup></b>: In case you are interested in the historical data we’ve collected, all the rate data is available for download below. Downloading the data will allow you to access this information after the website is taken offline.
                     </li>
                     <li>
                         <b>User Data Deletion</b>: Your privacy is essential to us. Rest assured that all user data will be permanently deleted. We respect your trust and take data protection seriously.
@@ -53,6 +53,11 @@
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center my-4">
                 <button type="button" class="btn btn-primary btn-lg px-4 gap-3" onclick="downloadRateData()">Rate Data Download</button>
             </div>
+            <p class="text-muted" style="font-size: 0.7rem;">
+                <sup>1</sup> {{ config('app.name') }} cannot guarantee the validity of the information found here. While we make reasonable efforts to include accurate and up to date information, we make no warranties as to the accuracy of the content and assume no liability or responsibility for an error or omission in the content. All information is provided as is and you understand that you are using any and all information available here at your own risk.
+                <br/>
+                The information provided on this website does not constitute investment advice, financial advice, trading advice, or any other sort of advice and you should not treat any of the website's content as such. {{ config('app.name') }} does not recommend that any cryptocurrency should be bought, sold, or held by you. Do conduct your own due diligence and consult your financial advisor before making any investment decisions. With any investment, your capital is at risk. Past performance is no guarantee of future results.
+            </p>
         </div>
     </div>
 
@@ -61,7 +66,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function downloadRateData() {
-        window.open('{{ asset('data/test.csv') }}', '_blank');
+        window.open('{{ asset('data/crypto_earns_crypto_rate_data_archive.csv') }}', '_blank');
         window.beampipe('rate-data-download');
         pa.track({name: 'rate-data-download'});
     }
