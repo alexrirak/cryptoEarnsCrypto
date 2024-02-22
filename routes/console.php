@@ -3,15 +3,18 @@
 use App\Events\RatesProcessed;
 use App\Helpers\CoinHelper;
 use App\Helpers\RateHelper;
+use App\Mail\ShutDownNotice;
 use App\Models\CoinMetadata;
 use App\Models\ProviderMetadata;
 use App\Models\Rate;
+use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 /*
@@ -24,6 +27,32 @@ use Illuminate\Support\Str;
 | simple approach to interacting with each command's IO methods.
 |
 */
+
+Artisan::command('sendShutdownNoticeEmail', function () {
+
+    Log::info("[sendShutdownNoticeEmail] Sending shutdown notice email to all users");
+    $this->info(">> Sending shutdown notice email to all users");
+    $users = User::all();
+
+    foreach($users as $index=>$user) {
+
+        // every 34 users we want to sleep for 5 minutes to avoid rate limiting
+        if ($index > 0 and $index % 34 == 0) {
+            Log::info("[sendShutdownNoticeEmail] Sleeping for 5 minutes to avoid rate limiting");
+            $this->info(">> Sleeping for 5 minutes to avoid rate limiting");
+            for ($i = 0; $i < 5; $i++) {
+                sleep(60);
+                Log::info("[sendShutdownNoticeEmail] Sleeping for another " . 4 - $i . " minutes");
+                $this->info(">> Sleeping for another " . 4 - $i . " minutes");
+            }
+        }
+
+        Log::info("[sendShutdownNoticeEmail] Sending email to: " . $user->email);
+        $this->info(">> Sending email to: " . $user->email);
+        Mail::to($user->email)->send(new ShutDownNotice());
+    }
+
+})->purpose('Send an email to all users notifying them of the shutdown');
 
 /**
  * Queries the Gemini Website to get the latest rates and inserts them into the DB if they have been updated
