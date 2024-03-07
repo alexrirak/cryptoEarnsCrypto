@@ -32,31 +32,40 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-dev
 
     - name: Upload data files
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: ${{ secrets.ftp_server }}
+        server: ${{ secrets.ftp_server_qa }}
         username: ${{ secrets.ftp_qa_username }}
         password: ${{ secrets.ftp_qa_password }}
+        protocol: ftps
         state-name: .sync-state.json
-        exclude: .git*
-          - .git*/**
-          -  **/.git*/**
-          - node_modules/**
-          - node_modules/**/*
-          - **/.github*/**
+        exclude: |
+          **/.git*
+          **/.git*/**
+          .git*/**
+          node_modules/**
+          node_modules/**/*
+          **/.github*/**
+          docker-compose.yml
+          Dockerfile
+          README.md
+          .env*
           
     
     - name: Upload public files
-      uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: ${{ secrets.ftp_server }}
+        server: ${{ secrets.ftp_server_qa }}
         username: ${{ secrets.ftp_qa_pub_username }}
         password: ${{ secrets.ftp_qa_pub_password }}
+        protocol: ftps
         state-name: .sync-state.json
         local-dir: ./public/
-        exclude: .git*
-          - .git*/**
-          -  **/.git*/**
-          - node_modules/**
-          - node_modules/**/*
-          - **/index.php
+        exclude: |
+          **/.git*
+          **/.git*/**
+          .git*/**
+          node_modules/**
+          node_modules/**/*
+          **/.github*/**
+          **/index.php
